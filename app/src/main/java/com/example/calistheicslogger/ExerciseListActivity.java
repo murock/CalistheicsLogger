@@ -31,7 +31,7 @@ public class ExerciseListActivity extends Activity {
     private void setUpListView(){
         ListView exercisesListView = findViewById(R.id.exercisesListView);
 
-        // Hardcoded exercises delete later
+        // Hardcoded exercises delete later move to sqlLite
         exercises = new ArrayList<String>();
         exercises.add("Human Flag");
         exercises.add("Back Lever");
