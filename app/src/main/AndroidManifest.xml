@@ -18,6 +18,8 @@
         </activity>
 
         <activity android:name=".ExerciseListActivity">
+    </activity>
+        <activity android:name=".NewExerciseActivity">
         </activity>
     </application>
 

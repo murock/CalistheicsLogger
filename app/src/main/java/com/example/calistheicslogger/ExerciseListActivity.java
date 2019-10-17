@@ -1,6 +1,7 @@
 package com.example.calistheicslogger;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class ExerciseListActivity extends Activity {
 
-    ArrayList<String> exercises;
+    public static ArrayList<String> exercises;
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -73,6 +74,11 @@ public class ExerciseListActivity extends Activity {
                 return true;
             }
         });
+    }
+
+    public void newExerciseClick(View view){
+        Intent newExercise = new Intent(this,NewExerciseActivity.class);
+        startActivity(newExercise);
     }
 
 }
