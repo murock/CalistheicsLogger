@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 public class NewExerciseActivity extends Activity {
+
+    AppDatabase appDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,6 +23,7 @@ public class NewExerciseActivity extends Activity {
 
         setUpSpinner(R.id.categorySpinner);
         setUpSpinner(R.id.progressionSpinner);
+        appDatabase = AppDatabase.getInstance(this);
     }
 
     private void setUpSpinner(int spinnerId) {
@@ -27,6 +31,17 @@ public class NewExerciseActivity extends Activity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, ExerciseListActivity.exercises);
         categorySpinner.setAdapter(arrayAdapter);
 
+    }
+
+    public void onSaveButtonClicked(View view){
+        EditText exerciseNameEditText = findViewById(R.id.nameEditText);
+        String exerciseName = exerciseNameEditText.getText().toString();
+        if (!exerciseName.isEmpty()) {
+            Exercise exercise = new Exercise(exerciseName);
+            appDatabase.exerciseDao().addExercise(exercise);
+        }else{
+            Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onCheckboxClicked(View view) {

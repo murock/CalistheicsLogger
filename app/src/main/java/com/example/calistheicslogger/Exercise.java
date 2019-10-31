@@ -2,6 +2,7 @@ package com.example.calistheicslogger;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "exercises")
@@ -12,6 +13,16 @@ public class Exercise
 
     @ColumnInfo(name = "exercise_name")
     private String name;
+
+    public Exercise(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
+    @Ignore
+    public Exercise(String name){
+        this.name = name;
+    }
 
     public int getId() {
         return id;
