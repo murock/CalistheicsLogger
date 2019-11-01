@@ -3,6 +3,7 @@ package com.example.calistheicslogger;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -11,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.util.List;
 
 public class NewExerciseActivity extends Activity {
 
@@ -42,6 +45,21 @@ public class NewExerciseActivity extends Activity {
         }else{
             Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onPrintExerciseButtonClick(View view){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Exercise> exercises = appDatabase.exerciseDao().getAll();
+                int i = 1;
+                for(Exercise exercise : exercises) {
+                    Log.i("Exercise " + i,exercise.getName());
+                }
+            }
+        });
+
+
     }
 
     public void onCheckboxClicked(View view) {
