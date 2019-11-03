@@ -37,14 +37,23 @@ public class NewExerciseActivity extends Activity {
     }
 
     public void onSaveButtonClicked(View view){
-        EditText exerciseNameEditText = findViewById(R.id.nameEditText);
-        String exerciseName = exerciseNameEditText.getText().toString();
-        if (!exerciseName.isEmpty()) {
-            Exercise exercise = new Exercise(exerciseName);
-            appDatabase.exerciseDao().addExercise(exercise);
-        }else{
-            Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
-        }
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("Exercise ","got here");
+                EditText exerciseNameEditText = findViewById(R.id.nameEditText);
+                String exerciseName = exerciseNameEditText.getText().toString();
+                if (!exerciseName.isEmpty()) {
+                    Exercise exercise = new Exercise(exerciseName);
+                    appDatabase.exerciseDao().addExercise(exercise);
+                }else{
+                    Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
     }
 
     public void onPrintExerciseButtonClick(View view){
@@ -55,6 +64,7 @@ public class NewExerciseActivity extends Activity {
                 int i = 1;
                 for(Exercise exercise : exercises) {
                     Log.i("Exercise " + i,exercise.getName());
+                    i++;
                 }
             }
         });
