@@ -13,34 +13,47 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewExerciseActivity extends Activity {
 
     AppDatabase appDatabase;
+    List<Category> categoriesInDatabase;
+    List<String> stringListCategories;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        appDatabase = AppDatabase.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_exercise_activity);
 
-        setUpSpinner(R.id.categorySpinner);
-        setUpSpinner(R.id.progressionSpinner);
-        appDatabase = AppDatabase.getInstance(this);
+        setUpCategorySpinner(R.id.categorySpinner);
+        setUpSpinner(R.id.progressionSpinner,ExerciseListActivity.exercises);
     }
 
-    private void setUpSpinner(int spinnerId) {
+    private void setUpSpinner(int spinnerId, ArrayList<String> list) {
         Spinner categorySpinner = findViewById(spinnerId);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, ExerciseListActivity.exercises);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
         categorySpinner.setAdapter(arrayAdapter);
+    }
 
+    private void setUpCategorySpinner(final int spinnerId) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                stringListCategories = appDatabase.categoryDao().getAllNames();
+                for(String category : stringListCategories){
+                }
+                setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
+            }
+        });
     }
 
     public void onSaveButtonClicked(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.i("Exercise ","got here");
                 EditText exerciseNameEditText = findViewById(R.id.nameEditText);
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
