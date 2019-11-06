@@ -1,9 +1,9 @@
 package com.example.calistheicslogger;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+        import androidx.room.ColumnInfo;
+        import androidx.room.Entity;
+        import androidx.room.Ignore;
+        import androidx.room.PrimaryKey;
 
 @Entity(tableName = "exercises")
 public class Exercise
@@ -14,14 +14,40 @@ public class Exercise
     @ColumnInfo(name = "exercise_name")
     private String name;
 
-    public Exercise(int id, String name){
+    @ColumnInfo(name = "category")
+    private String category;
+
+    @ColumnInfo(name = "type")
+    private String type;
+
+    @ColumnInfo(name = "band_assisted")
+    private Boolean bandAssisted;
+
+    @ColumnInfo(name = "weight_loadable")
+    private Boolean weightLoadable;
+
+    @ColumnInfo(name = "progression_name")
+    private String progression;
+
+    public Exercise(int id, String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
         this.id = id;
         this.name = name;
+        this.category = category;
+        this.type = type;
+        this.bandAssisted = bandAssisted;
+        this.weightLoadable = weightLoadable;
+        this.progression = progression;
     }
 
     @Ignore
-    public Exercise(String name){
+    public Exercise(String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
         this.name = name;
+        this.name = name;
+        this.category = category;
+        this.type = type;
+        this.bandAssisted = bandAssisted;
+        this.weightLoadable = weightLoadable;
+        this.progression = progression;
     }
 
     public int getId() {

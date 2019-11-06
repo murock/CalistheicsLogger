@@ -14,13 +14,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NewExerciseActivity extends Activity {
 
     AppDatabase appDatabase;
-    List<Category> categoriesInDatabase;
     List<String> stringListCategories;
+    // Put the 3 spinners here as public variables as they need to be accessed in different methods
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +31,8 @@ public class NewExerciseActivity extends Activity {
 
         setUpCategorySpinner(R.id.categorySpinner);
         setUpSpinner(R.id.progressionSpinner,ExerciseListActivity.exercises);
+        ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Isometric", "Weight and Reps", "Negative"));
+        setUpSpinner(R.id.typeSpinner,exerciseTypes);
     }
 
     private void setUpSpinner(int spinnerId, ArrayList<String> list) {
@@ -57,6 +60,7 @@ public class NewExerciseActivity extends Activity {
                 EditText exerciseNameEditText = findViewById(R.id.nameEditText);
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
+                    //  public Exercise(String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
                     Exercise exercise = new Exercise(exerciseName);
                     appDatabase.exerciseDao().addExercise(exercise);
                 }else{
