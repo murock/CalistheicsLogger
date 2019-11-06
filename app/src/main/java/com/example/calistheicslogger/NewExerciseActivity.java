@@ -21,6 +21,9 @@ public class NewExerciseActivity extends Activity {
 
     AppDatabase appDatabase;
     List<String> stringListCategories;
+    Spinner categorySpinner, progressionSpinner, typeSpinner;
+    Boolean bandChecked = false, weightLoadableChecked = false;
+
     // Put the 3 spinners here as public variables as they need to be accessed in different methods
 
     @Override
@@ -30,15 +33,16 @@ public class NewExerciseActivity extends Activity {
         setContentView(R.layout.new_exercise_activity);
 
         setUpCategorySpinner(R.id.categorySpinner);
-        setUpSpinner(R.id.progressionSpinner,ExerciseListActivity.exercises);
+        progressionSpinner = setUpSpinner(R.id.progressionSpinner,ExerciseListActivity.exercises);
         ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Isometric", "Weight and Reps", "Negative"));
-        setUpSpinner(R.id.typeSpinner,exerciseTypes);
+        typeSpinner = setUpSpinner(R.id.typeSpinner,exerciseTypes);
     }
 
-    private void setUpSpinner(int spinnerId, ArrayList<String> list) {
-        Spinner categorySpinner = findViewById(spinnerId);
+    private Spinner setUpSpinner(int spinnerId, ArrayList<String> list) {
+        Spinner spinner = findViewById(spinnerId);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
-        categorySpinner.setAdapter(arrayAdapter);
+        spinner.setAdapter(arrayAdapter);
+        return spinner;
     }
 
     private void setUpCategorySpinner(final int spinnerId) {
@@ -48,7 +52,7 @@ public class NewExerciseActivity extends Activity {
                 stringListCategories = appDatabase.categoryDao().getAllNames();
                 for(String category : stringListCategories){
                 }
-                setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
+                categorySpinner = setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
             }
         });
     }
@@ -61,7 +65,8 @@ public class NewExerciseActivity extends Activity {
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
                     //  public Exercise(String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
-                    Exercise exercise = new Exercise(exerciseName);
+                    Exercise exercise = new Exercise(exerciseName, categorySpinner.getSelectedItem().toString(), typeSpinner.getSelectedItem().toString(),
+                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString());
                     appDatabase.exerciseDao().addExercise(exercise);
                 }else{
                     Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
@@ -81,6 +86,11 @@ public class NewExerciseActivity extends Activity {
                 int i = 1;
                 for(Exercise exercise : exercises) {
                     Log.i("Exercise " + i,exercise.getName());
+                    Log.i("Exercise Category " + i,exercise.getCategory());
+                    Log.i("Exercise Type " + i,exercise.getType());
+                    Log.i("Exercise Band " + i,exercise.getBandAssisted().toString());
+                    Log.i("Exercise Weighted " + i,exercise.getWeightLoadable().toString());
+                    Log.i("Exercise Progression " + i,exercise.getProgression());
                     i++;
                 }
             }
@@ -95,16 +105,24 @@ public class NewExerciseActivity extends Activity {
         String message;
         switch (view.getId()) {
             case R.id.bandAssistCheckBox:
-                if (checked)
+                if (checked) {
                     message = "band checkbox ticked";
-                else
+                    bandChecked = true;
+                }
+                else {
                     message = "band checkbox unticked";
+                    bandChecked = false;
+                }
                 break;
             case R.id.weightCheckBox:
-                if (checked)
+                if (checked) {
                     message = "weight checkbox ticked";
-                else
+                    weightLoadableChecked = true;
+                }
+                else {
                     message = "weight checkbox unticked";
+                    weightLoadableChecked = false;
+                }
                 break;
             default:
                 message = "Not possible to get here??";

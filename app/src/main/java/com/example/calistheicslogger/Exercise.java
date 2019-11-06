@@ -65,4 +65,44 @@ public class Exercise
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Boolean getBandAssisted() {
+        return bandAssisted;
+    }
+
+    public void setBandAssisted(Boolean bandAssisted) {
+        this.bandAssisted = bandAssisted;
+    }
+
+    public Boolean getWeightLoadable() {
+        return weightLoadable;
+    }
+
+    public void setWeightLoadable(Boolean weightLoadable) {
+        this.weightLoadable = weightLoadable;
+    }
+
+    public String getProgression() {
+        return progression;
+    }
+
+    public void setProgression(String progression) {
+        this.progression = progression;
+    }
 }
