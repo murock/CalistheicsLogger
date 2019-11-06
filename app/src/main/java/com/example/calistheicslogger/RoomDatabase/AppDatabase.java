@@ -13,10 +13,12 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Category;
 import com.example.calistheicslogger.RoomDatabase.Entities.CategoryDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.ExerciseDao;
+import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
+import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgressionDao;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Exercise.class, Category.class},version = 1)
+@Database(entities = {Exercise.class, Category.class, FinalProgression.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
@@ -34,7 +36,9 @@ public abstract class AppDatabase extends RoomDatabase {
                                 @Override
                                 public void run() {
                                     Log.i("Exercise ","got here");
+                                    // Pre populate database
                                     getInstance(context).categoryDao().addMultipleCategories(Category.populateData());
+                                    getInstance(context).finalProgressionDao().addMultipleFinalProgressions(FinalProgression.populateData());
                                 }
                             });
                         }
@@ -47,4 +51,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ExerciseDao exerciseDao();
 
     public abstract CategoryDao categoryDao();
+
+    public abstract FinalProgressionDao finalProgressionDao();
 }

@@ -42,6 +42,7 @@ public class FinalProgression
 
     public static FinalProgression[] populateData(){
         return new FinalProgression[]{
+                new FinalProgression("Standalone"),
                 new FinalProgression("Human Flag"),
                 new FinalProgression("Back Lever"),
                 new FinalProgression("Front Lever"),

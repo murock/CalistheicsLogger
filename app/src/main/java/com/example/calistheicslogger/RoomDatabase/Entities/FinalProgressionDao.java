@@ -9,23 +9,23 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface CategoryDao {
+public interface FinalProgressionDao {
 
-    @Query("SELECT * FROM categories")
-    List<Category> getAll();
+    @Query("SELECT * FROM final_progressions")
+    List<FinalProgression> getAll();
 
-    @Query("SELECT category_name FROM categories")
+    @Query("SELECT final_progression_name FROM final_progressions")
     List<String> getAllNames();
 
     @Insert
-    void addCategory(Category category);
+    void addFinalProgression(FinalProgression finalProgression);
 
     @Insert
-    void addMultipleCategories(Category[] categories);
+    void addMultipleFinalProgressions(FinalProgression[] finalProgression);
 
     @Update
-    void updateCategory(Category category);
+    void updateFinalProgression(FinalProgression finalProgression);
 
     @Delete
-    void deleteCategory(Category category);
+    void deleteFinalProgression(FinalProgression finalProgression);
 }

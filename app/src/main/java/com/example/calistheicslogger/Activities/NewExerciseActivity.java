@@ -24,7 +24,6 @@ import java.util.List;
 public class NewExerciseActivity extends Activity {
 
     AppDatabase appDatabase;
-    List<String> stringListCategories;
     Spinner categorySpinner, progressionSpinner, typeSpinner;
     Boolean bandChecked = false, weightLoadableChecked = false;
 
@@ -37,7 +36,7 @@ public class NewExerciseActivity extends Activity {
         setContentView(R.layout.new_exercise_activity);
 
         setUpCategorySpinner(R.id.categorySpinner);
-        progressionSpinner = setUpSpinner(R.id.progressionSpinner,ExerciseListActivity.exercises);
+        setUpProgressionSpinner(R.id.progressionSpinner);
         ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Isometric", "Weight and Reps", "Negative"));
         typeSpinner = setUpSpinner(R.id.typeSpinner,exerciseTypes);
     }
@@ -53,10 +52,19 @@ public class NewExerciseActivity extends Activity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                stringListCategories = appDatabase.categoryDao().getAllNames();
-                for(String category : stringListCategories){
-                }
+                List<String> stringListCategories = appDatabase.categoryDao().getAllNames();
                 categorySpinner = setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
+            }
+        });
+    }
+
+    // TODO: Find a better way to do this that doesn't repeat code
+    private void setUpProgressionSpinner(final int spinnerId) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> stringListProgressions = appDatabase.finalProgressionDao().getAllNames();
+                progressionSpinner = setUpSpinner(spinnerId,(ArrayList<String>)stringListProgressions);
             }
         });
     }
