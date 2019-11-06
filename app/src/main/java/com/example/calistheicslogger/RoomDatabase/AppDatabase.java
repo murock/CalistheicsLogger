@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.RoomDatabase;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,9 +9,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.calistheicslogger.RoomDatabase.Entities.Category;
+import com.example.calistheicslogger.RoomDatabase.Entities.CategoryDao;
+import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
+import com.example.calistheicslogger.RoomDatabase.Entities.ExerciseDao;
+
 import java.util.concurrent.Executors;
 
-@Database(entities = {Exercise.class,Category.class},version = 1)
+@Database(entities = {Exercise.class, Category.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
@@ -41,5 +46,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ExerciseDao exerciseDao();
 
-    public abstract  CategoryDao categoryDao();
+    public abstract CategoryDao categoryDao();
 }

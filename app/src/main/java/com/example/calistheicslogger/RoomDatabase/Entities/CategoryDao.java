@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.RoomDatabase.Entities;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

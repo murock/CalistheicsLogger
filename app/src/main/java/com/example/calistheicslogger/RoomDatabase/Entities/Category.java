@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.RoomDatabase.Entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.example.calistheicslogger.R;
 
 public class MainActivity extends AppCompatActivity {
 

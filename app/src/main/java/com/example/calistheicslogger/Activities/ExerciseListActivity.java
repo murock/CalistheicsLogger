@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.example.calistheicslogger.R;
 
 import java.util.ArrayList;
 

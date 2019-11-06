@@ -1,4 +1,4 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.RoomDatabase;
 
 import android.os.Handler;
 import android.os.Looper;

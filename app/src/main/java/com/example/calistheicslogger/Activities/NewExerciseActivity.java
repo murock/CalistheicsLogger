@@ -1,7 +1,6 @@
-package com.example.calistheicslogger;
+package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +11,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.example.calistheicslogger.RoomDatabase.AppDatabase;
+import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
+import com.example.calistheicslogger.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
