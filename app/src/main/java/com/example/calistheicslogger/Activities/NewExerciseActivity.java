@@ -98,7 +98,7 @@ public class NewExerciseActivity extends Activity {
                 int i = 1;
                 for(Exercise exercise : exercises) {
                     Log.i("Exercise " + i,exercise.getName());
-                    Log.i("Exercise Category " + i,exercise.getCategory());
+                    Log.i("Exercise Category " + i,exercise.getCategories());
                     Log.i("Exercise Type " + i,exercise.getType());
                     Log.i("Exercise Band " + i,exercise.getBandAssisted().toString());
                     Log.i("Exercise Weighted " + i,exercise.getWeightLoadable().toString());
@@ -114,31 +114,25 @@ public class NewExerciseActivity extends Activity {
     public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
 
-        String message;
         switch (view.getId()) {
             case R.id.bandAssistCheckBox:
                 if (checked) {
-                    message = "band checkbox ticked";
                     bandChecked = true;
                 }
                 else {
-                    message = "band checkbox unticked";
                     bandChecked = false;
                 }
                 break;
             case R.id.weightCheckBox:
                 if (checked) {
-                    message = "weight checkbox ticked";
                     weightLoadableChecked = true;
                 }
                 else {
-                    message = "weight checkbox unticked";
                     weightLoadableChecked = false;
                 }
                 break;
             default:
-                message = "Not possible to get here??";
+                //"Not possible to get here??";
         }
-        Toast.makeText(NewExerciseActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

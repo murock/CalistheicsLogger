@@ -14,8 +14,8 @@ public class Exercise
     @ColumnInfo(name = "exercise_name")
     private String name;
 
-    @ColumnInfo(name = "category")
-    private String category;
+    @ColumnInfo(name = "categories")
+    private String categories;
 
     @ColumnInfo(name = "type")
     private String type;
@@ -29,10 +29,10 @@ public class Exercise
     @ColumnInfo(name = "progression_name")
     private String progression;
 
-    public Exercise(int id, String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
+    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
         this.id = id;
         this.name = name;
-        this.category = category;
+        this.categories = categories;
         this.type = type;
         this.bandAssisted = bandAssisted;
         this.weightLoadable = weightLoadable;
@@ -40,10 +40,10 @@ public class Exercise
     }
 
     @Ignore
-    public Exercise(String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
+    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
         this.name = name;
         this.name = name;
-        this.category = category;
+        this.categories = categories;
         this.type = type;
         this.bandAssisted = bandAssisted;
         this.weightLoadable = weightLoadable;
@@ -66,12 +66,12 @@ public class Exercise
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(String categories) {
+        this.categories = categories;
     }
 
     public String getType() {
@@ -105,4 +105,15 @@ public class Exercise
     public void setProgression(String progression) {
         this.progression = progression;
     }
+
+//    public static Exercise[] populateData(){
+//        return new Exercise[]{
+//                new Exercise("Human Flag", "Back"),
+//                new Exercise("Back Lever"),
+//                new Exercise("Front Lever"),
+//                new Exercise("Handstand"),
+//                new Exercise("Planche"),
+//                new Exercise("Muscle up"),
+//        };
+//    }
 }
