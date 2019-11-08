@@ -16,6 +16,8 @@ import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.R;
+import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
+import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +26,8 @@ import java.util.List;
 public class NewExerciseActivity extends Activity {
 
     AppDatabase appDatabase;
-    Spinner categorySpinner, progressionSpinner, typeSpinner;
+    Spinner progressionSpinner, typeSpinner;
+    MultiSelectionSpinner categorySpinner;
     Boolean bandChecked = false, weightLoadableChecked = false;
 
     // Put the 3 spinners here as public variables as they need to be accessed in different methods
@@ -53,7 +56,13 @@ public class NewExerciseActivity extends Activity {
             @Override
             public void run() {
                 List<String> stringListCategories = appDatabase.categoryDao().getAllNames();
-                categorySpinner = setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
+                ArrayList<Item> items = new ArrayList<>();
+                for (String category : stringListCategories){
+                    items.add(new Item(category,false));
+                }
+                categorySpinner = findViewById(spinnerId);
+                categorySpinner.setItems(items);
+               // categorySpinner = setUpSpinner(spinnerId,(ArrayList<String>)stringListCategories);
             }
         });
     }

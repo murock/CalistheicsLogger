@@ -2,6 +2,11 @@ package com.example.calistheicslogger.Tools.MultiSelectSpinner;
 
 
 public class Item {
+    public Item(String name, Boolean value) {
+        this.name = name;
+        this.value = value;
+    }
+
     public String getName() {
         return name;
     }
