@@ -39,6 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     // Pre populate database
                                     getInstance(context).categoryDao().addMultipleCategories(Category.populateData());
                                     getInstance(context).finalProgressionDao().addMultipleFinalProgressions(FinalProgression.populateData());
+                                    getInstance(context).exerciseDao().addMultipleExercises(Exercise.populateData());
                                 }
                             });
                         }

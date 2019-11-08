@@ -30,7 +30,6 @@ public class NewExerciseActivity extends Activity {
     MultiSelectionSpinner categorySpinner;
     Boolean bandChecked = false, weightLoadableChecked = false;
 
-    // Put the 3 spinners here as public variables as they need to be accessed in different methods
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,8 +84,17 @@ public class NewExerciseActivity extends Activity {
                 EditText exerciseNameEditText = findViewById(R.id.nameEditText);
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
-                    //  public Exercise(String name, String category, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
-                    Exercise exercise = new Exercise(exerciseName, categorySpinner.getSelectedItem().toString(), typeSpinner.getSelectedItem().toString(),
+                    String categories = new String();
+                    List<Item> items =  categorySpinner.getSelectedItems();
+                    for (Item item : items)
+                    {
+                        if (!categories.isEmpty()){
+                            // Add a space if there is more than one entry
+                            categories += " ";
+                        }
+                        categories += item.getName();
+                    }
+                    Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
                             bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString());
                     appDatabase.exerciseDao().addExercise(exercise);
                 }else{

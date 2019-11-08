@@ -13,32 +13,54 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
+import com.example.calistheicslogger.RoomDatabase.AppDatabase;
+import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExerciseListActivity extends Activity {
 
-    public static ArrayList<String> exercises;
+    AppDatabase appDatabase;
     ArrayAdapter<String> arrayAdapter;
+    List<String> stringListExercises;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        appDatabase = AppDatabase.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_list_activity);
 
-        setUpListView();
+        setUpExercisesList();
         setUpSearchView();
     }
 
-    private void setUpListView(){
-        ListView exercisesListView = findViewById(R.id.exercisesListView);
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        setUpExercisesList();
+    }
 
-        // Hardcoded exercises delete later move to sqlLite
-        exercises = new ArrayList<String>();
-        exercises.add("Human Flag");
-        exercises.add("Back Lever");
-        exercises.add("Handstand");
-        exercises.add("Front lever");
+    private void setUpExercisesList()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                stringListExercises = appDatabase.exerciseDao().getAllNames();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUpListView((ArrayList<String>)stringListExercises);
+                    }
+                });
+
+            }
+        });
+    }
+
+    private void setUpListView(final ArrayList<String> exercises){
+        ListView exercisesListView = findViewById(R.id.exercisesListView);
 
         arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
 

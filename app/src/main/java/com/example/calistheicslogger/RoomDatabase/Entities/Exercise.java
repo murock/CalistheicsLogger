@@ -106,14 +106,11 @@ public class Exercise
         this.progression = progression;
     }
 
-//    public static Exercise[] populateData(){
-//        return new Exercise[]{
-//                new Exercise("Human Flag", "Back"),
-//                new Exercise("Back Lever"),
-//                new Exercise("Front Lever"),
-//                new Exercise("Handstand"),
-//                new Exercise("Planche"),
-//                new Exercise("Muscle up"),
-//        };
-//    }
+    public static Exercise[] populateData(){
+        return new Exercise[]{
+                new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag"),
+                new Exercise("Back Lever","Chest Abs Back", "Isometric", false, false, "Back Lever"),
+                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up"),
+        };
+    }
 }

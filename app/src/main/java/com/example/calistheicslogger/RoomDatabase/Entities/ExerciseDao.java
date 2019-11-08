@@ -14,8 +14,14 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises")
     List<Exercise> getAll();
 
+    @Query("SELECT exercise_name FROM exercises")
+    List<String> getAllNames();
+
     @Insert
     void addExercise(Exercise exercise);
+
+    @Insert
+    void addMultipleExercises(Exercise[] exercises);
 
     @Update
     void updateExercise(Exercise exercise);
