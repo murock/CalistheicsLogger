@@ -6,6 +6,34 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/bandTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Band"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/bandSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
+        app:layout_constraintStart_toStartOf="@+id/bandSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/minuteEditText" />
+
+    <EditText
+        android:id="@+id/secondEditText"
+        android:layout_width="75dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="ss"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/minuteEditText"
+        app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
+
+    <TextView
         android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -81,6 +109,27 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:constraint_referenced_ids="repsTextView,repsMinusButton,repsEditText,repsPlusButton" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/weightGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="weightTextView,weightMinusButton,weightEditText,weightPlusButton" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/timeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="timeTextView,hourEditText,minuteEditText,secondEditText" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/bandGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="bandTextView,bandSpinner" />
 
     <Button
         android:id="@+id/addButton"
@@ -168,22 +217,45 @@
         android:id="@+id/minuteEditText"
         android:layout_width="75dp"
         android:layout_height="42dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
         android:gravity="center"
         android:hint="mm"
         android:inputType="time"
-        app:layout_constraintTop_toBottomOf="@+id/timeTextView"
-        tools:layout_editor_absoluteX="168dp" />
+        app:layout_constraintEnd_toStartOf="@+id/secondEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/hourEditText"
+        app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
 
     <EditText
         android:id="@+id/hourEditText"
         android:layout_width="75dp"
         android:layout_height="42dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
         android:gravity="center"
         android:hint="hh"
         android:inputType="time"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="225dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
+        app:layout_constraintEnd_toStartOf="@+id/minuteEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/minuteEditText" />
+
+    <Spinner
+        android:id="@+id/bandSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bandTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
