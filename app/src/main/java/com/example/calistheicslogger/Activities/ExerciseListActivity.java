@@ -70,6 +70,8 @@ public class ExerciseListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(ExerciseListActivity.this, "You pressed: " + exercises.get(position),Toast.LENGTH_SHORT).show();
+                newTrackAcitivity();
+
             }
         });
     }
@@ -103,6 +105,11 @@ public class ExerciseListActivity extends Activity {
     public void newExerciseClick(View view){
         Intent newExercise = new Intent(this,NewExerciseActivity.class);
         startActivity(newExercise);
+    }
+
+    public void newTrackAcitivity(){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        startActivity(trackActivity);
     }
 
 }

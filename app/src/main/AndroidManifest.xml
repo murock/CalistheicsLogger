@@ -21,6 +21,7 @@
     </activity>
         <activity android:name=".Activities.NewExerciseActivity">
         </activity>
+        <activity android:name=".Activities.TrackActivity"></activity>
     </application>
 
 </manifest>
