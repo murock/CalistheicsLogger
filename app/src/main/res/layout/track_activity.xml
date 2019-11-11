@@ -6,6 +6,22 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/distanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginRight="150dp"
+        android:text="Distance"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
+
+    <TextView
         android:id="@+id/bandTextView"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -55,7 +71,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintBottom_toTopOf="@+id/timeTextView"
         app:layout_constraintEnd_toStartOf="@+id/weightPlusButton"
         app:layout_constraintHorizontal_bias="0.5"
@@ -255,7 +271,35 @@
         android:layout_marginLeft="64dp"
         android:layout_marginEnd="64dp"
         android:layout_marginRight="64dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/distanceTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bandTextView" />
+
+    <Spinner
+        android:id="@+id/distanceSpinner"
+        android:layout_width="70dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/distanceEditText"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
+
+    <EditText
+        android:id="@+id/distanceEditText"
+        android:layout_width="198dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/distanceSpinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
