@@ -16,6 +16,8 @@ import com.example.calistheicslogger.RoomDatabase.Entities.ExerciseDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgressionDao;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Exercise.class, Category.class, FinalProgression.class},version = 1)
@@ -23,6 +25,25 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
     private static AppDatabase instance;
+
+    private PropertyChangeSupport support;
+
+    protected AppDatabase() {
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
+    }
+
+    private void OnDatabaseInitialised()
+    {
+        support.firePropertyChange("initialised");
+    }
 
     public static synchronized AppDatabase getInstance(final Context context){
         if(instance == null){
@@ -40,6 +61,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     getInstance(context).categoryDao().addMultipleCategories(Category.populateData());
                                     getInstance(context).finalProgressionDao().addMultipleFinalProgressions(FinalProgression.populateData());
                                     getInstance(context).exerciseDao().addMultipleExercises(Exercise.populateData());
+                                    instance.OnDatabaseInitialised();
                                 }
                             });
                         }

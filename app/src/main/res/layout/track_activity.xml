@@ -22,6 +22,18 @@
         app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
 
     <TextView
+        android:id="@+id/tempoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Tempo"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tempoPause1EditText"
+        app:layout_constraintEnd_toEndOf="@+id/tempoConcentricEditText"
+        app:layout_constraintStart_toStartOf="@+id/tempoPause1EditText"
+        app:layout_constraintTop_toBottomOf="@+id/distanceEditText" />
+
+    <TextView
         android:id="@+id/bandTextView"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -146,6 +158,20 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:constraint_referenced_ids="bandTextView,bandSpinner" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/distanceGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="distanceEditText,distanceSpinner,distanceTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/tempoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="tempoTextView,tempoEccentricEditText,tempoPause1EditText,tempoConcentricEditText,tempoPause2EditText" />
 
     <Button
         android:id="@+id/addButton"
@@ -297,9 +323,76 @@
         android:layout_marginLeft="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/tempoTextView"
         app:layout_constraintEnd_toStartOf="@+id/distanceSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
+
+    <EditText
+        android:id="@+id/tempoEccentricEditText"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="lower"
+        android:inputType="number"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@+id/tempoPause1EditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+
+    <EditText
+        android:id="@+id/tempoPause1EditText"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="pause"
+        android:inputType="number"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@+id/tempoConcentricEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tempoEccentricEditText"
+        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+
+    <EditText
+        android:id="@+id/tempoPause2EditText"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:hint="pause"
+        android:inputType="number"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tempoConcentricEditText"
+        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+
+    <EditText
+        android:id="@+id/tempoConcentricEditText"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="lift"
+        android:inputType="number"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@+id/tempoPause2EditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tempoPause1EditText"
+        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
