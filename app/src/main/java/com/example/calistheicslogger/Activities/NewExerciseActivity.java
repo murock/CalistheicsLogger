@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -41,6 +42,25 @@ public class NewExerciseActivity extends Activity {
         setUpProgressionSpinner(R.id.progressionSpinner);
         ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Isometric", "Weight and Reps", "Negative"));
         typeSpinner = setUpSpinner(R.id.typeSpinner,exerciseTypes);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedType = typeSpinner.getSelectedItem().toString();
+                CheckBox weightCheckbox = findViewById(R.id.weightCheckBox);
+                if (selectedType == "Weight and Reps")
+                {
+                    weightCheckbox.setChecked(true);
+                    weightCheckbox.setEnabled(false);
+                }else{
+                    weightCheckbox.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private Spinner setUpSpinner(int spinnerId, ArrayList<String> list) {
