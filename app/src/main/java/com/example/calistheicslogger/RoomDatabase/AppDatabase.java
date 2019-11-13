@@ -40,9 +40,8 @@ public abstract class AppDatabase extends RoomDatabase {
         support.removePropertyChangeListener(pcl);
     }
 
-    private void OnDatabaseInitialised()
-    {
-        support.firePropertyChange("initialised");
+    private void OnDatabaseInitialised() {
+        support.firePropertyChange("initialised", null, null);
     }
 
     public static synchronized AppDatabase getInstance(final Context context){

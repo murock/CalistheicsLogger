@@ -16,10 +16,12 @@ import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExerciseListActivity extends Activity {
+public class ExerciseListActivity extends Activity implements PropertyChangeListener {
 
     AppDatabase appDatabase;
     ArrayAdapter<String> arrayAdapter;
@@ -112,4 +114,9 @@ public class ExerciseListActivity extends Activity {
         startActivity(trackActivity);
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // Trigger after database has populated
+        setUpExercisesList();
+    }
 }
