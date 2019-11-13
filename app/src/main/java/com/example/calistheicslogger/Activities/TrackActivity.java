@@ -107,14 +107,4 @@ public class TrackActivity extends Activity implements Serializable {
         }
     }
 
-    public void MinusButtonClick(View view)
-    {
-        Group testButton = findViewById(R.id.repsGroup);
-        testButton.setVisibility(View.GONE);
-    }
-
-    public void AddButtonClick(View view){
-        Group testButton = findViewById(R.id.repsGroup);
-        testButton.setVisibility(View.VISIBLE);
-    }
 }
