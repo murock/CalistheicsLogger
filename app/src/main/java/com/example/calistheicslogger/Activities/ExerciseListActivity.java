@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,6 +31,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         appDatabase = AppDatabase.getInstance(this);
+        appDatabase.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_list_activity);
 
@@ -72,8 +74,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(ExerciseListActivity.this, "You pressed: " + exercises.get(position),Toast.LENGTH_SHORT).show();
-                newTrackAcitivity();
-
+                newTrackAcitivity(exercises.get(position));
             }
         });
     }
@@ -109,8 +110,9 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         startActivity(newExercise);
     }
 
-    public void newTrackAcitivity(){
+    public void newTrackAcitivity(String exercise){
         Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exercise);
         startActivity(trackActivity);
     }
 

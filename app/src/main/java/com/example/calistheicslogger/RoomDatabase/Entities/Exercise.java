@@ -3,9 +3,12 @@ package com.example.calistheicslogger.RoomDatabase.Entities;
         import androidx.room.ColumnInfo;
         import androidx.room.Entity;
         import androidx.room.Ignore;
+        import androidx.room.Index;
         import androidx.room.PrimaryKey;
 
-@Entity(tableName = "exercises")
+@Entity(tableName = "exercises",
+        indices = {@Index(value = "exercise_name", unique = true)})
+
 public class Exercise
 {
     @PrimaryKey(autoGenerate = true)
