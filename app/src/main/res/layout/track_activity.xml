@@ -41,8 +41,8 @@
         android:text="Band"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/bandSpinner"
-        app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
-        app:layout_constraintStart_toStartOf="@+id/bandSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/minuteEditText"
+        app:layout_constraintStart_toStartOf="@+id/minuteEditText"
         app:layout_constraintTop_toBottomOf="@+id/minuteEditText" />
 
     <EditText
@@ -83,6 +83,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:gravity="center_horizontal"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toTopOf="@+id/timeTextView"
         app:layout_constraintEnd_toStartOf="@+id/weightPlusButton"
@@ -96,6 +97,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:onClick="OnButtonClick"
         android:text="+"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
@@ -110,6 +112,7 @@
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:onClick="OnButtonClick"
         android:text="-"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
@@ -183,7 +186,7 @@
         app:layout_constraintBottom_toTopOf="@+id/repsEditText"
         app:layout_constraintEnd_toEndOf="@+id/repsEditText"
         app:layout_constraintStart_toStartOf="@+id/repsEditText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <Button
         android:id="@+id/repsPlusButton"
@@ -191,6 +194,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:onClick="OnButtonClick"
         android:text="+"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
@@ -205,6 +209,7 @@
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:onClick="OnButtonClick"
         android:text="-"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
@@ -224,6 +229,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:gravity="center_horizontal"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/weightTextView"
         app:layout_constraintEnd_toStartOf="@+id/repsPlusButton"
@@ -267,15 +273,17 @@
 
     <Spinner
         android:id="@+id/bandSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
+        android:layout_width="204dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginLeft="74dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginRight="54dp"
         android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@+id/distanceTextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bandTextView" />
 
@@ -373,6 +381,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
 
     <ListView
+        android:id="@+id/trackingListbox"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -385,4 +394,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempoEccentricEditText" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginRight="152dp"
+        android:layout_marginBottom="8dp"
+        android:text="Title Error"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/repsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

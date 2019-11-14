@@ -3,7 +3,14 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
@@ -14,6 +21,8 @@ import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TrackActivity extends Activity implements Serializable {
@@ -28,6 +37,7 @@ public class TrackActivity extends Activity implements Serializable {
         Intent i = getIntent();
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
         SetUpActivity(exerciseString);
+        setUpBandSpinner();
     }
 
     private void SetUpActivity(final String exerciseName){
@@ -45,8 +55,24 @@ public class TrackActivity extends Activity implements Serializable {
         });
     }
 
+    private void setUpBandSpinner(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> bands = appDatabase.bandDao().getAllBandColours();
+                Spinner bandSpinner = findViewById(R.id.bandSpinner);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
+                bandSpinner.setAdapter(arrayAdapter);
+            }
+        });
+    }
+
+
+
     private void SetUpControls(Exercise exercise)
     {
+        TextView title = findViewById(R.id.titleTextView);
+        title.setText(exercise.getName());
         String type = exercise.getType();
         //"Isometric", "Weight and Reps", "Negative"
         switch(type){
@@ -105,6 +131,46 @@ public class TrackActivity extends Activity implements Serializable {
             Group group = findViewById(R.id.weightGroup);
             group.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void OnButtonClick(View view){
+        //TODO: Hardcoded fix later
+        int repIncrement = 1;
+        double weightIncrement = 1.25;
+        EditText repsText = findViewById(R.id.repsEditText);
+        EditText weightText = findViewById(R.id.weightEditText);
+        if (TextUtils.isEmpty(repsText.getText().toString())) {
+            repsText.setText("0");
+        }
+        if (TextUtils.isEmpty(weightText.getText().toString())){
+            weightText.setText("0");
+        }
+       switch(view.getId()) {
+           case R.id.repsPlusButton:
+               int value = Integer.parseInt(repsText.getText().toString().trim());
+               value += repIncrement;
+               repsText.setText(Integer.toString(value));
+               break;
+           case R.id.repsMinusButton:
+               value = Integer.parseInt(repsText.getText().toString().trim());
+               value -= repIncrement;
+               if (value >= 0) {
+                   repsText.setText(Integer.toString(value));
+               }
+               break;
+           case R.id.weightPlusButton:
+               double weightValue = Double.parseDouble(weightText.getText().toString().trim());
+               weightValue += weightIncrement;
+               weightText.setText(Double.toString(weightValue));
+               break;
+           case R.id.weightMinusButton:
+               weightValue = Double.parseDouble(weightText.getText().toString().trim());
+               weightValue -= weightIncrement;
+               if (weightValue >= 0){
+                   weightText.setText(Double.toString(weightValue));
+               }
+               break;
+       }
     }
 
 }
