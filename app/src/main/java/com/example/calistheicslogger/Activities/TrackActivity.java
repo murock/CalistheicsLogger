@@ -67,6 +67,42 @@ public class TrackActivity extends Activity implements Serializable {
         });
     }
 
+    private void updateTrackingList(){
+
+    }
+
+//    private void setUpExercisesList()
+//    {
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                stringListExercises = appDatabase.exerciseDao().getAllNames();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        setUpListView((ArrayList<String>)stringListExercises);
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
+
+//    private void setUpListView(final ArrayList<String> exercises){
+//        ListView exercisesListView = findViewById(R.id.exercisesListView);
+//
+//        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
+//
+//        exercisesListView.setAdapter(arrayAdapter);
+//
+//        exercisesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(ExerciseListActivity.this, "You pressed: " + exercises.get(position),Toast.LENGTH_SHORT).show();
+//                newTrackAcitivity(exercises.get(position));
+//            }
+//        });
+//    }
 
 
     private void SetUpControls(Exercise exercise)
