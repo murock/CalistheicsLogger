@@ -45,7 +45,6 @@ public class Exercise
     @Ignore
     public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression){
         this.name = name;
-        this.name = name;
         this.categories = categories;
         this.type = type;
         this.bandAssisted = bandAssisted;

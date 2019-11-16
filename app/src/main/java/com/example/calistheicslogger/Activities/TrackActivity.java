@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,10 +18,13 @@ import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
+import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class TrackActivity extends Activity implements Serializable {
@@ -38,6 +40,7 @@ public class TrackActivity extends Activity implements Serializable {
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
         SetUpActivity(exerciseString);
         setUpBandSpinner();
+        updateTrackingList();
     }
 
     private void SetUpActivity(final String exerciseName){
@@ -68,7 +71,14 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     private void updateTrackingList(){
-
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                Log.i("Alfie", currentDate);
+              //  List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate()
+            }
+        });
     }
 
 //    private void setUpExercisesList()

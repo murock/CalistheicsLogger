@@ -17,12 +17,14 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.ExerciseDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgressionDao;
+import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExerciseDao;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Exercise.class, Category.class, FinalProgression.class, Band.class},version = 1)
+@Database(entities = {Exercise.class, Category.class, FinalProgression.class, Band.class, TrackedExercise.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
@@ -80,4 +82,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FinalProgressionDao finalProgressionDao();
 
     public abstract BandDao bandDao();
+
+    public abstract TrackedExerciseDao trackedExerciseDao();
 }

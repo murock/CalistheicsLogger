@@ -12,23 +12,23 @@ import java.util.List;
 public interface TrackedExerciseDao {
 
     @Query("SELECT * FROM tracked_exercises")
-    List<Exercise> getAll();
+    List<TrackedExercise> getAll();
 
-    @Query("SELECT exercise_name FROM exercises")
+    @Query("SELECT exercise_name FROM tracked_exercises")
     List<String> getAllNames();
 
-    @Query("SELECT * FROM exercises WHERE exercise_name =:name")
-    Exercise getExerciseFromName(String name);
+    @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name AND timestamp =:timestamp")
+    List<TrackedExercise> getTrackedExercisesFromNameAndDate(String name, String timestamp);
 
     @Insert
-    void addExercise(Exercise exercise);
+    void addTrackedExercise(TrackedExercise trackedExercise);
 
     @Insert
-    void addMultipleExercises(Exercise[] exercises);
+    void addMultipleTrackedExercises(TrackedExercise[] trackedExercises);
 
     @Update
-    void updateExercise(Exercise exercise);
+    void updateTrackedExercise(TrackedExercise trackedExercise);
 
     @Delete
-    void delete(Exercise exercise);
+    void delete(TrackedExercise trackedExercise);
 }
