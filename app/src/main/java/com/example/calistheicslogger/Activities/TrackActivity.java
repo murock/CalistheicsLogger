@@ -22,6 +22,7 @@ import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +31,7 @@ import java.util.Locale;
 public class TrackActivity extends Activity implements Serializable {
 
     AppDatabase appDatabase;
+    String currentExercise;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -44,6 +46,7 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     private void SetUpActivity(final String exerciseName){
+        currentExercise = exerciseName;
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -76,7 +79,11 @@ public class TrackActivity extends Activity implements Serializable {
             public void run() {
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                 Log.i("Alfie", currentDate);
-              //  List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate()
+                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
+                ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
+                for(TrackedExercise exercise : trackedExercises){
+
+                }
             }
         });
     }
