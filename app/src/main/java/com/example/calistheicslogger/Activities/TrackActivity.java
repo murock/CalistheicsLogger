@@ -2,6 +2,7 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +20,8 @@ import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.dslv.DragSortListView;
+import com.example.calistheicslogger.Tools.dslv.SimpleDragSortCursorAdapter;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,20 @@ public class TrackActivity extends Activity implements Serializable {
     AppDatabase appDatabase;
     String currentExercise;
 
+    ArrayAdapter<String> testAdapter;
+
+    private DragSortListView.DropListener onDrop =
+            new DragSortListView.DropListener() {
+                @Override
+                public void drop(int from, int to) {
+                    if (from != to) {
+                        String item = testAdapter.getItem(from);
+                        testAdapter.remove(item);
+                        testAdapter.insert(item, to);
+                    }
+                }
+            };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         appDatabase = AppDatabase.getInstance(this);
@@ -43,6 +60,21 @@ public class TrackActivity extends Activity implements Serializable {
         SetUpActivity(exerciseString);
         setUpBandSpinner();
         updateTrackingList();
+        TESTDSLV();
+    }
+
+    private void TESTDSLV()
+    {
+//        String[] columns = new String[]{"Test1", "Test2"};
+//        int[] ids = new int[]{1,2};
+//        SimpleDragSortCursorAdapter simpleDragSortCursorAdapter = new SimpleDragSortCursorAdapter(this,R.layout.exercise_list_activity, null, columns,ids,0);
+//        Cursor cursor =
+        testAdapter = new ArrayAdapter<String>(this, R.layout.center_spinner_text);
+        testAdapter.add("1          First item");
+        testAdapter.add("2          Second item");
+        DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
+        testdslv.setAdapter(testAdapter);
+        testdslv.setDropListener(onDrop);
     }
 
     private void SetUpActivity(final String exerciseName){
@@ -82,7 +114,7 @@ public class TrackActivity extends Activity implements Serializable {
                 List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
-
+                    trackedExercisesArrayList.add(Integer.toString(exercise.getSetNumber()));
                 }
             }
         });

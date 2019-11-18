@@ -398,6 +398,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.calistheicslogger.Tools.dslv.DragSortListView
+        android:id="@+id/trackedExerciseDSLV"
         android:layout_width="409dp"
         android:layout_height="170dp"
         android:layout_marginStart="8dp"
