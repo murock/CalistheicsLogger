@@ -207,6 +207,7 @@ public class TrackActivity extends Activity implements Serializable {
         }
         Boolean bandAssisted = exercise.getBandAssisted();
         Boolean weighted = exercise.getWeightLoadable();
+        Boolean tempoControlled = exercise.getTempoControlled();
         if (bandAssisted)
         {
             Group group = findViewById(R.id.bandGroup);
@@ -214,6 +215,10 @@ public class TrackActivity extends Activity implements Serializable {
         }
         if (weighted){
             Group group = findViewById(R.id.weightGroup);
+            group.setVisibility(View.VISIBLE);
+        }
+        if(tempoControlled){
+            Group group = findViewById(R.id.tempoGroup);
             group.setVisibility(View.VISIBLE);
         }
     }
