@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.InputFilterMinMax;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 import com.example.calistheicslogger.Tools.dslv.SimpleDragSortCursorAdapter;
 
@@ -37,6 +39,8 @@ public class TrackActivity extends Activity implements Serializable {
     String currentExercise;
 
     ArrayAdapter<String> testAdapter;
+    // TODO: set this number based off current state of DB
+    int globalSetNumber = 1;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -60,8 +64,10 @@ public class TrackActivity extends Activity implements Serializable {
         SetUpActivity(exerciseString);
         setUpBandSpinner();
         updateTrackingList();
+        SetUpFilters();
         TESTDSLV();
     }
+
 
     private void TESTDSLV()
     {
@@ -75,6 +81,24 @@ public class TrackActivity extends Activity implements Serializable {
         DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
         testdslv.setAdapter(testAdapter);
         testdslv.setDropListener(onDrop);
+    }
+
+    private void SetUpFilters(){
+        EditText hourEditText = findViewById(R.id.hourEditText);
+        EditText minText = findViewById(R.id.minuteEditText);
+        EditText secondText = findViewById(R.id.secondEditText);
+        EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
+        EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
+        EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
+        EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+
+        hourEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        minText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60)});
+        secondText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60)});
+        lowerEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        pause1EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        liftEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        pause2EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
     }
 
     private void SetUpActivity(final String exerciseName){
@@ -153,6 +177,67 @@ public class TrackActivity extends Activity implements Serializable {
 //        });
 //    }
 
+    //     public TrackedExercise(String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
+
+    public void SaveButtonClick(View view){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                TextView titleText = findViewById(R.id.titleTextView);
+                EditText repsText = findViewById(R.id.repsEditText);
+                EditText weightText = findViewById(R.id.weightEditText);
+                // time here
+                EditText hourText = findViewById(R.id.hourEditText);
+                EditText minText = findViewById(R.id.minuteEditText);
+                EditText secondText = findViewById(R.id.secondEditText);
+                String time = hourText.getText().toString() + minText.getText().toString() + secondText.getText().toString();
+
+                Spinner bandSpinner = findViewById(R.id.bandSpinner);
+                EditText distanceText = findViewById(R.id.distanceEditText);
+                // Tempo
+                EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
+                EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
+                EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
+                EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+                String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
+                               liftEditText.getText().toString() + pause2EditText.getText().toString();
+
+                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+                TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
+                        repsText.getText().toString(),weightText.getText().toString(),time,bandSpinner.getSelectedItem().toString(),
+                        );
+                globalSetNumber++;
+            }
+        });
+    }
+
+//    public void onSaveButtonClicked(View view){
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                EditText exerciseNameEditText = findViewById(R.id.nameEditText);
+//                String exerciseName = exerciseNameEditText.getText().toString();
+//                if (!exerciseName.isEmpty()) {
+//                    String categories = new String();
+//                    List<Item> items =  categorySpinner.getSelectedItems();
+//                    for (Item item : items)
+//                    {
+//                        if (!categories.isEmpty()){
+//                            // Add a space if there is more than one entry
+//                            categories += " ";
+//                        }
+//                        categories += item.getName();
+//                    }
+//                    Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
+//                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked);
+//                    appDatabase.exerciseDao().addExercise(exercise);
+//                }else{
+//                    Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
 
     private void SetUpControls(Exercise exercise)
     {

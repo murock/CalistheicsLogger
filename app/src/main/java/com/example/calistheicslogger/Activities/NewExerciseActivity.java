@@ -122,9 +122,6 @@ public class NewExerciseActivity extends Activity {
                 }
             }
         });
-
-
-
     }
 
     public void onPrintExerciseButtonClick(View view){
