@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ed96c71c8d140c7ca7a909278f1c2b76",
+    "identityHash": "c9f7db47f53746be787c55d1a994bbb0",
     "entities": [
       {
         "tableName": "exercises",
@@ -224,23 +224,14 @@
           ],
           "autoGenerate": true
         },
-        "indices": [
-          {
-            "name": "index_tracked_exercises_exercise_name",
-            "unique": true,
-            "columnNames": [
-              "exercise_name"
-            ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tracked_exercises_exercise_name` ON `${TABLE_NAME}` (`exercise_name`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed96c71c8d140c7ca7a909278f1c2b76')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c9f7db47f53746be787c55d1a994bbb0')"
     ]
   }
 }

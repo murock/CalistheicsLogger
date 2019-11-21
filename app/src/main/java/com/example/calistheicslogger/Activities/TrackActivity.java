@@ -87,8 +87,14 @@ public class TrackActivity extends Activity implements Serializable {
 
     private void UpdateDSLV(ArrayList<String> items){
         dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,items);
-        DragSortListView dslv = findViewById(R.id.trackedExerciseDSLV);
-        dslv.setAdapter(dslvAdapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DragSortListView dslv = findViewById(R.id.trackedExerciseDSLV);
+                dslv.setAdapter(dslvAdapter);
+            }
+        });
+
     }
 
     private void SetUpFilters(){
@@ -146,12 +152,31 @@ public class TrackActivity extends Activity implements Serializable {
                 List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
-                    trackedExercisesArrayList.add(Integer.toString(exercise.getSetNumber()));
+                    trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
                 }
                 UpdateDSLV(trackedExercisesArrayList);
             }
         });
     }
+
+    private String getTrackedExerciseString(TrackedExercise exercise)
+    {
+        String result = Integer.toString(exercise.getSetNumber());
+        if (!exercise.getReps().isEmpty())
+        {
+            result += "    " + exercise.getReps() + " reps";
+        }
+        if (!exercise.getWeight().isEmpty())
+        {
+            result += "    " + exercise.getWeight() + " kgs";
+        }
+        if (!exercise.getBand().isEmpty())
+        {
+            result += "    " + exercise.getBand() + " band";
+        }
+        return result;
+    }
+
 
 //    private void setUpExercisesList()
 //    {
@@ -204,6 +229,11 @@ public class TrackActivity extends Activity implements Serializable {
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 EditText distanceText = findViewById(R.id.distanceEditText);
+                int distance = -1;
+                if (distanceText.getText().toString() == ""){
+                    distance = Integer.parseInt(distanceText.getText().toString());
+                }
+
                 // Tempo
                 EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
                 EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
@@ -216,9 +246,10 @@ public class TrackActivity extends Activity implements Serializable {
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                 Log.i("Alfie","2");
 
+
                 final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
                         repsText.getText().toString(),weightText.getText().toString(),time,bandSpinner.getSelectedItem().toString(),
-                        Integer.parseInt(distanceText.getText().toString()),tempo);
+                        distance,tempo);
                 Log.i("Alfie","3");
                 globalSetNumber++;
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -227,6 +258,7 @@ public class TrackActivity extends Activity implements Serializable {
                         Log.i("Alfie","4");
                         appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
                         Log.i("Alfie","5");
+                        updateTrackingList();
                     }
                 });
             }
