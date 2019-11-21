@@ -2,7 +2,6 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -23,7 +22,6 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
-import com.example.calistheicslogger.Tools.dslv.SimpleDragSortCursorAdapter;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -38,7 +36,7 @@ public class TrackActivity extends Activity implements Serializable {
     AppDatabase appDatabase;
     String currentExercise;
 
-    ArrayAdapter<String> testAdapter;
+    ArrayAdapter<String> dslvAdapter;
     // TODO: set this number based off current state of DB
     int globalSetNumber = 1;
 
@@ -47,9 +45,9 @@ public class TrackActivity extends Activity implements Serializable {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-                        String item = testAdapter.getItem(from);
-                        testAdapter.remove(item);
-                        testAdapter.insert(item, to);
+                        String item = dslvAdapter.getItem(from);
+                        dslvAdapter.remove(item);
+                        dslvAdapter.insert(item, to);
                     }
                 }
             };
@@ -63,24 +61,34 @@ public class TrackActivity extends Activity implements Serializable {
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
         SetUpActivity(exerciseString);
         setUpBandSpinner();
-        updateTrackingList();
         SetUpFilters();
         TESTDSLV();
+        updateTrackingList();
     }
 
 
     private void TESTDSLV()
     {
+        DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
+        testdslv.setDropListener(onDrop);
+
 //        String[] columns = new String[]{"Test1", "Test2"};
 //        int[] ids = new int[]{1,2};
 //        SimpleDragSortCursorAdapter simpleDragSortCursorAdapter = new SimpleDragSortCursorAdapter(this,R.layout.exercise_list_activity, null, columns,ids,0);
 //        Cursor cursor =
-        testAdapter = new ArrayAdapter<String>(this, R.layout.center_spinner_text);
-        testAdapter.add("1          First item");
-        testAdapter.add("2          Second item");
-        DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
-        testdslv.setAdapter(testAdapter);
-        testdslv.setDropListener(onDrop);
+
+//        dslvAdapter = new ArrayAdapter<String>(this, R.layout.center_spinner_text);
+//        dslvAdapter.add("1          First item");
+//        dslvAdapter.add("2          Second item");
+//        testdslv.setAdapter(dslvAdapter);
+
+
+    }
+
+    private void UpdateDSLV(ArrayList<String> items){
+        dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,items);
+        DragSortListView dslv = findViewById(R.id.trackedExerciseDSLV);
+        dslv.setAdapter(dslvAdapter);
     }
 
     private void SetUpFilters(){
@@ -140,6 +148,7 @@ public class TrackActivity extends Activity implements Serializable {
                 for(TrackedExercise exercise : trackedExercises){
                     trackedExercisesArrayList.add(Integer.toString(exercise.getSetNumber()));
                 }
+                UpdateDSLV(trackedExercisesArrayList);
             }
         });
     }
@@ -183,6 +192,7 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
+                Log.i("Alfie","1");
                 TextView titleText = findViewById(R.id.titleTextView);
                 EditText repsText = findViewById(R.id.repsEditText);
                 EditText weightText = findViewById(R.id.weightEditText);
@@ -202,12 +212,23 @@ public class TrackActivity extends Activity implements Serializable {
                 String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
                                liftEditText.getText().toString() + pause2EditText.getText().toString();
 
+                //TODO: make someway of saving exercises in the past/future
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                Log.i("Alfie","2");
 
-                TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
+                final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
                         repsText.getText().toString(),weightText.getText().toString(),time,bandSpinner.getSelectedItem().toString(),
-                        );
+                        Integer.parseInt(distanceText.getText().toString()),tempo);
+                Log.i("Alfie","3");
                 globalSetNumber++;
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i("Alfie","4");
+                        appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
+                        Log.i("Alfie","5");
+                    }
+                });
             }
         });
     }
