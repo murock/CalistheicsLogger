@@ -159,20 +159,39 @@ public class TrackActivity extends Activity implements Serializable {
         });
     }
 
+    //    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
     private String getTrackedExerciseString(TrackedExercise exercise)
     {
+        // TODO: adapt this for many different units e.g kgs/m etc
+        ArrayList<String> exercises = new ArrayList<String>();
         String result = Integer.toString(exercise.getSetNumber());
         if (!exercise.getReps().isEmpty())
         {
             result += "    " + exercise.getReps() + " reps";
+            exercises.add(exercise.getReps() + " reps");
         }
         if (!exercise.getWeight().isEmpty())
         {
             result += "    " + exercise.getWeight() + " kgs";
+            exercises.add(exercise.getWeight() + " kgs");
+        }
+        if (!exercise.getTime().isEmpty())
+        {
+            exercises.add(exercise.getTime());
         }
         if (!exercise.getBand().isEmpty())
         {
             result += "    " + exercise.getBand() + " band";
+            exercises.add(exercise.getBand() + " band");
+        }
+        int distance = exercise.getDistance();
+        if (distance != -1)
+        {
+            exercises.add(distance + " m");
+        }
+        if (!exercise.getTempo().isEmpty())
+        {
+            exercises.add(exercise.getTempo());
         }
         return result;
     }
