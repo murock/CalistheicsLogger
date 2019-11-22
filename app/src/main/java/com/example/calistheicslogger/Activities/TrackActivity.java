@@ -63,7 +63,6 @@ public class TrackActivity extends Activity implements Serializable {
         setUpBandSpinner();
         SetUpFilters();
         TESTDSLV();
-        updateTrackingList();
     }
 
 
@@ -105,6 +104,7 @@ public class TrackActivity extends Activity implements Serializable {
         EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
         EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
         EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+        EditText weightText = findViewById(R.id.weightEditText);
 
         hourEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
         minText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60)});
@@ -113,6 +113,8 @@ public class TrackActivity extends Activity implements Serializable {
         pause1EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
         liftEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
         pause2EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        // TODO: Fix this to limit weight size
+     //   weightText.setFilters(new InputFilter[]{new InputFilterMinMax(0,9999)});
     }
 
     private void SetUpActivity(final String exerciseName){
@@ -125,6 +127,7 @@ public class TrackActivity extends Activity implements Serializable {
                     @Override
                     public void run() {
                         SetUpControls(exercise);
+                        updateTrackingList();
                     }
                 });
             }
@@ -163,36 +166,71 @@ public class TrackActivity extends Activity implements Serializable {
     private String getTrackedExerciseString(TrackedExercise exercise)
     {
         // TODO: adapt this for many different units e.g kgs/m etc
-        ArrayList<String> exercises = new ArrayList<String>();
-        String result = Integer.toString(exercise.getSetNumber());
+        ArrayList<String> trackedComponents = new ArrayList<String>();
+        //String result = Integer.toString(exercise.getSetNumber());
+        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
         if (!exercise.getReps().isEmpty())
         {
-            result += "    " + exercise.getReps() + " reps";
-            exercises.add(exercise.getReps() + " reps");
+          //  result += "    " + exercise.getReps() + " reps";
+            trackedComponents.add(exercise.getReps() + " reps");
         }
         if (!exercise.getWeight().isEmpty())
         {
-            result += "    " + exercise.getWeight() + " kgs";
-            exercises.add(exercise.getWeight() + " kgs");
+          //  result += "    " + exercise.getWeight() + " kgs";
+            trackedComponents.add(exercise.getWeight() + " kgs");
         }
         if (!exercise.getTime().isEmpty())
         {
-            exercises.add(exercise.getTime());
+            trackedComponents.add(exercise.getTime());
         }
-        if (!exercise.getBand().isEmpty())
+        Group bandGroup = findViewById(R.id.bandGroup);
+        if (bandGroup.getVisibility() == View.VISIBLE && !exercise.getBand().isEmpty())
         {
-            result += "    " + exercise.getBand() + " band";
-            exercises.add(exercise.getBand() + " band");
+          //  result += "    " + exercise.getBand() + " band";
+            trackedComponents.add(exercise.getBand() + " band");
         }
         int distance = exercise.getDistance();
         if (distance != -1)
         {
-            exercises.add(distance + " m");
+            trackedComponents.add(distance + " m");
         }
         if (!exercise.getTempo().isEmpty())
         {
-            exercises.add(exercise.getTempo());
+            trackedComponents.add(exercise.getTempo());
         }
+        return ListToRow(trackedComponents);
+    }
+
+    private String ListToRow(ArrayList<String> list)
+    {
+        String result = new String();
+        String spacer = "";
+        switch(list.size()){
+            case 1:
+                spacer = "       ";
+                break;
+            case 2:
+                spacer = "      ";
+                break;
+            case 3:
+                spacer = "     ";
+                break;
+            case 4:
+                spacer = "    ";
+                break;
+            case 5:
+                spacer = "   ";
+                break;
+            case 6:
+                spacer = "  ";
+                break;
+                default:
+
+        }
+        for (String item : list){
+            result += item + spacer;
+        }
+        result = result.substring(0,result.length() - spacer.length());
         return result;
     }
 
@@ -232,6 +270,15 @@ public class TrackActivity extends Activity implements Serializable {
 
     //     public TrackedExercise(String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
 
+    private String AddPrefixToItem(String item, int desiredLength, String preFix)
+    {
+        while (item.length() < desiredLength)
+        {
+            item = preFix + item;
+        }
+        return item;
+    }
+
     public void SaveButtonClick(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -240,11 +287,13 @@ public class TrackActivity extends Activity implements Serializable {
                 TextView titleText = findViewById(R.id.titleTextView);
                 EditText repsText = findViewById(R.id.repsEditText);
                 EditText weightText = findViewById(R.id.weightEditText);
+                String weightString = AddPrefixToItem(weightText.getText().toString(),7," ");
                 // time here
                 EditText hourText = findViewById(R.id.hourEditText);
                 EditText minText = findViewById(R.id.minuteEditText);
                 EditText secondText = findViewById(R.id.secondEditText);
-                String time = hourText.getText().toString() + minText.getText().toString() + secondText.getText().toString();
+                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(),2, "0" ) + ":"
+                        + AddPrefixToItem(secondText.getText().toString(),2, "0");
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 EditText distanceText = findViewById(R.id.distanceEditText);
@@ -267,7 +316,7 @@ public class TrackActivity extends Activity implements Serializable {
 
 
                 final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
-                        repsText.getText().toString(),weightText.getText().toString(),time,bandSpinner.getSelectedItem().toString(),
+                        repsText.getText().toString(),weightString,time,bandSpinner.getSelectedItem().toString(),
                         distance,tempo);
                 Log.i("Alfie","3");
                 globalSetNumber++;
