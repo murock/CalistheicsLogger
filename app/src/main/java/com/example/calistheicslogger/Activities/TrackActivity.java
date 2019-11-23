@@ -37,7 +37,7 @@ public class TrackActivity extends Activity implements Serializable {
     String currentExercise;
 
     ArrayAdapter<String> dslvAdapter;
-    // TODO: set this number based off current state of DB
+    // TODO: re-order set numbers when dragged
     int globalSetNumber = 1;
 
     private DragSortListView.DropListener onDrop =
@@ -45,10 +45,21 @@ public class TrackActivity extends Activity implements Serializable {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
+                        Log.i("Alfie from: ",from +"" );
+                        Log.i("Alfie from: ",to +"" );
+                        swapTrackedExercises(from + 1,to + 1);
                         String item = dslvAdapter.getItem(from);
                         dslvAdapter.remove(item);
                         dslvAdapter.insert(item, to);
                     }
+                }
+            };
+
+    private DragSortListView.DragListener onDrag =
+            new DragSortListView.DragListener() {
+                @Override
+                public void drag(int from, int to) {
+                    // TODO: put code in here for selection of record???
                 }
             };
 
@@ -62,26 +73,14 @@ public class TrackActivity extends Activity implements Serializable {
         SetUpActivity(exerciseString);
         setUpBandSpinner();
         SetUpFilters();
-        TESTDSLV();
+        SetUpDSLV();
     }
 
 
-    private void TESTDSLV()
+    private void SetUpDSLV()
     {
         DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
         testdslv.setDropListener(onDrop);
-
-//        String[] columns = new String[]{"Test1", "Test2"};
-//        int[] ids = new int[]{1,2};
-//        SimpleDragSortCursorAdapter simpleDragSortCursorAdapter = new SimpleDragSortCursorAdapter(this,R.layout.exercise_list_activity, null, columns,ids,0);
-//        Cursor cursor =
-
-//        dslvAdapter = new ArrayAdapter<String>(this, R.layout.center_spinner_text);
-//        dslvAdapter.add("1          First item");
-//        dslvAdapter.add("2          Second item");
-//        testdslv.setAdapter(dslvAdapter);
-
-
     }
 
     private void UpdateDSLV(ArrayList<String> items){
@@ -146,6 +145,20 @@ public class TrackActivity extends Activity implements Serializable {
         });
     }
 
+    private void swapTrackedExercises(final int SetNo1, final int SetNo2)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("Alfie to: ", "here: " + SetNo1 + "set: "+ SetNo2);
+                appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1, SetNo2);
+                Log.i("Alfie to: ", "here");
+                appDatabase.trackedExerciseDao().doSetSwap();
+                Log.i("Alfie to: ", "here2");
+            }
+        });
+    }
+
     private void updateTrackingList(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -153,6 +166,7 @@ public class TrackActivity extends Activity implements Serializable {
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                 Log.i("Alfie", currentDate);
                 List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
+                globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
                     trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
@@ -174,12 +188,14 @@ public class TrackActivity extends Activity implements Serializable {
           //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
         }
-        if (!exercise.getWeight().isEmpty())
+        Group weightGroup = findViewById(R.id.weightGroup);
+        if (weightGroup.getVisibility() == View.VISIBLE && !exercise.getWeight().isEmpty())
         {
           //  result += "    " + exercise.getWeight() + " kgs";
             trackedComponents.add(exercise.getWeight() + " kgs");
         }
-        if (!exercise.getTime().isEmpty())
+        Group timeGroup = findViewById(R.id.timeGroup);
+        if (timeGroup.getVisibility() == View.VISIBLE && !exercise.getTime().isEmpty())
         {
             trackedComponents.add(exercise.getTime());
         }
@@ -234,42 +250,6 @@ public class TrackActivity extends Activity implements Serializable {
         return result;
     }
 
-
-//    private void setUpExercisesList()
-//    {
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                stringListExercises = appDatabase.exerciseDao().getAllNames();
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        setUpListView((ArrayList<String>)stringListExercises);
-//                    }
-//                });
-//
-//            }
-//        });
-//    }
-
-//    private void setUpListView(final ArrayList<String> exercises){
-//        ListView exercisesListView = findViewById(R.id.exercisesListView);
-//
-//        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
-//
-//        exercisesListView.setAdapter(arrayAdapter);
-//
-//        exercisesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(ExerciseListActivity.this, "You pressed: " + exercises.get(position),Toast.LENGTH_SHORT).show();
-//                newTrackAcitivity(exercises.get(position));
-//            }
-//        });
-//    }
-
-    //     public TrackedExercise(String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
-
     private String AddPrefixToItem(String item, int desiredLength, String preFix)
     {
         while (item.length() < desiredLength)
@@ -278,87 +258,6 @@ public class TrackActivity extends Activity implements Serializable {
         }
         return item;
     }
-
-    public void SaveButtonClick(View view){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("Alfie","1");
-                TextView titleText = findViewById(R.id.titleTextView);
-                EditText repsText = findViewById(R.id.repsEditText);
-                EditText weightText = findViewById(R.id.weightEditText);
-                String weightString = AddPrefixToItem(weightText.getText().toString(),7," ");
-                // time here
-                EditText hourText = findViewById(R.id.hourEditText);
-                EditText minText = findViewById(R.id.minuteEditText);
-                EditText secondText = findViewById(R.id.secondEditText);
-                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(),2, "0" ) + ":"
-                        + AddPrefixToItem(secondText.getText().toString(),2, "0");
-
-                Spinner bandSpinner = findViewById(R.id.bandSpinner);
-                EditText distanceText = findViewById(R.id.distanceEditText);
-                int distance = -1;
-                if (distanceText.getText().toString() == ""){
-                    distance = Integer.parseInt(distanceText.getText().toString());
-                }
-
-                // Tempo
-                EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
-                EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
-                EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
-                EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
-                String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
-                               liftEditText.getText().toString() + pause2EditText.getText().toString();
-
-                //TODO: make someway of saving exercises in the past/future
-                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                Log.i("Alfie","2");
-
-
-                final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
-                        repsText.getText().toString(),weightString,time,bandSpinner.getSelectedItem().toString(),
-                        distance,tempo);
-                Log.i("Alfie","3");
-                globalSetNumber++;
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("Alfie","4");
-                        appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
-                        Log.i("Alfie","5");
-                        updateTrackingList();
-                    }
-                });
-            }
-        });
-    }
-
-//    public void onSaveButtonClicked(View view){
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                EditText exerciseNameEditText = findViewById(R.id.nameEditText);
-//                String exerciseName = exerciseNameEditText.getText().toString();
-//                if (!exerciseName.isEmpty()) {
-//                    String categories = new String();
-//                    List<Item> items =  categorySpinner.getSelectedItems();
-//                    for (Item item : items)
-//                    {
-//                        if (!categories.isEmpty()){
-//                            // Add a space if there is more than one entry
-//                            categories += " ";
-//                        }
-//                        categories += item.getName();
-//                    }
-//                    Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-//                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked);
-//                    appDatabase.exerciseDao().addExercise(exercise);
-//                }else{
-//                    Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
 
     private void SetUpControls(Exercise exercise)
     {
@@ -427,6 +326,60 @@ public class TrackActivity extends Activity implements Serializable {
             Group group = findViewById(R.id.tempoGroup);
             group.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void DeleteButtonClick(View view){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                TrackedExercise trackedExercise = appDatabase.trackedExerciseDao().getLastTrackedExercise();
+                appDatabase.trackedExerciseDao().delete(trackedExercise);
+                updateTrackingList();
+            }
+        });
+    }
+
+    public void SaveButtonClick(View view){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                TextView titleText = findViewById(R.id.titleTextView);
+                EditText repsText = findViewById(R.id.repsEditText);
+                EditText weightText = findViewById(R.id.weightEditText);
+                String weightString = AddPrefixToItem(weightText.getText().toString(),7," ");
+                // time here
+                EditText hourText = findViewById(R.id.hourEditText);
+                EditText minText = findViewById(R.id.minuteEditText);
+                EditText secondText = findViewById(R.id.secondEditText);
+                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(),2, "0" ) + ":"
+                        + AddPrefixToItem(secondText.getText().toString(),2, "0");
+
+                Spinner bandSpinner = findViewById(R.id.bandSpinner);
+                EditText distanceText = findViewById(R.id.distanceEditText);
+                int distance = -1;
+                if (distanceText.getText().toString() == ""){
+                    distance = Integer.parseInt(distanceText.getText().toString());
+                }
+
+                // Tempo
+                EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
+                EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
+                EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
+                EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+                String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
+                        liftEditText.getText().toString() + pause2EditText.getText().toString();
+
+                //TODO: make someway of saving exercises in the past/future
+                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+                final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
+                        repsText.getText().toString(),weightString,time,bandSpinner.getSelectedItem().toString(),
+                        distance,tempo);
+                globalSetNumber++;
+                appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
+                updateTrackingList();
+            }
+        });
     }
 
     public void OnButtonClick(View view){
