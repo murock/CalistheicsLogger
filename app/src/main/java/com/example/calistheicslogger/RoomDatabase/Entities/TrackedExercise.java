@@ -6,8 +6,7 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tracked_exercises",
-        indices = {@Index(value = "set_number", unique = true)})
+@Entity(tableName = "tracked_exercises")
 
 public class TrackedExercise
 {

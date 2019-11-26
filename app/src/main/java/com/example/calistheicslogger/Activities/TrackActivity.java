@@ -152,9 +152,7 @@ public class TrackActivity extends Activity implements Serializable {
             public void run() {
                 Log.i("Alfie to: ", "here: " + SetNo1 + "set: "+ SetNo2);
                 appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1, SetNo2);
-                Log.i("Alfie to: ", "here");
-                appDatabase.trackedExerciseDao().doSetSwap();
-                Log.i("Alfie to: ", "here2");
+                updateTrackingList();
             }
         });
     }
