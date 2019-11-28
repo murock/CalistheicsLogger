@@ -2,6 +2,7 @@ package com.example.calistheicslogger.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import com.example.calistheicslogger.R;
@@ -79,34 +82,51 @@ public class MainActivity extends AppCompatActivity {
                 "Android Studio",
                 "PhpMyAdmin"
         };
+        boolean isFirst = true;
         for(String item : DynamicListElements)
         {
             PropertyTextView test = new PropertyTextView(this);
+            test.setClickable(true);
+            test.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    PropertyTextView textView = (PropertyTextView)v;
+                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
             test.exerciseName = item;
+            if (isFirst){
+                test.setBackground(ContextCompat.getDrawable(this,R.drawable.top_and_sides_border));
+                isFirst = false;
+            }else{
+                test.setBackground(ContextCompat.getDrawable(this,R.drawable.sides_border));
+            }
+
             test.setText(item);
             linearLayout.addView(test);
         }
         PropertyTextView spacer = new PropertyTextView(this);
-        spacer.setText("-------------------------");
+        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
         linearLayout.addView(spacer);
 
     }
 
-    private void updateTrackingList(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                Log.i("Alfie", currentDate);
-                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
-                globalSetNumber = trackedExercises.size() + 1;
-                ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
-                for(TrackedExercise exercise : trackedExercises){
-                    trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
-                }
-                UpdateDSLV(trackedExercisesArrayList);
-            }
-        });
-    }
+//    private void updateTrackingList(){
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//                Log.i("Alfie", currentDate);
+//                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
+//                globalSetNumber = trackedExercises.size() + 1;
+//                ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
+//                for(TrackedExercise exercise : trackedExercises){
+//                    trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
+//                }
+//                UpdateDSLV(trackedExercisesArrayList);
+//            }
+//        });
+//    }
 
 }
