@@ -73,43 +73,88 @@ public class MainActivity extends AppCompatActivity {
 
     public void calendarClick(View view)
     {
-        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+        populateDaysExercises();
+//        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+//
+//
+//        final String[] DynamicListElements = new String[] {
+//                "Android Test",
+//                "PHP",
+//                "Android Studio",
+//                "PhpMyAdmin"
+//        };
+//        boolean isFirst = true;
+//        for(String item : DynamicListElements)
+//        {
+//            PropertyTextView test = new PropertyTextView(this);
+//            test.setClickable(true);
+//            test.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    PropertyTextView textView = (PropertyTextView)v;
+//                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+//                    return false;
+//                }
+//            });
+//            test.exerciseName = item;
+//            if (isFirst){
+//                test.setBackground(ContextCompat.getDrawable(this,R.drawable.top_and_sides_border));
+//                isFirst = false;
+//            }else{
+//                test.setBackground(ContextCompat.getDrawable(this,R.drawable.sides_border));
+//            }
+//
+//            test.setText(item);
+//            linearLayout.addView(test);
+//        }
+//        PropertyTextView spacer = new PropertyTextView(this);
+//        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
+//        linearLayout.addView(spacer);
 
+    }
 
-        final String[] DynamicListElements = new String[] {
-                "Android Test",
-                "PHP",
-                "Android Studio",
-                "PhpMyAdmin"
-        };
-        boolean isFirst = true;
-        for(String item : DynamicListElements)
-        {
-            PropertyTextView test = new PropertyTextView(this);
-            test.setClickable(true);
-            test.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    PropertyTextView textView = (PropertyTextView)v;
-                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
-                    return false;
+    private void populateDaysExercises(final String date, final String exerciseName){
+        final LinearLayout linearLayout = findViewById(R.id.listviewBox);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // TODO: make it so you can get all exercises regardless of name
+                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(exerciseName,date);
+                String previousExercise = "";
+                boolean isFirst = true;
+                for(TrackedExercise exercise : trackedExercises){
+                    PropertyTextView textView = new PropertyTextView(MainActivity.this);
+                    textView.setClickable(true);
+                    textView.exerciseName = exercise.getName();
+                    textView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            PropertyTextView textView = (PropertyTextView)v;
+                            Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                    });
+                    if (isFirst){
+                        textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
+                        isFirst = false;
+                    }else{
+                        textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
+                    }
+
+                    if (previousExercise != exercise.getName())
+                    {
+                        // Do something when its a new exercise
+                        PropertyTextView spacer = new PropertyTextView(this);
+                        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
+                        linearLayout.addView(spacer);
+                    }
+                    TrackActivity TrackActivity = new TrackActivity();
+                    String exerciseString = TrackActivity.getTrackedExerciseString(exercise);
+                    textView.setText(exerciseString);
+                    linearLayout.addView(textView);
                 }
-            });
-            test.exerciseName = item;
-            if (isFirst){
-                test.setBackground(ContextCompat.getDrawable(this,R.drawable.top_and_sides_border));
-                isFirst = false;
-            }else{
-                test.setBackground(ContextCompat.getDrawable(this,R.drawable.sides_border));
             }
-
-            test.setText(item);
-            linearLayout.addView(test);
-        }
-        PropertyTextView spacer = new PropertyTextView(this);
-        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
-        linearLayout.addView(spacer);
-
+        });
     }
 
 //    private void updateTrackingList(){
