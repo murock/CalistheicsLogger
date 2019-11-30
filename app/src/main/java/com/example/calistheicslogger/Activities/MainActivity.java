@@ -19,19 +19,22 @@ import android.widget.Toast;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.PropertyTextView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PropertyChangeListener {
 
     AppDatabase appDatabase;
-    List<TrackedExercise> trackedExercises;
+    DatabaseCommunicator databaseCommunicator;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appDatabase = AppDatabase.getInstance(this);
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -76,7 +81,10 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.i("alfie","0" );
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        getTrackedExercisesFromDB(currentDate);
+        databaseCommunicator.getExercisesFromDate(currentDate);
+
+        //getTrackedExercisesFromDB(currentDate);
+
 //        LinearLayout linearLayout = findViewById(R.id.listviewBox);
 //
 //
@@ -117,22 +125,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTrackedExercisesFromDB(final String date){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
-                populateDaysExercises();
-            }
-        });
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
+//                populateDaysExercises();
+//            }
+//        });
     }
 
     private void populateDaysExercises(){
         LinearLayout linearLayout = findViewById(R.id.listviewBox);
 
-
         String previousExercise = "";
         boolean isFirst = true;
-        for(TrackedExercise exercise : trackedExercises){
+        for(TrackedExercise exercise : databaseCommunicator.trackedExercisesFromDate){
             PropertyTextView textView = new PropertyTextView(MainActivity.this);
             textView.setClickable(true);
             textView.exerciseName = exercise.getName();
@@ -150,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
             }
-            TrackActivity TrackActivity = new TrackActivity();
-            String exerciseString = TrackActivity.getTrackedExerciseString(exercise);
+            String exerciseString = getTrackedExerciseString(exercise);
             textView.setText(exerciseString);
 
             if (previousExercise != exercise.getName())
@@ -163,6 +169,51 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.addView(spacer);
             }
             linearLayout.addView(textView);
+        }
+    }
+
+    private String getTrackedExerciseString(TrackedExercise exercise){
+        // TODO: adapt this for many different units e.g kgs/m etc
+        ArrayList<String> trackedComponents = new ArrayList<String>();
+        //String result = Integer.toString(exercise.getSetNumber());
+        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
+        if (!exercise.getReps().isEmpty())
+        {
+            //  result += "    " + exercise.getReps() + " reps";
+            trackedComponents.add(exercise.getReps() + " reps");
+        }
+        if (!exercise.getWeight().isEmpty())
+        {
+            //  result += "    " + exercise.getWeight() + " kgs";
+            trackedComponents.add(exercise.getWeight() + " kgs");
+        }
+        if (!exercise.getTime().isEmpty())
+        {
+            trackedComponents.add(exercise.getTime());
+        }
+        if (!exercise.getBand().isEmpty())
+        {
+            //  result += "    " + exercise.getBand() + " band";
+            trackedComponents.add(exercise.getBand() + " band");
+        }
+        int distance = exercise.getDistance();
+        if (distance != -1)
+        {
+            trackedComponents.add(distance + " m");
+        }
+        if (!exercise.getTempo().isEmpty())
+        {
+            trackedComponents.add(exercise.getTempo());
+        }
+        return TrackActivity.ListToRow(trackedComponents);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Log.i("Alfie prop name: ", evt.getPropertyName());
+        if (evt.getPropertyName() == "exerciseFromDatePopulated"){
+            Log.i("Alfie","got here");
+            populateDaysExercises();
         }
     }
 

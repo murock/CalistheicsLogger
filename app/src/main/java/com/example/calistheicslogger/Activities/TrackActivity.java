@@ -175,7 +175,7 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     //    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
-    public String getTrackedExerciseString(TrackedExercise exercise)
+    private String getTrackedExerciseString(TrackedExercise exercise)
     {
         // TODO: adapt this for many different units e.g kgs/m etc
         ArrayList<String> trackedComponents = new ArrayList<String>();
@@ -215,7 +215,7 @@ public class TrackActivity extends Activity implements Serializable {
         return ListToRow(trackedComponents);
     }
 
-    private String ListToRow(ArrayList<String> list)
+    public static String ListToRow(ArrayList<String> list)
     {
         String result = new String();
         String spacer = "";
