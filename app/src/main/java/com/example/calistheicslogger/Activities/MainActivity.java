@@ -31,6 +31,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     AppDatabase appDatabase;
+    List<TrackedExercise> trackedExercises;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void calendarClick(View view)
     {
-        populateDaysExercises();
+        Log.i("alfie","0" );
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        getTrackedExercisesFromDB(currentDate);
 //        LinearLayout linearLayout = findViewById(R.id.listviewBox);
 //
 //
@@ -113,48 +116,54 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void populateDaysExercises(final String date, final String exerciseName){
-        final LinearLayout linearLayout = findViewById(R.id.listviewBox);
+    private void getTrackedExercisesFromDB(final String date){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                // TODO: make it so you can get all exercises regardless of name
-                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(exerciseName,date);
-                String previousExercise = "";
-                boolean isFirst = true;
-                for(TrackedExercise exercise : trackedExercises){
-                    PropertyTextView textView = new PropertyTextView(MainActivity.this);
-                    textView.setClickable(true);
-                    textView.exerciseName = exercise.getName();
-                    textView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            PropertyTextView textView = (PropertyTextView)v;
-                            Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-                    });
-                    if (isFirst){
-                        textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
-                        isFirst = false;
-                    }else{
-                        textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
-                    }
-
-                    if (previousExercise != exercise.getName())
-                    {
-                        // Do something when its a new exercise
-                        PropertyTextView spacer = new PropertyTextView(this);
-                        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
-                        linearLayout.addView(spacer);
-                    }
-                    TrackActivity TrackActivity = new TrackActivity();
-                    String exerciseString = TrackActivity.getTrackedExerciseString(exercise);
-                    textView.setText(exerciseString);
-                    linearLayout.addView(textView);
-                }
+                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
+                populateDaysExercises();
             }
         });
+    }
+
+    private void populateDaysExercises(){
+        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+
+
+        String previousExercise = "";
+        boolean isFirst = true;
+        for(TrackedExercise exercise : trackedExercises){
+            PropertyTextView textView = new PropertyTextView(MainActivity.this);
+            textView.setClickable(true);
+            textView.exerciseName = exercise.getName();
+            textView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    PropertyTextView textView = (PropertyTextView)v;
+                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+            if (isFirst){
+                textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
+                isFirst = false;
+            }else{
+                textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
+            }
+            TrackActivity TrackActivity = new TrackActivity();
+            String exerciseString = TrackActivity.getTrackedExerciseString(exercise);
+            textView.setText(exerciseString);
+
+            if (previousExercise != exercise.getName())
+            {
+                // Do something when its a new exercise
+                previousExercise = exercise.getName();
+                PropertyTextView spacer = new PropertyTextView(MainActivity.this);
+                spacer.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_border));
+                linearLayout.addView(spacer);
+            }
+            linearLayout.addView(textView);
+        }
     }
 
 //    private void updateTrackingList(){
