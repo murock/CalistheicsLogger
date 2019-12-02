@@ -20,7 +20,7 @@ public interface TrackedExerciseDao {
     @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name AND timestamp =:timestamp ORDER BY set_number")
     List<TrackedExercise> getTrackedExercisesFromNameAndDate(String name, String timestamp);
 
-    @Query("SELECT * FROM tracked_exercises WHERE timestamp =:timestamp ORDER BY set_number")
+    @Query("SELECT * FROM tracked_exercises WHERE timestamp =:timestamp ORDER BY exercise_name, set_number")
     List<TrackedExercise> getTrackedExercisesFromDate(String timestamp);
 
     @Query("SELECT *, MAX(set_number) FROM tracked_exercises")

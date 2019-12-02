@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
     AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
+    String selectedDate;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,69 +82,32 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     public void calendarClick(View view)
     {
         Log.i("alfie","0" );
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        databaseCommunicator.getExercisesFromDate(currentDate);
-
-        //getTrackedExercisesFromDB(currentDate);
-
-//        LinearLayout linearLayout = findViewById(R.id.listviewBox);
-//
-//
-//        final String[] DynamicListElements = new String[] {
-//                "Android Test",
-//                "PHP",
-//                "Android Studio",
-//                "PhpMyAdmin"
-//        };
-//        boolean isFirst = true;
-//        for(String item : DynamicListElements)
-//        {
-//            PropertyTextView test = new PropertyTextView(this);
-//            test.setClickable(true);
-//            test.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    PropertyTextView textView = (PropertyTextView)v;
-//                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
-//                    return false;
-//                }
-//            });
-//            test.exerciseName = item;
-//            if (isFirst){
-//                test.setBackground(ContextCompat.getDrawable(this,R.drawable.top_and_sides_border));
-//                isFirst = false;
-//            }else{
-//                test.setBackground(ContextCompat.getDrawable(this,R.drawable.sides_border));
-//            }
-//
-//            test.setText(item);
-//            linearLayout.addView(test);
-//        }
-//        PropertyTextView spacer = new PropertyTextView(this);
-//        spacer.setBackground(ContextCompat.getDrawable(this,R.drawable.top_border));
-//        linearLayout.addView(spacer);
-
+        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        databaseCommunicator.getExercisesFromDate(selectedDate);
+        populateDateTitle();
     }
 
-    private void getTrackedExercisesFromDB(final String date){
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
-//                populateDaysExercises();
-//            }
-//        });
+    private void populateDateTitle(){
+        TextView dateTextView = findViewById(R.id.dateTextView);
+        dateTextView.setText(selectedDate);
     }
 
     private void populateDaysExercises(){
         LinearLayout linearLayout = findViewById(R.id.listviewBox);
-
-        String previousExercise = "";
-        boolean isFirst = true;
-        for(TrackedExercise exercise : databaseCommunicator.trackedExercisesFromDate){
+        List<TrackedExercise> trackedExercises = databaseCommunicator.trackedExercisesFromDate;
+        if (trackedExercises.size() <= 0)
+        {
+            return;
+        }
+        boolean isNewExercise = true;
+        //for(TrackedExercise exercise : databaseCommunicator.trackedExercisesFromDate){
+          for (int i = 0; i < trackedExercises.size(); i++){
+            TrackedExercise exercise = trackedExercises.get(i);
+            String exerciseName = exercise.getName();
             PropertyTextView textView = new PropertyTextView(MainActivity.this);
             textView.setClickable(true);
-            textView.exerciseName = exercise.getName();
+            textView.exerciseName = exerciseName;
+            Log.i("Alfie: ", exercise.getName());
             textView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -151,24 +116,39 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
                     return false;
                 }
             });
-            if (isFirst){
+            if (isNewExercise){
+                PropertyTextView title = new PropertyTextView(MainActivity.this);
+                title.setClickable(true);
+                title.exerciseName = exerciseName;
+                title.setText(exerciseName);
+                title.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        PropertyTextView textView = (PropertyTextView)v;
+                        Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                });
+                linearLayout.addView(title);
                 textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
-                isFirst = false;
+                isNewExercise = false;
             }else{
                 textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
             }
             String exerciseString = getTrackedExerciseString(exercise);
             textView.setText(exerciseString);
+            linearLayout.addView(textView);
 
-            if (previousExercise != exercise.getName())
+
+            if ( trackedExercises.size() == i + 1|| trackedExercises.size() > i + 1 && !exerciseName.equals(trackedExercises.get(i + 1).getName()) )
             {
                 // Do something when its a new exercise
-                previousExercise = exercise.getName();
+                isNewExercise = true;
                 PropertyTextView spacer = new PropertyTextView(MainActivity.this);
                 spacer.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_border));
                 linearLayout.addView(spacer);
             }
-            linearLayout.addView(textView);
+
         }
     }
 
@@ -177,21 +157,21 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         ArrayList<String> trackedComponents = new ArrayList<String>();
         //String result = Integer.toString(exercise.getSetNumber());
         trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-        if (!exercise.getReps().isEmpty())
-        {
+        if (!exercise.getReps().isEmpty()) {
             //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
         }
-        if (!exercise.getWeight().isEmpty())
+        if (!exercise.getWeight().trim().isEmpty() && !exercise.getWeight().contains(" 0"))
         {
+            Log.i("weight is:", exercise.getWeight());
             //  result += "    " + exercise.getWeight() + " kgs";
             trackedComponents.add(exercise.getWeight() + " kgs");
         }
-        if (!exercise.getTime().isEmpty())
+        if (!exercise.getTime().isEmpty() && !exercise.getTime().equals("00:00:00"))
         {
             trackedComponents.add(exercise.getTime());
         }
-        if (!exercise.getBand().isEmpty())
+        if (!exercise.getBand().isEmpty() && !exercise.getBand().equals("No"))
         {
             //  result += "    " + exercise.getBand() + " band";
             trackedComponents.add(exercise.getBand() + " band");
@@ -203,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
         if (!exercise.getTempo().isEmpty())
         {
-            trackedComponents.add(exercise.getTempo());
+            trackedComponents.add(exercise.getTempo().replaceAll(".(?=.)", "$0:"));
         }
         return TrackActivity.ListToRow(trackedComponents);
     }
@@ -213,7 +193,12 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         Log.i("Alfie prop name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "exerciseFromDatePopulated"){
             Log.i("Alfie","got here");
-            populateDaysExercises();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    populateDaysExercises();
+                }
+            });
         }
     }
 
