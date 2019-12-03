@@ -26,8 +26,10 @@ import com.example.calistheicslogger.Tools.PropertyTextView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -70,7 +72,29 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
+        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         setContentView(R.layout.activity_main);
+    }
+
+    public void nextButtonClick(View view) throws ParseException {
+        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+        linearLayout.removeAllViews();
+        Date date = new SimpleDateFormat("dd-MM-yyyy").parse(selectedDate);
+        date = addHoursToJavaUtilDate(date, 24);
+    }
+
+    public void nextButtonClick(View view) throws ParseException {
+        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+        linearLayout.removeAllViews();
+        Date date = new SimpleDateFormat("dd-MM-yyyy").parse(selectedDate);
+        date = addHoursToJavaUtilDate(date, 24);
+    }
+
+    public Date addHoursToJavaUtilDate(Date date, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
     }
 
     public void addExerciseClick(View view){
@@ -82,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     public void calendarClick(View view)
     {
         Log.i("alfie","0" );
-        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
     }
