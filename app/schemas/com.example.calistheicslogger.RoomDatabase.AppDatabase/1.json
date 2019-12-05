@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c9f7db47f53746be787c55d1a994bbb0",
+    "identityHash": "8897f8b514b3be64c6a0aaddb015f6f1",
     "entities": [
       {
         "tableName": "exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `progression_name` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `angle` INTEGER, `progression_name` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -47,6 +47,12 @@
           {
             "fieldPath": "tempoControlled",
             "columnName": "tempo_controlled",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "angle",
+            "columnName": "angle",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -155,7 +161,7 @@
       },
       {
         "tableName": "tracked_exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` TEXT, `weight` TEXT, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` TEXT, `weight` TEXT, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `angle` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -216,6 +222,38 @@
             "columnName": "tempo",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "angle",
+            "columnName": "angle",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "angles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `angle` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "angle",
+            "columnName": "angle",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -231,7 +269,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c9f7db47f53746be787c55d1a994bbb0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8897f8b514b3be64c6a0aaddb015f6f1')"
     ]
   }
 }

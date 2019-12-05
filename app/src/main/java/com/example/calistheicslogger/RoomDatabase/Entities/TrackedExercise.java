@@ -3,7 +3,6 @@ package com.example.calistheicslogger.RoomDatabase.Entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tracked_exercises")
@@ -40,7 +39,10 @@ public class TrackedExercise
     @ColumnInfo(name = "tempo")
     private String tempo;
 
-    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
+    @ColumnInfo(name = "angle")
+    private String angle;
+
+    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo, String angle){
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
@@ -51,10 +53,11 @@ public class TrackedExercise
         this.band = band;
         this.distance = distance;
         this.tempo = tempo;
+        this.angle = angle;
     }
 
     @Ignore
-    public TrackedExercise(String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
+    public TrackedExercise(String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo, String angle){
         this.name = name;
         this.timestamp = timestamp;
         this.setNumber = setNumber;
@@ -64,6 +67,7 @@ public class TrackedExercise
         this.band = band;
         this.distance = distance;
         this.tempo = tempo;
+        this.angle = angle;
     }
 
     public int getId() {
@@ -144,5 +148,13 @@ public class TrackedExercise
 
     public void setTempo(String tempo) {
         this.tempo = tempo;
+    }
+
+    public String getAngle() {
+        return angle;
+    }
+
+    public void setAngle(String angle) {
+        this.angle = angle;
     }
 }

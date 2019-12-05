@@ -29,7 +29,7 @@ public class NewExerciseActivity extends Activity {
     AppDatabase appDatabase;
     Spinner progressionSpinner, typeSpinner;
     MultiSelectionSpinner categorySpinner;
-    Boolean bandChecked = false, weightLoadableChecked = false, tempoChecked = false;
+    Boolean bandChecked = false, weightLoadableChecked = false, tempoChecked = false, angleChecked = false;
 
 
     @Override
@@ -115,7 +115,7 @@ public class NewExerciseActivity extends Activity {
                         categories += item.getName();
                     }
                     Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked);
+                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked);
                     appDatabase.exerciseDao().addExercise(exercise);
                 }else{
                     Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
@@ -170,6 +170,13 @@ public class NewExerciseActivity extends Activity {
                     tempoChecked = true;
                 }else {
                     tempoChecked = false;
+                }
+                break;
+            case R.id.angleCheckBox:
+                if (checked){
+                    angleChecked = true;
+                }else{
+                    angleChecked = false;
                 }
             default:
                 //"Not possible to get here??";

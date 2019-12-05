@@ -5,6 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Spinner
+        android:id="@+id/angleSpinner"
+        android:layout_width="204dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
+
+    <TextView
+        android:id="@+id/angleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Angle"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/angleSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
+        app:layout_constraintStart_toStartOf="@+id/bandSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
+
     <TextView
         android:id="@+id/distanceTextView"
         android:layout_width="wrap_content"
@@ -19,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/angleSpinner" />
 
     <TextView
         android:id="@+id/tempoTextView"
@@ -176,6 +202,13 @@
         android:visibility="visible"
         app:constraint_referenced_ids="tempoTextView,tempoEccentricEditText,tempoPause1EditText,tempoConcentricEditText,tempoPause2EditText" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/angleGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="angleTextView,angleSpinner" />
+
     <TextView
         android:id="@+id/repsTextView"
         android:layout_width="wrap_content"
@@ -283,7 +316,7 @@
         android:layout_marginRight="54dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/distanceTextView"
+        app:layout_constraintBottom_toTopOf="@+id/angleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"

@@ -32,10 +32,13 @@ public class Exercise
     @ColumnInfo(name = "tempo_controlled")
     private Boolean tempoControlled;
 
+    @ColumnInfo(name = "angle")
+    private Boolean angle;
+
     @ColumnInfo(name = "progression_name")
     private String progression;
 
-    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled){
+    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean angle){
         this.id = id;
         this.name = name;
         this.categories = categories;
@@ -44,10 +47,11 @@ public class Exercise
         this.weightLoadable = weightLoadable;
         this.progression = progression;
         this.tempoControlled = tempoControlled;
+        this.angle = angle;
     }
 
     @Ignore
-    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled){
+    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean angle){
         this.name = name;
         this.categories = categories;
         this.type = type;
@@ -55,6 +59,7 @@ public class Exercise
         this.weightLoadable = weightLoadable;
         this.progression = progression;
         this.tempoControlled = tempoControlled;
+        this.angle = angle;
     }
 
     public Boolean getTempoControlled() {
@@ -105,6 +110,12 @@ public class Exercise
         this.bandAssisted = bandAssisted;
     }
 
+    public Boolean getAngle(){
+        return angle;
+    }
+
+    public void setAngle(Boolean angle) {this.angle = angle; }
+
     public Boolean getWeightLoadable() {
         return weightLoadable;
     }
@@ -123,9 +134,9 @@ public class Exercise
 
     public static Exercise[] populateData(){
         return new Exercise[]{
-                new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false),
-                new Exercise("Back Lever","Chest Abs Back", "Isometric", false, false, "Back Lever", false),
-                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false),
+                new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false),
+                new Exercise("Back Lever","Chest Abs Back", "Isometric", false, false, "Back Lever", false, false),
+                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false),
         };
     }
 }

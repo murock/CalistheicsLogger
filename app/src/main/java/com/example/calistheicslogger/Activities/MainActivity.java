@@ -76,18 +76,22 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         setContentView(R.layout.activity_main);
     }
 
-    public void nextButtonClick(View view) throws ParseException {
-        LinearLayout linearLayout = findViewById(R.id.listviewBox);
-        linearLayout.removeAllViews();
-        Date date = new SimpleDateFormat("dd-MM-yyyy").parse(selectedDate);
-        date = addHoursToJavaUtilDate(date, 24);
-    }
 
-    public void nextButtonClick(View view) throws ParseException {
+
+    public void navigationButtonClick(View view) throws ParseException {
+        int hours;
+        if (view.getId() == R.id.nextButton){
+            hours = 24;
+        }else{
+            hours = -24;
+        }
         LinearLayout linearLayout = findViewById(R.id.listviewBox);
         linearLayout.removeAllViews();
         Date date = new SimpleDateFormat("dd-MM-yyyy").parse(selectedDate);
-        date = addHoursToJavaUtilDate(date, 24);
+        date = addHoursToJavaUtilDate(date, hours);
+        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date);
+        databaseCommunicator.getExercisesFromDate(selectedDate);
+        populateDateTitle();
     }
 
     public Date addHoursToJavaUtilDate(Date date, int hours) {
@@ -198,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         {
             //  result += "    " + exercise.getBand() + " band";
             trackedComponents.add(exercise.getBand() + " band");
+        }
+        if (!exercise.getAngle().isEmpty())
+        {
+            trackedComponents.add(exercise.getAngle());
         }
         int distance = exercise.getDistance();
         if (distance != -1)

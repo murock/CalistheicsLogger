@@ -72,6 +72,7 @@ public class TrackActivity extends Activity implements Serializable {
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
         SetUpActivity(exerciseString);
         setUpBandSpinner();
+        setUpAngleSpinner();
         SetUpFilters();
         SetUpDSLV();
     }
@@ -145,6 +146,19 @@ public class TrackActivity extends Activity implements Serializable {
         });
     }
 
+    // TODO: Do not repeat code fix
+    private void setUpAngleSpinner(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> angles = appDatabase.angleDao().getAllAngles();
+                Spinner angleSpinner = findViewById(R.id.angleSpinner);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, angles);
+                angleSpinner.setAdapter(arrayAdapter);
+            }
+        });
+    }
+
     private void swapTrackedExercises(final int SetNo1, final int SetNo2)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -202,6 +216,11 @@ public class TrackActivity extends Activity implements Serializable {
         {
           //  result += "    " + exercise.getBand() + " band";
             trackedComponents.add(exercise.getBand() + " band");
+        }
+        Group angleGroup = findViewById(R.id.angleGroup);
+        if (angleGroup.getVisibility() == View.VISIBLE && !exercise.getAngle().isEmpty())
+        {
+            trackedComponents.add(exercise.getAngle());
         }
         int distance = exercise.getDistance();
         if (distance != -1)
@@ -263,19 +282,22 @@ public class TrackActivity extends Activity implements Serializable {
         title.setText(exercise.getName());
         String type = exercise.getType();
         //"Isometric", "Weight and Reps", "Negative"
+        Group group;
+        group = findViewById(R.id.distanceGroup);
+        group.setVisibility(View.GONE);
+        group = findViewById(R.id.bandGroup);
+        group.setVisibility(View.GONE);
+        group = findViewById(R.id.tempoGroup);
+        group.setVisibility(View.GONE);
+        group = findViewById(R.id.angleGroup);
+        group.setVisibility(View.GONE);
         switch(type){
             case "Isometric":
-                Group group = findViewById(R.id.timeGroup);
+                group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.VISIBLE);
                 group = findViewById(R.id.repsGroup);
                 group.setVisibility(View.GONE);
-                group = findViewById(R.id.bandGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.tempoGroup);
-                group.setVisibility(View.GONE);
                 group = findViewById(R.id.weightGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.distanceGroup);
                 group.setVisibility(View.GONE);
                 break;
             case "Weight and Reps":
@@ -283,47 +305,42 @@ public class TrackActivity extends Activity implements Serializable {
                 group.setVisibility(View.GONE);
                 group = findViewById(R.id.repsGroup);
                 group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.bandGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.tempoGroup);
-                group.setVisibility(View.GONE);
                 group = findViewById(R.id.weightGroup);
                 group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.distanceGroup);
-                group.setVisibility(View.GONE);
                 break;
             case "Negative":
                 group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.GONE);
                 group = findViewById(R.id.repsGroup);
                 group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.bandGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.tempoGroup);
-                group.setVisibility(View.GONE);
                 group = findViewById(R.id.weightGroup);
                 group.setVisibility(View.GONE);
-                group = findViewById(R.id.distanceGroup);
-                group.setVisibility(View.GONE);
+
                 break;
                 default:
         }
         Boolean bandAssisted = exercise.getBandAssisted();
         Boolean weighted = exercise.getWeightLoadable();
         Boolean tempoControlled = exercise.getTempoControlled();
+        Boolean adjustableAngle = exercise.getAngle();
         if (bandAssisted)
         {
-            Group group = findViewById(R.id.bandGroup);
+            group = findViewById(R.id.bandGroup);
             group.setVisibility(View.VISIBLE);
         }
         if (weighted){
-            Group group = findViewById(R.id.weightGroup);
+            group = findViewById(R.id.weightGroup);
             group.setVisibility(View.VISIBLE);
         }
         if(tempoControlled){
-            Group group = findViewById(R.id.tempoGroup);
+            group = findViewById(R.id.tempoGroup);
             group.setVisibility(View.VISIBLE);
         }
+        if (adjustableAngle){
+            group = findViewById(R.id.angleGroup);
+            group.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void DeleteButtonClick(View view){
@@ -353,6 +370,7 @@ public class TrackActivity extends Activity implements Serializable {
                         + AddPrefixToItem(secondText.getText().toString(),2, "0");
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
+                Spinner angleSpinner = findViewById(R.id.angleSpinner);
                 EditText distanceText = findViewById(R.id.distanceEditText);
                 int distance = -1;
                 if (distanceText.getText().toString() == ""){
@@ -372,7 +390,7 @@ public class TrackActivity extends Activity implements Serializable {
 
                 final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
                         repsText.getText().toString(),weightString,time,bandSpinner.getSelectedItem().toString(),
-                        distance,tempo);
+                        distance,tempo, angleSpinner.getSelectedItem().toString());
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
                 updateTrackingList();
