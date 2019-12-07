@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         super.onCreate(savedInstanceState);
         selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         setContentView(R.layout.activity_main);
+        databaseCommunicator.getExercisesFromDate(selectedDate);
+        populateDateTitle();
     }
 
 
@@ -135,27 +137,13 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             textView.setClickable(true);
             textView.exerciseName = exerciseName;
             Log.i("Alfie: ", exercise.getName());
-            textView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    PropertyTextView textView = (PropertyTextView)v;
-                    Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
+            textView.setOnTouchListener(handleExerciseTouch);
             if (isNewExercise){
                 PropertyTextView title = new PropertyTextView(MainActivity.this);
                 title.setClickable(true);
                 title.exerciseName = exerciseName;
                 title.setText(exerciseName);
-                title.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        PropertyTextView textView = (PropertyTextView)v;
-                        Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                });
+                title.setOnTouchListener(handleExerciseTouch);
                 linearLayout.addView(title);
                 textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
                 isNewExercise = false;
@@ -219,11 +207,16 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         return TrackActivity.ListToRow(trackedComponents);
     }
 
+    private void newTrackAcitivity(String exercise){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exercise);
+        startActivity(trackActivity);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Log.i("Alfie prop name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "exerciseFromDatePopulated"){
-            Log.i("Alfie","got here");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -233,21 +226,15 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
     }
 
-//    private void updateTrackingList(){
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-//                Log.i("Alfie", currentDate);
-//                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
-//                globalSetNumber = trackedExercises.size() + 1;
-//                ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
-//                for(TrackedExercise exercise : trackedExercises){
-//                    trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
-//                }
-//                UpdateDSLV(trackedExercisesArrayList);
-//            }
-//        });
-//    }
+    private View.OnTouchListener handleExerciseTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            PropertyTextView textView = (PropertyTextView)v;
+            Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+            newTrackAcitivity(textView.exerciseName);
+            return true;
+        }
+    };
+
 
 }
