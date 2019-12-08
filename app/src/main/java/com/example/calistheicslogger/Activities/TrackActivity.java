@@ -21,7 +21,9 @@ import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
+import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
+import com.example.calistheicslogger.Tools.dslv.SimpleFloatViewManager;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,9 @@ public class TrackActivity extends Activity implements Serializable {
 
     AppDatabase appDatabase;
     String currentExercise;
+    DragSortListView dslv;
+    SimpleFloatViewManager floatViewManager;
+    DragSortController dragSortController;
 
     ArrayAdapter<String> dslvAdapter;
     // TODO: re-order set numbers when dragged
@@ -55,13 +60,13 @@ public class TrackActivity extends Activity implements Serializable {
                 }
             };
 
-    private DragSortListView.DragListener onDrag =
-            new DragSortListView.DragListener() {
-                @Override
-                public void drag(int from, int to) {
-                    // TODO: put code in here for selection of record???
-                }
-            };
+//    private DragSortListView.DragListener onDrag =
+//            new DragSortListView.DragListener() {
+//                @Override
+//                public void drag(int from, int to) {
+//                    // TODO: put code in here for selection of record???
+//                }
+//            };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -77,11 +82,28 @@ public class TrackActivity extends Activity implements Serializable {
         SetUpDSLV();
     }
 
+    public DragSortController buildController(DragSortListView dslv) {
+        // defaults are
+        //   dragStartMode = onDown
+        //   removeMode = flingRight
+        DragSortController controller = new DragSortController(dslv);
+   //     controller.setDragHandleId(R.id.drag_handle);
+     //   controller.setClickRemoveId(R.id.click_remove);
+        controller.setRemoveEnabled(false);
+        controller.setSortEnabled(true);
+        controller.setDragInitMode(DragSortController.ON_LONG_PRESS);
+        controller.setRemoveMode(DragSortController.FLING_REMOVE);
+        return controller;
+    }
+
 
     private void SetUpDSLV()
     {
-        DragSortListView testdslv = findViewById(R.id.trackedExerciseDSLV);
-        testdslv.setDropListener(onDrop);
+        dslv = findViewById(R.id.trackedExerciseDSLV);
+        dslv.setDropListener(onDrop);
+        dragSortController = buildController(dslv);
+        dslv.setFloatViewManager(dragSortController);
+        dslv.setOnTouchListener(dragSortController);
     }
 
     private void UpdateDSLV(ArrayList<String> items){
@@ -89,7 +111,7 @@ public class TrackActivity extends Activity implements Serializable {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DragSortListView dslv = findViewById(R.id.trackedExerciseDSLV);
+                //dslv = findViewById(R.id.trackedExerciseDSLV);
                 dslv.setAdapter(dslvAdapter);
             }
         });
