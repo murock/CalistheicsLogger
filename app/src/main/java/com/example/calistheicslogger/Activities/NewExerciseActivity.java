@@ -1,6 +1,7 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -97,6 +98,13 @@ public class NewExerciseActivity extends Activity {
         });
     }
 
+    private void newTrackAcitivity(String exercise){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exercise);
+        startActivity(trackActivity);
+    }
+
+
     public void onSaveButtonClicked(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -120,8 +128,11 @@ public class NewExerciseActivity extends Activity {
                 }else{
                     Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
                 }
+                newTrackAcitivity(exerciseNameEditText.getText().toString());
             }
         });
+
+
     }
 
     public void onPrintExerciseButtonClick(View view){

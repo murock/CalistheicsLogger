@@ -365,6 +365,18 @@ public class TrackActivity extends Activity implements Serializable {
 
     }
 
+    private void newHistoryAcitivity(){
+        Intent historyActivity = new Intent(this, HistoryActivity.class);
+        historyActivity.putExtra("Exercise", currentExercise);
+        startActivity(historyActivity);
+    }
+
+
+    public void HistoryButtonClick(View view)
+    {
+        newHistoryAcitivity();
+    }
+
     public void DeleteButtonClick(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -382,8 +394,19 @@ public class TrackActivity extends Activity implements Serializable {
             public void run() {
                 TextView titleText = findViewById(R.id.titleTextView);
                 EditText repsText = findViewById(R.id.repsEditText);
+                String repString = repsText.getText().toString();
+                Group repGroup = findViewById(R.id.repsGroup);
+                if (repGroup.getVisibility() == View.VISIBLE && repString.isEmpty())
+                {
+                    repString = "0";
+                }
                 EditText weightText = findViewById(R.id.weightEditText);
-                String weightString = AddPrefixToItem(weightText.getText().toString(),7," ");
+                String weightString = weightText.getText().toString();//AddPrefixToItem(weightText.getText().toString(),7," ");
+                Group weightGroup = findViewById(R.id.weightGroup);
+                if (weightGroup.getVisibility() == View.VISIBLE && weightString.isEmpty())
+                {
+                    weightString = "0.0";
+                }
                 // time here
                 EditText hourText = findViewById(R.id.hourEditText);
                 EditText minText = findViewById(R.id.minuteEditText);
@@ -393,6 +416,11 @@ public class TrackActivity extends Activity implements Serializable {
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 Spinner angleSpinner = findViewById(R.id.angleSpinner);
+                String angleString = "";
+                Group angleGroup = findViewById(R.id.angleGroup);
+                if (angleGroup.getVisibility() == View.VISIBLE){
+                    angleString = angleSpinner.getSelectedItem().toString();
+                }
                 EditText distanceText = findViewById(R.id.distanceEditText);
                 int distance = -1;
                 if (distanceText.getText().toString() == ""){
@@ -411,8 +439,8 @@ public class TrackActivity extends Activity implements Serializable {
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
                 final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
-                        repsText.getText().toString(),weightString,time,bandSpinner.getSelectedItem().toString(),
-                        distance,tempo, angleSpinner.getSelectedItem().toString());
+                        repString,weightString,time,bandSpinner.getSelectedItem().toString(),
+                        distance,tempo, angleString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
                 updateTrackingList();
