@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             textView.setText(exerciseString);
             linearLayout.addView(textView);
 
-
             if ( trackedExercises.size() == i + 1|| trackedExercises.size() > i + 1 && !exerciseName.equals(trackedExercises.get(i + 1).getName()) )
             {
                 // Do something when its a new exercise
@@ -175,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
                 spacer.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_border));
                 linearLayout.addView(spacer);
             }
-
         }
     }
 

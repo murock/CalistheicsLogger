@@ -23,6 +23,9 @@ public interface TrackedExerciseDao {
     @Query("SELECT * FROM tracked_exercises WHERE timestamp =:timestamp ORDER BY exercise_name, set_number")
     List<TrackedExercise> getTrackedExercisesFromDate(String timestamp);
 
+    @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name")
+    List<TrackedExercise> getTrackedExercisesFromName(String name);
+
     @Query("SELECT *, MAX(set_number) FROM tracked_exercises")
     TrackedExercise getLastTrackedExercise();
 

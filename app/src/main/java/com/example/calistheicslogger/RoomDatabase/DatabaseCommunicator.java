@@ -16,6 +16,7 @@ public class DatabaseCommunicator {
     private static DatabaseCommunicator instance;
 
     public static List<TrackedExercise> trackedExercisesFromDate;
+    public static List<TrackedExercise> exerciseHistoryList;
 
     protected DatabaseCommunicator(Context context){
         appDatabase = AppDatabase.getInstance(context);
@@ -48,6 +49,16 @@ public class DatabaseCommunicator {
                 // Fire event
                 Log.i("tracked exercise null", "blank");
                 support.firePropertyChange("exerciseFromDatePopulated", null, null);
+            }
+        });
+    }
+
+    public void getExerciseHistory(final String exerciseName){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exerciseHistoryList = appDatabase.trackedExerciseDao().getTrackedExercisesFromName(exerciseName);
+                support.firePropertyChange("exerciseFromNamePopulated", null, null);
             }
         });
     }
