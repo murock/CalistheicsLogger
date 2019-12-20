@@ -74,7 +74,7 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             TextView textView = new TextView(HistoryActivity.this);
             if (isNewDate){
                 TextView title = new TextView(HistoryActivity.this);
-                title.setText(exercise.getName());
+                title.setText(exercise.getName() + " : " + exercise.getTimestamp());
                 linearLayout.addView(title);
                 textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.top_and_sides_border));
                 isNewDate = false;

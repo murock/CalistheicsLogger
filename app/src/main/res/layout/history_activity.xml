@@ -15,17 +15,19 @@
         android:layout_marginTop="16dp"
         android:onClick="TrackButtonClick"
         android:text="Track"
+        app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="409dp"
-        android:layout_height="665dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackButton">
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
         <LinearLayout
             android:id="@+id/linearLayout"
