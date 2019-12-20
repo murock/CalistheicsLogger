@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
     }
 
-    private String getTrackedExerciseString(TrackedExercise exercise){
+    public static String getTrackedExerciseString(TrackedExercise exercise){
         // TODO: adapt this for many different units e.g kgs/m etc
         ArrayList<String> trackedComponents = new ArrayList<String>();
         //String result = Integer.toString(exercise.getSetNumber());

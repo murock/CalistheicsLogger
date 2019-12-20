@@ -9,10 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.PropertyTextView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -36,6 +38,7 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
         currentExercise = (String)i.getSerializableExtra("Exercise");
         TextView titleTextView = findViewById(R.id.titleTextView);
         titleTextView.setText(currentExercise);
+        startExerciseHistoryLookUp();
     }
 
     private void newTrackAcitivity(String exercise){
@@ -65,6 +68,31 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             return;
         }
         boolean isNewDate = true;
+        for(int i = 0; i < exerciseHistory.size(); i++)
+        {
+            TrackedExercise exercise = exerciseHistory.get(i);
+            TextView textView = new TextView(HistoryActivity.this);
+            if (isNewDate){
+                TextView title = new TextView(HistoryActivity.this);
+                title.setText(exercise.getName());
+                linearLayout.addView(title);
+                textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.top_and_sides_border));
+                isNewDate = false;
+            }else {
+                textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.sides_border));
+            }
+            textView.setText(MainActivity.getTrackedExerciseString(exercise));
+            linearLayout.addView(textView);
+
+            if ( exerciseHistory.size() == i + 1|| exerciseHistory.size() > i + 1 && ! exercise.getTimestamp().equals(exerciseHistory.get(i + 1).getTimestamp()))
+            {
+                // Do something when its a new exercise
+                isNewDate = true;
+                TextView spacer = new TextView(HistoryActivity.this);
+                spacer.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.top_border));
+                linearLayout.addView(spacer);
+            }
+        }
     }
 
     @Override
