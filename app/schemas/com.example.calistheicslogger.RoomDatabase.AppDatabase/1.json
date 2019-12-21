@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8897f8b514b3be64c6a0aaddb015f6f1",
+    "identityHash": "b42aba1278e9fb9d9593e146ffc04dab",
     "entities": [
       {
         "tableName": "exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `angle` INTEGER, `progression_name` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `angle` INTEGER, `progression_name` TEXT, `weight_increment` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,6 +61,12 @@
             "columnName": "progression_name",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "weightIncrement",
+            "columnName": "weight_increment",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -269,7 +275,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8897f8b514b3be64c6a0aaddb015f6f1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b42aba1278e9fb9d9593e146ffc04dab')"
     ]
   }
 }

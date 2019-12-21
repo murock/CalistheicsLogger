@@ -123,7 +123,7 @@ public class NewExerciseActivity extends Activity {
                         categories += item.getName();
                     }
                     Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked);
+                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
                     appDatabase.exerciseDao().addExercise(exercise);
                 }else{
                     Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
