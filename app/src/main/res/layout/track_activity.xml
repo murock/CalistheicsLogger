@@ -507,6 +507,7 @@
         android:id="@+id/personalRecordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="RecordClick"
         android:text="Records"
         app:layout_constraintBottom_toBottomOf="@+id/progressionButton"
         app:layout_constraintEnd_toEndOf="parent"

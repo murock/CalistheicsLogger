@@ -17,6 +17,7 @@ public class DatabaseCommunicator {
 
     public static List<TrackedExercise> trackedExercisesFromDate;
     public static List<TrackedExercise> exerciseHistoryList;
+    public static List<TrackedExercise> personalRecordsList;
 
     protected DatabaseCommunicator(Context context){
         appDatabase = AppDatabase.getInstance(context);
@@ -59,6 +60,15 @@ public class DatabaseCommunicator {
             public void run() {
                 exerciseHistoryList = appDatabase.trackedExerciseDao().getTrackedExercisesFromName(exerciseName);
                 support.firePropertyChange("exerciseFromNamePopulated", null, null);
+            }
+        });
+    }
+
+    public void getPersonalRecords(final String exerciseName){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                personalRecordsList = appDatabase.trackedExerciseDao()
             }
         });
     }

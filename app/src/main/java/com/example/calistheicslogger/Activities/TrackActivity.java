@@ -365,17 +365,25 @@ public class TrackActivity extends Activity implements Serializable {
 
     }
 
-    private void newHistoryAcitivity(){
-        Intent historyActivity = new Intent(this, HistoryActivity.class);
-        historyActivity.putExtra("Exercise", currentExercise);
-        startActivity(historyActivity);
+    private void startActivity(Class<?> activityToStart){
+        Intent activity = new Intent(this, activityToStart);
+        activity.putExtra("Exercise", currentExercise);
+        startActivity(activity);
     }
+
+  //  private void newHistoryAcitivity(){
+  //      Intent historyActivity = new Intent(this, HistoryActivity.class);
+   //     historyActivity.putExtra("Exercise", currentExercise);
+  //      startActivity(historyActivity);
+   // }
 
 
     public void HistoryButtonClick(View view)
     {
-        newHistoryAcitivity();
+        startActivity(HistoryActivity.class);
     }
+
+    public void RecordClick(View view){ startActivity(PersonalRecordsActivity.class);}
 
     public void DeleteButtonClick(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
