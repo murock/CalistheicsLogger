@@ -10,11 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Progression"
-        app:layout_constraintBottom_toBottomOf="@+id/personalRecordButton"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+        app:layout_constraintEnd_toEndOf="@id/personalRecordButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/personalRecordButton"
+        app:layout_constraintStart_toEndOf="@+id/historyButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
@@ -496,21 +497,20 @@
         android:layout_marginStart="8dp"
         android:onClick="HistoryButtonClick"
         android:text="History"
-        app:layout_constraintBottom_toBottomOf="@+id/personalRecordButton"
-        app:layout_constraintEnd_toStartOf="@+id/personalRecordButton"
+        app:layout_constraintBottom_toBottomOf="@+id/progressionButton"
+        app:layout_constraintEnd_toStartOf="@+id/progressionButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/personalRecordButton" />
+        app:layout_constraintTop_toTopOf="@+id/progressionButton" />
 
     <Button
         android:id="@+id/personalRecordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="Records"
-        app:layout_constraintBottom_toTopOf="@+id/titleTextView"
-        app:layout_constraintEnd_toStartOf="@+id/progressionButton"
+        app:layout_constraintBottom_toBottomOf="@+id/progressionButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/historyButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/progressionButton"
+        app:layout_constraintTop_toTopOf="@id/progressionButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
