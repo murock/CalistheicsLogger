@@ -68,7 +68,7 @@ public class DatabaseCommunicator {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                personalRecordsList = appDatabase.trackedExerciseDao()
+             //   personalRecordsList = appDatabase.trackedExerciseDao()
             }
         });
     }
