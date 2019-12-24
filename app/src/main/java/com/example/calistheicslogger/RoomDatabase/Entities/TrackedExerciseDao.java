@@ -33,6 +33,9 @@ public interface TrackedExerciseDao {
     @Query("UPDATE tracked_exercises set set_number = (case set_number when :setNo1 then :setNo2 else :setNo1 end) where set_number in (:setNo1, :setNo2)")
     void swapBySetNumber(int setNo1, int setNo2);
 
+    @Query("SELECT * FROM tracked_exercises INNER JOIN (SELECT band, MAX(reps) AS Maxreps FROM tracked_exercises WHERE exercise_name =:name GROUP BY band ) topset ON tracked_exercises.band = topset.band AND tracked_exercises.reps = topset.Maxreps")
+    List<TrackedExercise> getPersonalRecords(String name);
+
     @Insert
     void addTrackedExercise(TrackedExercise trackedExercise);
 
