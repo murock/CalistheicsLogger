@@ -33,6 +33,7 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
         Intent i = getIntent();
         currentExercise = (String)i.getSerializableExtra("Exercise");
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
         startPersonalRecordLookUp();
     }
 
@@ -51,12 +52,21 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
 
     private void startPersonalRecordLookUp()
     {
-        databaseCommunicator.getExerciseHistory(currentExercise);
+        Log.i("Alfie", "look up");
+        databaseCommunicator.getPersonalRecords(currentExercise);
     }
 
     private void populatePersonalRecords(){
+        Log.i("Alfie", "recieve");
+        TextView test = new TextView(PersonalRecordsActivity.this);
+        test.setText("Alfie test");
+
+
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
         linearLayout.removeAllViews();
+
+        linearLayout.addView(test);
+
         List<TrackedExercise> trackedExercises = databaseCommunicator.personalRecordsList;
         if (trackedExercises.size() <= 0)
         {
@@ -74,8 +84,9 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Log.i("Alfie prop name: ", evt.getPropertyName());
+        Log.i("Alfie propdsf name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "personalRecordsPopulated"){
+            Log.i("Alfie ", "got here");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
