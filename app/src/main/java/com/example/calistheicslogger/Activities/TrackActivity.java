@@ -37,6 +37,7 @@ public class TrackActivity extends Activity implements Serializable {
 
     AppDatabase appDatabase;
     String currentExercise;
+    String currentDate;
     DragSortListView dslv;
     SimpleFloatViewManager floatViewManager;
     DragSortController dragSortController;
@@ -75,6 +76,8 @@ public class TrackActivity extends Activity implements Serializable {
         setContentView(R.layout.track_activity);
         Intent i = getIntent();
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
+        currentDate = (String)i.getSerializableExtra("Date");
+        SetDate();
         SetUpActivity(exerciseString);
         setUpBandSpinner();
         setUpAngleSpinner();
@@ -96,6 +99,13 @@ public class TrackActivity extends Activity implements Serializable {
         return controller;
     }
 
+    private void SetDate()
+    {
+        if(currentDate == null || currentDate.isEmpty())
+        {
+            currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        }
+    }
 
     private void SetUpDSLV()
     {
@@ -140,6 +150,7 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     private void SetUpActivity(final String exerciseName){
+        Log.i("Alfie exercise name is ", exerciseName);
         currentExercise = exerciseName;
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -197,7 +208,6 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                 Log.i("Alfie", currentDate);
                 List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 globalSetNumber = trackedExercises.size() + 1;
@@ -301,7 +311,9 @@ public class TrackActivity extends Activity implements Serializable {
     private void SetUpControls(Exercise exercise)
     {
         TextView title = findViewById(R.id.titleTextView);
-        title.setText(exercise.getName());
+        Log.i("Alfie current date", currentDate);
+
+        title.setText(exercise.getName() + " - " + currentDate);
         String type = exercise.getType();
         //"Isometric", "Weight and Reps", "Negative"
         Group group;
@@ -400,7 +412,6 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                TextView titleText = findViewById(R.id.titleTextView);
                 EditText repsText = findViewById(R.id.repsEditText);
                 String repString = repsText.getText().toString();
                 Group repGroup = findViewById(R.id.repsGroup);
@@ -443,10 +454,7 @@ public class TrackActivity extends Activity implements Serializable {
                 String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
                         liftEditText.getText().toString() + pause2EditText.getText().toString();
 
-                //TODO: make someway of saving exercises in the past/future
-                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
-                final TrackedExercise trackedExercise = new TrackedExercise(titleText.getText().toString(), currentDate, globalSetNumber,
+                final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
                         repString,weightString,time,bandSpinner.getSelectedItem().toString(),
                         distance,tempo, angleString);
                 globalSetNumber++;

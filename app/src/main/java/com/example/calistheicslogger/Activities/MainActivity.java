@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     public void addExerciseClick(View view){
         Log.i("Button Pressed:", "Add Exercise");
         Intent addExercise = new Intent(this,ExerciseListActivity.class);
+        addExercise.putExtra("Date", selectedDate);
         startActivity(addExercise);
     }
 
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     private void newTrackAcitivity(String exercise){
         Intent trackActivity = new Intent(this, TrackActivity.class);
         trackActivity.putExtra("Exercise", exercise);
+        trackActivity.putExtra("Date", selectedDate);
         startActivity(trackActivity);
     }
 

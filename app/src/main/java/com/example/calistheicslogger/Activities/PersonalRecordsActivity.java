@@ -38,16 +38,10 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
     }
 
 
-    private void newTrackAcitivity(String exercise){
-        Intent trackActivity = new Intent(this, TrackActivity.class);
-        trackActivity.putExtra("Exercise", exercise);
-        startActivity(trackActivity);
-    }
-
 
     public void TrackButtonClick(View v)
     {
-        newTrackAcitivity(currentExercise);
+        finish();
     }
 
     private void startPersonalRecordLookUp()

@@ -19,14 +19,16 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExerciseListActivity extends Activity implements PropertyChangeListener {
+public class ExerciseListActivity extends Activity implements PropertyChangeListener, Serializable {
 
     AppDatabase appDatabase;
     ArrayAdapter<String> arrayAdapter;
     List<String> stringListExercises;
+    String currentDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         appDatabase.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_list_activity);
+        Intent i = getIntent();
+        currentDate = (String)i.getSerializableExtra("Date");
 
         setUpExercisesList();
         setUpSearchView();
@@ -113,6 +117,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     public void newTrackAcitivity(String exercise){
         Intent trackActivity = new Intent(this, TrackActivity.class);
         trackActivity.putExtra("Exercise", exercise);
+        trackActivity.putExtra("Date", currentDate);
         startActivity(trackActivity);
     }
 
