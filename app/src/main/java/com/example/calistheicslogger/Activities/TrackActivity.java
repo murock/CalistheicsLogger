@@ -401,7 +401,7 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                TrackedExercise trackedExercise = appDatabase.trackedExerciseDao().getLastTrackedExercise();
+                TrackedExercise trackedExercise = appDatabase.trackedExerciseDao().getLastTrackedExercise(currentDate);
                 appDatabase.trackedExerciseDao().delete(trackedExercise);
                 updateTrackingList();
             }

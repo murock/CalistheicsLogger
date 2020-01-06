@@ -26,8 +26,8 @@ public interface TrackedExerciseDao {
     @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name")
     List<TrackedExercise> getTrackedExercisesFromName(String name);
 
-    @Query("SELECT *, MAX(set_number) FROM tracked_exercises")
-    TrackedExercise getLastTrackedExercise();
+    @Query("SELECT *, MAX(set_number) FROM tracked_exercises WHERE timestamp =:timestamp")
+    TrackedExercise getLastTrackedExercise(String timestamp);
 
     //@Query("UPDATE tracked_exercises set set_number = -set_number where set_number =:setNo1 or set_number =:setNo2;")
     @Query("UPDATE tracked_exercises set set_number = (case set_number when :setNo1 then :setNo2 else :setNo1 end) where set_number in (:setNo1, :setNo2)")
