@@ -325,31 +325,22 @@ public class TrackActivity extends Activity implements Serializable {
         group.setVisibility(View.GONE);
         group = findViewById(R.id.angleGroup);
         group.setVisibility(View.GONE);
+        group = findViewById(R.id.weightGroup);
+        group.setVisibility(View.GONE);
         switch(type){
-            case "Isometric":
-                group = findViewById(R.id.timeGroup);
-                group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.repsGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.weightGroup);
-                group.setVisibility(View.GONE);
-                break;
             case "Weight and Reps":
-                group = findViewById(R.id.timeGroup);
-                group.setVisibility(View.GONE);
-                group = findViewById(R.id.repsGroup);
-                group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.weightGroup);
-                group.setVisibility(View.VISIBLE);
-                break;
+            case "Reps":
             case "Negative":
                 group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.GONE);
                 group = findViewById(R.id.repsGroup);
                 group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.weightGroup);
+                break;
+            case "Isometric":
+                group = findViewById(R.id.timeGroup);
+                group.setVisibility(View.VISIBLE);
+                group = findViewById(R.id.repsGroup);
                 group.setVisibility(View.GONE);
-
                 break;
                 default:
         }

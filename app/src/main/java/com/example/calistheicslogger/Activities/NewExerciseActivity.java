@@ -42,7 +42,7 @@ public class NewExerciseActivity extends Activity {
 
         setUpCategorySpinner(R.id.categorySpinner);
         setUpProgressionSpinner(R.id.progressionSpinner);
-        ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Isometric", "Weight and Reps", "Negative"));
+        ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Reps", "Isometric", "Weight and Reps", "Negative"));
         typeSpinner = setUpSpinner(R.id.typeSpinner,exerciseTypes);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -113,7 +113,7 @@ public class NewExerciseActivity extends Activity {
                 EditText exerciseNameEditText = findViewById(R.id.nameEditText);
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
-                    if (ifExistsInDb(exerciseName)) {
+                    if (!ifExistsInDb(exerciseName)) {
                         String categories = new String();
                         List<Item> items = categorySpinner.getSelectedItems();
                         for (Item item : items) {
@@ -123,15 +123,17 @@ public class NewExerciseActivity extends Activity {
                             }
                             categories += item.getName();
                         }
+                        Log.i("Alfie loadable is: ", weightLoadableChecked + "");
                         Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
                                 bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
                         appDatabase.exerciseDao().addExercise(exercise);
+                        newTrackAcitivity(exerciseNameEditText.getText().toString());
                     }
                     else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(NewExerciseActivity.this, "Exercise already exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NewExerciseActivity.this, "Exercise already exists", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -139,11 +141,11 @@ public class NewExerciseActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-                newTrackAcitivity(exerciseNameEditText.getText().toString());
+
             }
         });
     }

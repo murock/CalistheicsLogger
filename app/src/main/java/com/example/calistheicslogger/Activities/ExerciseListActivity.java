@@ -103,7 +103,9 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (arrayAdapter != null) {
                     arrayAdapter.getFilter().filter(newText);
+                }
                 return true;
             }
         });

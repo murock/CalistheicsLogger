@@ -19,7 +19,7 @@
 
         <activity android:name=".Activities.ExerciseListActivity">
     </activity>
-        <activity android:name=".Activities.NewExerciseActivity">
+        <activity android:name=".Activities.NewExerciseActivity"  android:noHistory="true">
         </activity>
         <activity android:name=".Activities.TrackActivity"></activity>
         <activity android:name=".Activities.HistoryActivity"></activity>
