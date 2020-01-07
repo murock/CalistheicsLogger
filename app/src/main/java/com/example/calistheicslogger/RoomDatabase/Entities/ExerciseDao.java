@@ -1,5 +1,7 @@
 package com.example.calistheicslogger.RoomDatabase.Entities;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,6 +21,9 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercises WHERE exercise_name =:name")
     Exercise getExerciseFromName(String name);
+
+    @Query("SELECT exercise_name FROM exercises WHERE exercise_name = :exerciseName")
+    Cursor checkExists(String exerciseName);
 
     @Insert
     void addExercise(Exercise exercise);

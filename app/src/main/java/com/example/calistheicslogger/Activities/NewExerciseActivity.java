@@ -2,6 +2,7 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -112,27 +113,49 @@ public class NewExerciseActivity extends Activity {
                 EditText exerciseNameEditText = findViewById(R.id.nameEditText);
                 String exerciseName = exerciseNameEditText.getText().toString();
                 if (!exerciseName.isEmpty()) {
-                    String categories = new String();
-                    List<Item> items =  categorySpinner.getSelectedItems();
-                    for (Item item : items)
-                    {
-                        if (!categories.isEmpty()){
-                            // Add a space if there is more than one entry
-                            categories += " ";
+                    if (ifExistsInDb(exerciseName)) {
+                        String categories = new String();
+                        List<Item> items = categorySpinner.getSelectedItems();
+                        for (Item item : items) {
+                            if (!categories.isEmpty()) {
+                                // Add a space if there is more than one entry
+                                categories += " ";
+                            }
+                            categories += item.getName();
                         }
-                        categories += item.getName();
+                        Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
+                                bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
+                        appDatabase.exerciseDao().addExercise(exercise);
                     }
-                    Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-                            bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
-                    appDatabase.exerciseDao().addExercise(exercise);
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(NewExerciseActivity.this, "Exercise already exists", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }else{
-                    Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewExerciseActivity.this, "Please Enter an exercise name", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 newTrackAcitivity(exerciseNameEditText.getText().toString());
             }
         });
+    }
 
-
+    private boolean ifExistsInDb(String exercise)
+    {
+        Cursor cursor = null;
+        cursor = appDatabase.exerciseDao().checkExists(exercise);
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        Log.i("Alfie exists is", exists + "" );
+        return exists;
     }
 
     public void onPrintExerciseButtonClick(View view){

@@ -383,12 +383,6 @@ public class TrackActivity extends Activity implements Serializable {
         startActivity(activity);
     }
 
-  //  private void newHistoryAcitivity(){
-  //      Intent historyActivity = new Intent(this, HistoryActivity.class);
-   //     historyActivity.putExtra("Exercise", currentExercise);
-  //      startActivity(historyActivity);
-   // }
-
 
     public void HistoryButtonClick(View view)
     {
