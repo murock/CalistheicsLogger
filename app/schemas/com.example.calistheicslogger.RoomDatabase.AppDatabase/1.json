@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b42aba1278e9fb9d9593e146ffc04dab",
+    "identityHash": "0a6cd906ed26487eb45a0d2083f9a12b",
     "entities": [
       {
         "tableName": "exercises",
@@ -167,7 +167,7 @@
       },
       {
         "tableName": "tracked_exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` TEXT, `weight` TEXT, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `angle` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` TEXT, `weight` REAL NOT NULL, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `angle` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -202,8 +202,8 @@
           {
             "fieldPath": "weight",
             "columnName": "weight",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "REAL",
+            "notNull": true
           },
           {
             "fieldPath": "time",
@@ -275,7 +275,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b42aba1278e9fb9d9593e146ffc04dab')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a6cd906ed26487eb45a0d2083f9a12b')"
     ]
   }
 }

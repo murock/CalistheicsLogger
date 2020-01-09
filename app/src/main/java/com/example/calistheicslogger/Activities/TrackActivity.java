@@ -233,7 +233,7 @@ public class TrackActivity extends Activity implements Serializable {
             trackedComponents.add(exercise.getReps() + " reps");
         }
         Group weightGroup = findViewById(R.id.weightGroup);
-        if (weightGroup.getVisibility() == View.VISIBLE && !exercise.getWeight().isEmpty())
+        if (weightGroup.getVisibility() == View.VISIBLE )
         {
           //  result += "    " + exercise.getWeight() + " kgs";
             trackedComponents.add(exercise.getWeight() + " kgs");
@@ -405,10 +405,17 @@ public class TrackActivity extends Activity implements Serializable {
                     repString = "0";
                 }
                 EditText weightText = findViewById(R.id.weightEditText);
+                // weight
                 String weightString = weightText.getText().toString();//AddPrefixToItem(weightText.getText().toString(),7," ");
                 Group weightGroup = findViewById(R.id.weightGroup);
+                double weightValue = -1;
+                if (weightGroup.getVisibility() == View.VISIBLE && !weightString.isEmpty())
+                {
+                   weightValue = Double.parseDouble(weightText.getText().toString().trim());
+                }
                 if (weightGroup.getVisibility() == View.VISIBLE && weightString.isEmpty())
                 {
+                    weightValue = 0.0;
                     weightString = "0.0";
                 }
                 // time here
@@ -440,7 +447,7 @@ public class TrackActivity extends Activity implements Serializable {
                         liftEditText.getText().toString() + pause2EditText.getText().toString();
 
                 final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
-                        repString,weightString,time,bandSpinner.getSelectedItem().toString(),
+                        repString,weightValue,time,bandSpinner.getSelectedItem().toString(),
                         distance,tempo, angleString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);

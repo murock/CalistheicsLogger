@@ -187,10 +187,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
         }
-        if (!exercise.getWeight().trim().isEmpty() && !exercise.getWeight().contains(" 0"))
+        if (!(exercise.getWeight() == -1))
         {
-            Log.i("weight is:", exercise.getWeight());
-            //  result += "    " + exercise.getWeight() + " kgs";
             trackedComponents.add(exercise.getWeight() + " kgs");
         }
         if (!exercise.getTime().isEmpty() && !exercise.getTime().equals("00:00:00"))
