@@ -90,7 +90,6 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Log.i("Alfie prop name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "exerciseFromNamePopulated"){
             runOnUiThread(new Runnable() {
                 @Override

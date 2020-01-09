@@ -22,7 +22,7 @@ public class TrackedExercise
     private int setNumber;
 
     @ColumnInfo(name = "reps")
-    private String reps;
+    private int reps;
 
     @ColumnInfo(name = "weight")
     private double weight;
@@ -42,7 +42,7 @@ public class TrackedExercise
     @ColumnInfo(name = "angle")
     private String angle;
 
-    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, double weight, String time, String band, int distance, String tempo, String angle){
+    public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String angle){
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
@@ -57,7 +57,7 @@ public class TrackedExercise
     }
 
     @Ignore
-    public TrackedExercise(String name, String timestamp, int setNumber, String reps, double weight, String time, String band, int distance, String tempo, String angle){
+    public TrackedExercise(String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String angle){
         this.name = name;
         this.timestamp = timestamp;
         this.setNumber = setNumber;
@@ -102,11 +102,11 @@ public class TrackedExercise
         this.setNumber = setNumber;
     }
 
-    public String getReps() {
+    public int getReps() {
         return reps;
     }
 
-    public void setReps(String reps) {
+    public void setReps(int reps) {
         this.reps = reps;
     }
 

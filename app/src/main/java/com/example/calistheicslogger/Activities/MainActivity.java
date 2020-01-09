@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
     public void calendarClick(View view)
     {
-        Log.i("alfie","0" );
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
     }
@@ -149,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             PropertyTextView textView = new PropertyTextView(MainActivity.this);
             textView.setClickable(true);
             textView.exerciseName = exerciseName;
-            Log.i("Alfie: ", exercise.getName());
             textView.setOnClickListener(handleExerciseClick);
             if (isNewExercise){
                 PropertyTextView title = new PropertyTextView(MainActivity.this);
@@ -183,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         ArrayList<String> trackedComponents = new ArrayList<String>();
         //String result = Integer.toString(exercise.getSetNumber());
         trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-        if (!exercise.getReps().isEmpty()) {
+        if (!(exercise.getReps() == -1)) {
             //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
         }
@@ -240,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     private View.OnClickListener handleExerciseClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.i("Alfie", "eyy");
             PropertyTextView textView = (PropertyTextView)v;
             Toast.makeText(MainActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
             newTrackAcitivity(textView.exerciseName);

@@ -51,8 +51,6 @@ public class TrackActivity extends Activity implements Serializable {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-                        Log.i("Alfie from: ",from +"" );
-                        Log.i("Alfie from: ",to +"" );
                         swapTrackedExercises(from + 1,to + 1);
                         String item = dslvAdapter.getItem(from);
                         dslvAdapter.remove(item);
@@ -150,7 +148,6 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     private void SetUpActivity(final String exerciseName){
-        Log.i("Alfie exercise name is ", exerciseName);
         currentExercise = exerciseName;
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -197,7 +194,6 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.i("Alfie to: ", "here: " + SetNo1 + "set: "+ SetNo2);
                 appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1, SetNo2);
                 updateTrackingList();
             }
@@ -208,7 +204,6 @@ public class TrackActivity extends Activity implements Serializable {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.i("Alfie", currentDate);
                 List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
@@ -227,7 +222,8 @@ public class TrackActivity extends Activity implements Serializable {
         ArrayList<String> trackedComponents = new ArrayList<String>();
         //String result = Integer.toString(exercise.getSetNumber());
         trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-        if (!exercise.getReps().isEmpty())
+        Group repGroup = findViewById(R.id.repsGroup);
+        if (repGroup.getVisibility() == View.VISIBLE)
         {
           //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
@@ -400,9 +396,15 @@ public class TrackActivity extends Activity implements Serializable {
                 EditText repsText = findViewById(R.id.repsEditText);
                 String repString = repsText.getText().toString();
                 Group repGroup = findViewById(R.id.repsGroup);
+                int repValue = -1;
+
+                if (repGroup.getVisibility() == View.VISIBLE && !repString.isEmpty())
+                {
+                    repValue = Integer.parseInt((repString.trim()));
+                }
                 if (repGroup.getVisibility() == View.VISIBLE && repString.isEmpty())
                 {
-                    repString = "0";
+                    repValue = 0;
                 }
                 EditText weightText = findViewById(R.id.weightEditText);
                 // weight
@@ -411,12 +413,11 @@ public class TrackActivity extends Activity implements Serializable {
                 double weightValue = -1;
                 if (weightGroup.getVisibility() == View.VISIBLE && !weightString.isEmpty())
                 {
-                   weightValue = Double.parseDouble(weightText.getText().toString().trim());
+                   weightValue = Double.parseDouble(weightString.trim());
                 }
                 if (weightGroup.getVisibility() == View.VISIBLE && weightString.isEmpty())
                 {
                     weightValue = 0.0;
-                    weightString = "0.0";
                 }
                 // time here
                 EditText hourText = findViewById(R.id.hourEditText);
@@ -447,7 +448,7 @@ public class TrackActivity extends Activity implements Serializable {
                         liftEditText.getText().toString() + pause2EditText.getText().toString();
 
                 final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
-                        repString,weightValue,time,bandSpinner.getSelectedItem().toString(),
+                        repValue,weightValue,time,bandSpinner.getSelectedItem().toString(),
                         distance,tempo, angleString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);

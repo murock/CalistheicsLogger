@@ -36,7 +36,7 @@ public interface TrackedExerciseDao {
     @Query("SELECT * FROM tracked_exercises INNER JOIN (SELECT band, MAX(reps) AS Maxreps FROM tracked_exercises WHERE exercise_name =:name GROUP BY band ) topset ON tracked_exercises.band = topset.band AND tracked_exercises.reps = topset.Maxreps")
     List<TrackedExercise> getPersonalRecords2(String name);
 
-    @Query("SELECT *, MAX(reps) reps FROM tracked_exercises WHERE exercise_name =:name GROUP BY exercise_name, band, weight")
+    @Query("SELECT *, MAX(weight) weight  FROM tracked_exercises WHERE exercise_name =:name GROUP BY reps,band ")
     List<TrackedExercise> getPersonalRecords(String name);
 
     @Insert

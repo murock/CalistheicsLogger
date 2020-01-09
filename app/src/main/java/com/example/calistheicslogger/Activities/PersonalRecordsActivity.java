@@ -46,12 +46,10 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
 
     private void startPersonalRecordLookUp()
     {
-        Log.i("Alfie", "look up");
         databaseCommunicator.getPersonalRecords(currentExercise);
     }
 
-    private void populatePersonalRecords(){
-        Log.i("Alfie", "recieve");
+    private void populatePersonalRecords(){ ;
         TextView test = new TextView(PersonalRecordsActivity.this);
         test.setText("Alfie test");
 
@@ -78,9 +76,7 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Log.i("Alfie propdsf name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "personalRecordsPopulated"){
-            Log.i("Alfie ", "got here");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

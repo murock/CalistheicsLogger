@@ -69,6 +69,24 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 personalRecordsList = appDatabase.trackedExerciseDao().getPersonalRecords(exerciseName);
+                List<TrackedExercise> trackedExercises = personalRecordsList;
+                for(int i=0; i<personalRecordsList.size() - 1; i++)
+                {
+                    TrackedExercise trackedExercise = personalRecordsList.get(i);
+                    TrackedExercise trackedExercise1 = personalRecordsList.get(i + 1);
+                    Log.i("Alfie reps1: ",trackedExercise.getReps() + "" );
+                    Log.i("Alfie reps2: ",trackedExercise1.getReps() + "" );
+                    Log.i("Alfie weight1: ",trackedExercise.getWeight() + "" );
+                    Log.i("Alfie weight2: ",trackedExercise1.getWeight() + "" );
+                    if (trackedExercise.getBand() == trackedExercise1.getBand() &&
+                        trackedExercise.getReps() <= trackedExercise1.getReps() &&
+                        trackedExercise.getWeight() <= trackedExercise.getWeight())
+                    {
+
+                        trackedExercises.remove(trackedExercise);
+                    }
+                }
+                personalRecordsList = trackedExercises;
                 support.firePropertyChange("personalRecordsPopulated", null, null);
             }
         });

@@ -123,7 +123,6 @@ public class NewExerciseActivity extends Activity {
                             }
                             categories += item.getName();
                         }
-                        Log.i("Alfie loadable is: ", weightLoadableChecked + "");
                         Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
                                 bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
                         appDatabase.exerciseDao().addExercise(exercise);
@@ -156,7 +155,6 @@ public class NewExerciseActivity extends Activity {
         cursor = appDatabase.exerciseDao().checkExists(exercise);
         boolean exists = cursor.getCount() > 0;
         cursor.close();
-        Log.i("Alfie exists is", exists + "" );
         return exists;
     }
 
