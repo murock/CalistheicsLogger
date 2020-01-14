@@ -37,6 +37,38 @@ public interface TrackedExerciseDao {
     List<TrackedExercise> getPersonalRecords2(String name);
 
     @Query("SELECT *, MAX(weight) weight  FROM tracked_exercises WHERE exercise_name =:name GROUP BY reps,band ")
+    List<TrackedExercise> getPersonalRecords1(String name);
+
+//    @Query("with cte as (\n" +
+//            "  select t.exercise_name,t.band, t.reps, t.weight\n" +
+//            "  from ( \n" +
+//            "    select *,\n" +
+//            "      row_number() over (partition by band order by reps desc) rnreps,\n" +
+//            "      row_number() over (partition by band, reps order by weight desc) rnweight\n" +
+//            "    from tracked_exercises\n" +
+//            "  ) t  \n" +
+//            "  where exercise_name = 'Muscle Up' and (t.rnreps = 1 or t.rnweight = 1)\n" +
+//            ")  \n" +
+//            "select * from cte c\n" +
+//            "where not exists (\n" +
+//            "  select 1 from cte\n" +
+//            "  where band = c.band and reps > c.reps and weight >= c.weight\n" +
+//            ")  ")
+    @Query("with cte as (\n" +
+            "  select t.id,t.exercise_name,t.timestamp,t.set_number,t.band, t.reps, t.weight,t.time,t.distance,t.tempo,t.angle\n" +
+            "  from ( \n" +
+            "    select *,\n"+      "" +
+            "      row_number() over (partition by band order by reps desc) rnreps,\n" +
+            "      row_number() over (partition by band, reps order by weight desc) rnweight" +
+            "    from tracked_exercises\n" +
+            "  ) t  \n" +
+            "  where exercise_name = :name\n" +
+            ")  \n" +
+            "select * from cte c\n" +
+            "where not exists (\n" +
+            "  select 1 from cte\n" +
+            "  where band = c.band and reps > c.reps and weight >= c.weight\n" +
+            ")  \n")
     List<TrackedExercise> getPersonalRecords(String name);
 
     @Insert
