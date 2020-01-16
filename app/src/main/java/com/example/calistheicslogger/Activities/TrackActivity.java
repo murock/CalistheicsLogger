@@ -123,7 +123,6 @@ public class TrackActivity extends Activity implements Serializable {
                 dslv.setAdapter(dslvAdapter);
             }
         });
-
     }
 
     private void SetUpFilters(){

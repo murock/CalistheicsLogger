@@ -14,14 +14,20 @@ public class Band
     @ColumnInfo(name = "band_colour")
     private String colour;
 
-    public Band(int id, String colour){
+    // 1 is hardest 1=>n   0 is always 'No'
+    @ColumnInfo(name = "rank" )
+    private int rank;
+
+    public Band(int id, String colour, int rank){
         this.id = id;
         this.colour = colour;
+        this.rank = rank;
     }
 
     @Ignore
-    public Band(String colour){
+    public Band(String colour, int rank){
         this.colour = colour;
+        this.rank = rank;
     }
 
     public int getId() {
@@ -38,6 +44,14 @@ public class Band
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     // TODO Remove this and replace with band selecting/creating dialog
