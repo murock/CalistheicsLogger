@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9e3b97a30712e45423d072949039e5a1",
+    "identityHash": "797a843c05f9de11e02a90cd517ffd28",
     "entities": [
       {
         "tableName": "exercises",
@@ -141,7 +141,7 @@
       },
       {
         "tableName": "bands",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `band_colour` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `band_colour` TEXT, `rank` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -154,6 +154,12 @@
             "columnName": "band_colour",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -275,7 +281,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9e3b97a30712e45423d072949039e5a1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '797a843c05f9de11e02a90cd517ffd28')"
     ]
   }
 }

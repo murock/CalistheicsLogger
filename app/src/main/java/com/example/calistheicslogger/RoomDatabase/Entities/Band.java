@@ -57,11 +57,11 @@ public class Band
     // TODO Remove this and replace with band selecting/creating dialog
     public static Band[] populateData(){
         return new Band[]{
-                new Band("No"),
-                new Band("Green"),
-                new Band("Purple"),
-                new Band("Black"),
-                new Band("Red"),
+                new Band("Green",4),
+                new Band("Purple", 3),
+                new Band("Black",2),
+                new Band("Red",1),
+                new Band("No", 0),
         };
     }
 }

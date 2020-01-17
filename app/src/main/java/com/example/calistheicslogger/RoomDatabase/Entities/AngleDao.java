@@ -12,7 +12,7 @@ import java.util.List;
 public interface AngleDao {
 
     @Query("SELECT * FROM angles")
-    List<Band> getAll();
+    List<Angle> getAll();
 
     @Query("SELECT angle FROM angles")
     List<String> getAllAngles();
