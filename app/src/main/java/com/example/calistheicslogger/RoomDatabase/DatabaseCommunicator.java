@@ -86,4 +86,22 @@ public class DatabaseCommunicator {
             }
         });
     }
+
+    public void swapBands(final int bandPos1, final int bandPos2)
+    {
+        Log.i("Alfie band 1 is ", bandPos1 + "");
+        Log.i("Alfie band 2 is ", bandPos2 + "");
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int band1Rank = bandsList.size() - bandPos1 - 1;
+                int band2Rank = bandsList.size() - bandPos2 - 1;
+                Log.i("Alfie band 1 rank is ", band1Rank + "");
+                Log.i("Alfie band 2 rank is ", band2Rank + "");
+                appDatabase.bandDao().swapByRank(band1Rank,band2Rank);
+                bandsList = appDatabase.bandDao().getAll();
+                support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
 }

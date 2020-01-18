@@ -17,6 +17,9 @@ public interface BandDao {
     @Query("SELECT band_colour FROM bands")
     List<String> getAllBandColours();
 
+    @Query("UPDATE bands set rank = (case rank when :band1Rank then :band2Rank else :band1Rank end) where rank in (:band1Rank, :band2Rank)")
+    void swapByRank(int band1Rank, int band2Rank);
+
     @Insert
     void addBand(Band band);
 

@@ -34,10 +34,10 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-                        swapBands(from + 1,to + 1);
-                        String item = dslvAdapter.getItem(from);
-                        dslvAdapter.remove(item);
-                        dslvAdapter.insert(item, to);
+//                        String item = dslvAdapter.getItem(from);
+//                        dslvAdapter.remove(item);
+//                        dslvAdapter.insert(item, to);
+                        databaseCommunicator.swapBands(from, to);
                     }
                 }
             };
@@ -50,17 +50,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
         databaseCommunicator.getBands();
-    }
-
-    private void swapBands(final int BandNo1, final int BandNo2)
-    {
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1, SetNo2);
-//                updateTrackingList();
-//            }
-//        });
     }
 
     public DragSortController buildController(DragSortListView dslv) {
@@ -103,23 +92,12 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 view.setBackgroundColor(Color.parseColor(colourCode));
                 TextView textView=(TextView) view.findViewById(android.R.id.text1);
 
-                //if (red*0.299 + green*0.587 + blue*0.114) > 186 use #000000 else use #ffffff
+                // Select text based on background colour
                 if((r*0.299 + g*0.587 + b*0.114) > 186){
                     textView.setTextColor(Color.BLACK);
                 }else{
                     textView.setTextColor(Color.WHITE);
                 }
-
-//                if(position %2 == 1)
-//                {
-//                    // Set a background color for ListView regular row/item
-//                    view.setBackgroundColor(Color.parseColor("#FFB6B546"));
-//                }
-//                else
-//                {
-//                    // Set the background color for alternate row/item
-//                    view.setBackgroundColor(Color.parseColor("#FFCCCB4C"));
-//                }
                 return view;
             }
         };
@@ -130,7 +108,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             }
         });
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
