@@ -11,7 +11,7 @@ package com.example.calistheicslogger.RoomDatabase.Entities;
 @Dao
 public interface BandDao {
 
-    @Query("SELECT * FROM bands")
+    @Query("SELECT * FROM bands order by rank")
     List<Band> getAll();
 
     @Query("SELECT band_colour FROM bands")

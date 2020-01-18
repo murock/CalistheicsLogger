@@ -3,6 +3,7 @@ package com.example.calistheicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 
 import java.beans.PropertyChangeListener;
@@ -18,6 +19,8 @@ public class DatabaseCommunicator {
     public static List<TrackedExercise> trackedExercisesFromDate;
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
+    public static List<Band> bandsList;
+
 
     protected DatabaseCommunicator(Context context){
         appDatabase = AppDatabase.getInstance(context);
@@ -69,25 +72,17 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 personalRecordsList = appDatabase.trackedExerciseDao().getPersonalRecords(exerciseName);
-//                List<TrackedExercise> trackedExercises = personalRecordsList;
-//                for(int i=0; i<personalRecordsList.size() - 1; i++)
-//                {
-//                    TrackedExercise trackedExercise = personalRecordsList.get(i);
-//                    TrackedExercise trackedExercise1 = personalRecordsList.get(i + 1);
-//                    Log.i("Alfie reps1: ",trackedExercise.getReps() + "" );
-//                    Log.i("Alfie reps2: ",trackedExercise1.getReps() + "" );
-//                    Log.i("Alfie weight1: ",trackedExercise.getWeight() + "" );
-//                    Log.i("Alfie weight2: ",trackedExercise1.getWeight() + "" );
-//                    if (trackedExercise.getBand() == trackedExercise1.getBand() &&
-//                        trackedExercise.getReps() <= trackedExercise1.getReps() &&
-//                        trackedExercise.getWeight() <= trackedExercise.getWeight())
-//                    {
-//
-//                        trackedExercises.remove(trackedExercise);
-//                    }
-//                }
-//                personalRecordsList = trackedExercises;
                 support.firePropertyChange("personalRecordsPopulated", null, null);
+            }
+        });
+    }
+
+    public void getBands(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                bandsList = appDatabase.bandDao().getAll();
+                support.firePropertyChange("bandsPopulated", null, null);
             }
         });
     }

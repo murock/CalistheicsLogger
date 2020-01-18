@@ -8,16 +8,22 @@ import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 
-public class LockActivity extends Activity {
+public class LockerActivity extends Activity implements PropertyChangeListener {
 
     DragSortListView dslv;
     ArrayAdapter<String> dslvAdapter;
     DragSortController dragSortController;
+    DatabaseCommunicator databaseCommunicator;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -36,7 +42,10 @@ public class LockActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locker_activity);
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
+        databaseCommunicator.getBands();
     }
 
     private void swapBands(final int BandNo1, final int BandNo2)
@@ -69,14 +78,32 @@ public class LockActivity extends Activity {
         dslv.setOnTouchListener(dragSortController);
     }
 
-    private void UpdateDSLV(ArrayList<String> items){
-        dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,items);
+    private void UpdateDSLV(){
+        List<Band> bands = databaseCommunicator.bandsList;
+        ArrayList<String> arrayListBands = new ArrayList<>();
+        for(Band band : bands)
+        {
+            arrayListBands.add(band.getColour() + " Band");
+        }
+
+        dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,arrayListBands);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //dslv = findViewById(R.id.trackedExerciseDSLV);
                 dslv.setAdapter(dslvAdapter);
             }
         });
     }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName() == "bandsPopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateDSLV();
+                }
+            });
+        }
+    }
+
 }

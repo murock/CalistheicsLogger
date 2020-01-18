@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
                 return true;
             case R.id.locker:
                 Log.i("Item selected","locker");
+                Intent locker = new Intent(this,LockerActivity.class);
+                startActivity(locker);
                 return true;
             default:
                 return  false;
@@ -111,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     }
 
     public void addExerciseClick(View view){
-        Log.i("Button Pressed:", "Add Exercise");
         Intent addExercise = new Intent(this,ExerciseListActivity.class);
         addExercise.putExtra("Date", selectedDate);
         startActivity(addExercise);
