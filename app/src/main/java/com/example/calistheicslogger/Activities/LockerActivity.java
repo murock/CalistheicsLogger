@@ -1,8 +1,12 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -79,14 +83,46 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     private void UpdateDSLV(){
-        List<Band> bands = databaseCommunicator.bandsList;
+        final List<Band> bands = databaseCommunicator.bandsList;
         ArrayList<String> arrayListBands = new ArrayList<>();
         for(Band band : bands)
         {
             arrayListBands.add(band.getColour() + " Band");
         }
 
-        dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,arrayListBands);
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListBands){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                // Get the current item from ListView
+                View view = super.getView(position,convertView,parent);
+                String colourCode = bands.get(position).getColourCode();
+                int color = Color.parseColor(colourCode);
+                int r = (color >> 16) & 0xFF;
+                int g = (color >> 8) & 0xFF;
+                int b = (color >> 0) & 0xFF;
+                view.setBackgroundColor(Color.parseColor(colourCode));
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                //if (red*0.299 + green*0.587 + blue*0.114) > 186 use #000000 else use #ffffff
+                if((r*0.299 + g*0.587 + b*0.114) > 186){
+                    textView.setTextColor(Color.BLACK);
+                }else{
+                    textView.setTextColor(Color.WHITE);
+                }
+
+//                if(position %2 == 1)
+//                {
+//                    // Set a background color for ListView regular row/item
+//                    view.setBackgroundColor(Color.parseColor("#FFB6B546"));
+//                }
+//                else
+//                {
+//                    // Set the background color for alternate row/item
+//                    view.setBackgroundColor(Color.parseColor("#FFCCCB4C"));
+//                }
+                return view;
+            }
+        };
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -94,6 +130,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             }
         });
     }
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "bandsPopulated"){
