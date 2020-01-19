@@ -3,6 +3,7 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -112,6 +113,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "bandsPopulated"){
+            Log.i("Alfie", "band populated");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -89,8 +89,8 @@ public class DatabaseCommunicator {
 
     public void swapBands(final int bandPos1, final int bandPos2)
     {
-        Log.i("Alfie band 1 is ", bandPos1 + "");
-        Log.i("Alfie band 2 is ", bandPos2 + "");
+//        Log.i("Alfie band 1 is ", bandPos1 + "");
+//        Log.i("Alfie band 2 is ", bandPos2 + "");
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
