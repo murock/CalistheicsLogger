@@ -29,7 +29,7 @@
         android:layout_marginEnd="8dp"
         android:text="Thin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AngleToggleButton" />
+        app:layout_constraintTop_toBottomOf="@+id/angleToggleButton" />
 
     <TextView
         android:id="@+id/hardTextView"
@@ -46,19 +46,22 @@
         android:layout_width="0dp"
         android:layout_height="78dp"
         android:checked="true"
+        android:enabled="false"
+        android:onClick="OnToggleClick"
         android:text="ToggleButton"
         android:textOff="Bands"
         android:textOn="Bands"
-        app:layout_constraintEnd_toStartOf="@+id/AngleToggleButton"
+        app:layout_constraintEnd_toStartOf="@+id/angleToggleButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/AngleToggleButton" />
+        app:layout_constraintTop_toTopOf="@+id/angleToggleButton" />
 
     <ToggleButton
-        android:id="@+id/AngleToggleButton"
+        android:id="@+id/angleToggleButton"
         android:layout_width="0dp"
         android:layout_height="78dp"
         android:layout_marginTop="16dp"
+        android:onClick="OnToggleClick"
         android:text="ToggleButton"
         android:textOff="Angles"
         android:textOn="Angles"

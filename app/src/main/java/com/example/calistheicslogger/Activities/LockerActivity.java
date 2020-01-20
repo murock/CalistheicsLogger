@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 
@@ -108,6 +109,23 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 dslv.setAdapter(dslvAdapter);
             }
         });
+    }
+
+    public void OnToggleClick(View view){
+        ToggleButton bandsButton = findViewById(R.id.bandToggleButton);
+        ToggleButton angleButton = findViewById(R.id.angleToggleButton);
+        if (view.getId() == R.id.angleToggleButton && bandsButton.isChecked())
+        {
+            // Switching to angles
+            bandsButton.setEnabled(true);
+            bandsButton.setChecked(false);
+            angleButton.setEnabled(false);
+        }else if(view.getId() == R.id.bandToggleButton && angleButton.isChecked()){
+            // Switching to bands
+            angleButton.setChecked(false);
+            angleButton.setEnabled(true);
+            bandsButton.setEnabled(false);
+        }
     }
 
     @Override
