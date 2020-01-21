@@ -17,6 +17,16 @@ public interface AngleDao {
     @Query("SELECT angle FROM angles")
     List<String> getAllAngles();
 
+    @Query("UPDATE angles " +
+            "set rank = " +
+            "(case " +
+            "when rank = :angle1Rank then :angle2Rank " +
+            "when rank <= :angle2Rank and rank >= :angle1Rank then rank - 1 " +
+            "when rank <= :angle1Rank and rank >= :angle2Rank then rank + 1 " +
+            "else rank " +
+            "end)")
+    void swapByRank(int angle1Rank, int angle2Rank);
+
     @Insert
     void addAngle(Angle angle);
 

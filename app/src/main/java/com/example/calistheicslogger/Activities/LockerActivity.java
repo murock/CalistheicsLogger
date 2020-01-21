@@ -13,8 +13,8 @@ import android.widget.ToggleButton;
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
-import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.RoomDatabase.Entities.Angle;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
@@ -30,16 +30,19 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     ArrayAdapter<String> dslvAdapter;
     DragSortController dragSortController;
     DatabaseCommunicator databaseCommunicator;
+    boolean isBandMode = true;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-//                        String item = dslvAdapter.getItem(from);
-//                        dslvAdapter.remove(item);
-//                        dslvAdapter.insert(item, to);
-                        databaseCommunicator.swapBands(from, to);
+                        if (isBandMode) {
+                            databaseCommunicator.swapBands(from, to);
+                        }else{
+                            Log.i("Angle", "swapping " + from + " to " + to);
+                            databaseCommunicator.swapAngles(from, to);
+                        }
                     }
                 }
             };
@@ -73,7 +76,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         dslv.setOnTouchListener(dragSortController);
     }
 
-    private void UpdateDSLV(){
+    private void UpdateDSLVForBands(){
         final List<Band> bands = databaseCommunicator.bandsList;
         ArrayList<String> arrayListBands = new ArrayList<>();
         for(Band band : bands)
@@ -111,20 +114,47 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         });
     }
 
+    private void UpdateDSLVForAngles(){
+        final List<Angle> angles = databaseCommunicator.anglesList;
+        ArrayList<String> arrayListAngles = new ArrayList<>();
+        for(Angle angle : angles)
+        {
+            arrayListAngles.add(angle.getAngle());
+        }
+
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListAngles);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dslv.setAdapter(dslvAdapter);
+            }
+        });
+    }
+
     public void OnToggleClick(View view){
         ToggleButton bandsButton = findViewById(R.id.bandToggleButton);
         ToggleButton angleButton = findViewById(R.id.angleToggleButton);
+        TextView easyTextView = findViewById(R.id.easyTextView);
+        TextView hardTextView = findViewById(R.id.hardTextView);
         if (view.getId() == R.id.angleToggleButton && bandsButton.isChecked())
         {
             // Switching to angles
             bandsButton.setEnabled(true);
             bandsButton.setChecked(false);
             angleButton.setEnabled(false);
+            isBandMode = false;
+            databaseCommunicator.getAngles();
+            easyTextView.setText("Lowest");
+            hardTextView.setText("Highest");
         }else if(view.getId() == R.id.bandToggleButton && angleButton.isChecked()){
             // Switching to bands
             angleButton.setChecked(false);
             angleButton.setEnabled(true);
             bandsButton.setEnabled(false);
+            isBandMode = true;
+            databaseCommunicator.getBands();
+            easyTextView.setText("Thin");
+            hardTextView.setText("Thick");
         }
     }
 
@@ -135,7 +165,16 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    UpdateDSLV();
+                    UpdateDSLVForBands();
+                }
+            });
+        }
+        if(evt.getPropertyName() == "anglesPopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i("Angle", "angles populated");
+                    UpdateDSLVForAngles();
                 }
             });
         }

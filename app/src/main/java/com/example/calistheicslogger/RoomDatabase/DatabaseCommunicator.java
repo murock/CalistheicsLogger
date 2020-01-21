@@ -3,6 +3,7 @@ package com.example.calistheicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.calistheicslogger.RoomDatabase.Entities.Angle;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 
@@ -20,6 +21,7 @@ public class DatabaseCommunicator {
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
     public static List<Band> bandsList;
+    public static  List<Angle> anglesList;
 
 
     protected DatabaseCommunicator(Context context){
@@ -89,18 +91,39 @@ public class DatabaseCommunicator {
 
     public void swapBands(final int bandPos1, final int bandPos2)
     {
-//        Log.i("Alfie band 1 is ", bandPos1 + "");
-//        Log.i("Alfie band 2 is ", bandPos2 + "");
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 int band1Rank = bandsList.size() - bandPos1 - 1;
                 int band2Rank = bandsList.size() - bandPos2 - 1;
-                Log.i("Alfie band 1 rank is ", band1Rank + "");
-                Log.i("Alfie band 2 rank is ", band2Rank + "");
                 appDatabase.bandDao().swapByRank(band1Rank,band2Rank);
                 bandsList = appDatabase.bandDao().getAll();
                 support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
+
+    public void getAngles(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                anglesList = appDatabase.angleDao().getAll();
+                support.firePropertyChange("anglesPopulated", null, null);
+            }
+        });
+    }
+
+    public void swapAngles(final int anglePos1, final int anglePos2)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int angle1Rank = anglesList.size() - anglePos1 - 1;
+                int angle2Rank = anglesList.size() - anglePos2 - 1;
+                Log.i("Angle", "swapping rank " + angle1Rank + " to " + angle2Rank);
+                appDatabase.angleDao().swapByRank(angle1Rank,angle2Rank);
+                anglesList = appDatabase.angleDao().getAll();
+                support.firePropertyChange("anglesPopulated", null, null);
             }
         });
     }

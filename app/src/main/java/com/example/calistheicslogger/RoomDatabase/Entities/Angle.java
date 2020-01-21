@@ -14,14 +14,20 @@ public class Angle
     @ColumnInfo(name = "angle")
     private String angle;
 
-    public Angle(int id, String angle){
+    // 0 is hardest 0=>n
+    @ColumnInfo(name = "rank" )
+    private int rank;
+
+    public Angle(int id, String angle, int rank){
         this.id = id;
         this.angle = angle;
+        this.rank = rank;
     }
 
     @Ignore
-    public Angle(String angle){
+    public Angle(String angle, int rank){
         this.angle = angle;
+        this.rank = rank;
     }
 
     public int getId() {
@@ -40,12 +46,21 @@ public class Angle
         this.angle = angle;
     }
 
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
     // TODO Remove this and replace with band selecting/creating dialog
     public static Angle[] populateData(){
         return new Angle[]{
-                new Angle("Shallow"),
-                new Angle("Medium"),
-                new Angle("Steep"),
+                new Angle("Shallow",2),
+                new Angle("Medium",1),
+                new Angle("Steep",0),
         };
     }
 }
