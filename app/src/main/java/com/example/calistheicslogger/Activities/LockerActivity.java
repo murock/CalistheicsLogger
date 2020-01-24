@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
@@ -24,6 +25,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class LockerActivity extends Activity implements PropertyChangeListener {
 
     DragSortListView dslv;
@@ -31,6 +34,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     DragSortController dragSortController;
     DatabaseCommunicator databaseCommunicator;
     boolean isBandMode = true;
+    int defaultColor;
+    TextView newBandTextView;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -55,6 +60,9 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
         databaseCommunicator.getBands();
+        defaultColor = ContextCompat.getColor(LockerActivity.this, R.color.colorPrimary);
+        newBandTextView = findViewById(R.id.newBandEditText);
+        newBandTextView.setBackgroundColor(defaultColor);
     }
 
     public DragSortController buildController(DragSortListView dslv) {
@@ -156,6 +164,29 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             easyTextView.setText("Thin");
             hardTextView.setText("Thick");
         }
+    }
+
+    public void openColorPicker(View view){
+        AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, defaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+
+            }
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                defaultColor = color;
+                newBandTextView.setBackgroundColor((defaultColor));
+            }
+        });
+        colorPicker.show();
+    }
+
+    public void addBandToDatabase(View view){
+        String hexColour = Integer.toHexString(defaultColor);
+        String name = newBandTextView.getText().toString();
+        name = name.replaceAll(" Band", "");
+
     }
 
     @Override
