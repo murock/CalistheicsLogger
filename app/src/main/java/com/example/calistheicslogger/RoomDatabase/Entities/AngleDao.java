@@ -11,10 +11,10 @@ import java.util.List;
 @Dao
 public interface AngleDao {
 
-    @Query("SELECT * FROM angles")
+    @Query("SELECT * FROM angles order by rank")
     List<Angle> getAll();
 
-    @Query("SELECT angle FROM angles")
+    @Query("SELECT angle FROM angles order by rank")
     List<String> getAllAngles();
 
     @Query("UPDATE angles " +

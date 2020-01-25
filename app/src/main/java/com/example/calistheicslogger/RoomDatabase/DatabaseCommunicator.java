@@ -89,6 +89,17 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void addBand(final Band band){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.bandDao().addBand(band);
+                bandsList = appDatabase.bandDao().getAll();
+                support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
+
     public void swapBands(final int bandPos1, final int bandPos2)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

@@ -14,7 +14,7 @@ public interface BandDao {
     @Query("SELECT * FROM bands order by rank desc")
     List<Band> getAll();
 
-    @Query("SELECT band_colour FROM bands")
+    @Query("SELECT band_colour FROM bands order by rank desc")
     List<String> getAllBandColours();
 
    // @Query("UPDATE bands set rank = (case rank when :band1Rank then :band2Rank else :band1Rank end) where rank in (:band1Rank, :band2Rank)")
