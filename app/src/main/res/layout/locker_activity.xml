@@ -87,7 +87,7 @@
         android:id="@+id/addButton"
         android:layout_width="59dp"
         android:layout_height="50dp"
-        android:onClick="addBandToDatabase"
+        android:onClick="addRemoveButtonPress"
         android:text="+"
         app:layout_constraintBottom_toBottomOf="@+id/colorButton"
         app:layout_constraintEnd_toEndOf="parent"

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -39,11 +40,12 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     DatabaseCommunicator databaseCommunicator;
     boolean isBandMode = true;
     int defaultColor;
-    TextView newBandTextView;
+    EditText newBandEditText;
     // Indicates the total number of bands
     int numBands;
 
     int selectedPosition = -1;
+    Button addRemoveButton, colorPickerButton;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -70,9 +72,17 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     {
                         // Toggle off
                         selectedPosition = -1;
+                        addRemoveButton.setText("+");
+                        colorPickerButton.setText("pick color");
+                        newBandEditText.setText("Enter Band Name");
+                        // TODO: adjust based on background color
+                        newBandEditText.setTextColor(Color.BLACK);
+                        newBandEditText.setBackgroundColor(defaultColor);
                     }else{
                         // Toggle on
                         selectedPosition = position;
+                        addRemoveButton.setText("-");
+                        colorPickerButton.setText("delete");
                     }
 
                     dslvAdapter.notifyDataSetChanged();
@@ -88,8 +98,10 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         SetUpDSLV();
         databaseCommunicator.getBands();
         defaultColor = ContextCompat.getColor(LockerActivity.this, R.color.colorPrimary);
-        newBandTextView = findViewById(R.id.newBandEditText);
-        newBandTextView.setBackgroundColor(defaultColor);
+        newBandEditText = findViewById(R.id.newBandEditText);
+        newBandEditText.setBackgroundColor(defaultColor);
+        addRemoveButton = findViewById(R.id.addButton);
+        colorPickerButton = findViewById(R.id.colorButton);
     }
 
     public DragSortController buildController(DragSortListView dslv) {
@@ -134,18 +146,23 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 TextView textView=(TextView) view.findViewById(android.R.id.text1);
 
                 // Select text based on background colour
+                int textColor;
                 if((r*0.299 + g*0.587 + b*0.114) > 186){
-                    textView.setTextColor(Color.BLACK);
+                    textColor = Color.BLACK;
                 }else{
-                    textView.setTextColor(Color.WHITE);
+                    textColor = Color.WHITE;
                 }
+                textView.setTextColor(textColor);
 
                 if (position == selectedPosition)
                 {
-                        ColorDrawable viewColor = (ColorDrawable)view.getBackground();
-                        int backgroundColor = viewColor.getColor();
-                        backgroundColor = ColorUtils.blendARGB(backgroundColor, Color.WHITE, 0.4f);
-                        view.setBackgroundColor(backgroundColor);
+                    ColorDrawable viewColor = (ColorDrawable)view.getBackground();
+                    int backgroundColor = viewColor.getColor();
+                    backgroundColor = ColorUtils.blendARGB(backgroundColor, Color.WHITE, 0.4f);
+                    newBandEditText.setText(bands.get(position).getColour() + " Band");
+                    newBandEditText.setBackgroundColor(viewColor.getColor());
+                    newBandEditText.setTextColor(textColor);
+                    view.setBackgroundColor(backgroundColor);
                 }
                 return view;
             }
@@ -212,18 +229,28 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 defaultColor = color;
-                newBandTextView.setBackgroundColor((defaultColor));
+                newBandEditText.setBackgroundColor((defaultColor));
             }
         });
         colorPicker.show();
     }
 
-    public void addBandToDatabase(View view){
-        String name = newBandTextView.getText().toString();
+    private void addBandToDatabase(){
+        String name = newBandEditText.getText().toString();
         // stops view from displaying e.g 'Green Band Band'
         name = name.replaceAll(" Band", "");
         Band newBand = new Band(name,defaultColor,this.numBands);
         this.databaseCommunicator.addBand(newBand);
+    }
+
+    public void addRemoveButtonPress(View view){
+        if (selectedPosition != -1)
+        {
+            // RemoveBand
+
+        }else{
+            addBandToDatabase();
+        }
     }
 
     @Override
