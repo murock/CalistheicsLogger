@@ -2,10 +2,12 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
@@ -40,6 +43,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     // Indicates the total number of bands
     int numBands;
 
+    int selectedPosition = -1;
+
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
                 @Override
@@ -52,6 +57,25 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                             databaseCommunicator.swapAngles(from, to);
                         }
                     }
+                }
+            };
+
+
+    private DragSortListView.OnItemClickListener onClick =
+            new DragSortListView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView,View v, int position, long arg)
+                {
+                    if (position == selectedPosition)
+                    {
+                        // Toggle off
+                        selectedPosition = -1;
+                    }else{
+                        // Toggle on
+                        selectedPosition = position;
+                    }
+
+                    dslvAdapter.notifyDataSetChanged();
                 }
             };
 
@@ -85,6 +109,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         dragSortController = buildController(dslv);
         dslv.setFloatViewManager(dragSortController);
         dslv.setOnTouchListener(dragSortController);
+        dslv.setOnItemClickListener(onClick);
     }
 
     private void UpdateDSLVForBands(){
@@ -100,7 +125,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             @Override
             public View getView(int position, View convertView, ViewGroup parent){
                 // Get the current item from ListView
-                View view = super.getView(position,convertView,parent);
+                final View view = super.getView(position,convertView,parent);
                 int color = bands.get(position).getColourCode();
                 int r = (color >> 16) & 0xFF;
                 int g = (color >> 8) & 0xFF;
@@ -113,6 +138,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     textView.setTextColor(Color.BLACK);
                 }else{
                     textView.setTextColor(Color.WHITE);
+                }
+
+                if (position == selectedPosition)
+                {
+                        ColorDrawable viewColor = (ColorDrawable)view.getBackground();
+                        int backgroundColor = viewColor.getColor();
+                        backgroundColor = ColorUtils.blendARGB(backgroundColor, Color.WHITE, 0.4f);
+                        view.setBackgroundColor(backgroundColor);
                 }
                 return view;
             }
