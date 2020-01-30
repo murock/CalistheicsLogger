@@ -100,6 +100,16 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void removeBand(final int bandPos){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int bandRank = bandsList.size() - bandPos - 1;
+                appDatabase.bandDao()
+            }
+        });
+    }
+
     public void swapBands(final int bandPos1, final int bandPos2)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

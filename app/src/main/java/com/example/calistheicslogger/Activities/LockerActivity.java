@@ -220,19 +220,24 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     public void openColorPicker(View view){
-        AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, defaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
+        if (selectedPosition != -1)
+        {
+            removeBandFromDatabase();
+        }else {
+            AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, defaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
 
-            }
+                }
 
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
-                defaultColor = color;
-                newBandEditText.setBackgroundColor((defaultColor));
-            }
-        });
-        colorPicker.show();
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
+                    defaultColor = color;
+                    newBandEditText.setBackgroundColor((defaultColor));
+                }
+            });
+            colorPicker.show();
+        }
     }
 
     private void addBandToDatabase(){
@@ -243,11 +248,17 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         this.databaseCommunicator.addBand(newBand);
     }
 
+    private void removeBandFromDatabase(){
+        Log.i("Alfie", "selected pos is" + selectedPosition);
+        this.databaseCommunicator.removeBand(selectedPosition);
+
+    }
+
     public void addRemoveButtonPress(View view){
         if (selectedPosition != -1)
         {
             // RemoveBand
-
+            removeBandFromDatabase();
         }else{
             addBandToDatabase();
         }
