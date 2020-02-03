@@ -87,5 +87,5 @@ public class ChartActivity extends Activity {
 
     }
 
-    public 
+    public
 }
