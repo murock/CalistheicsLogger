@@ -6,12 +6,13 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/progressionButton"
+        android:id="@+id/chartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="Progression"
+        android:onClick="ChartsButtonClick"
+        android:text="Chart"
         app:layout_constraintBottom_toTopOf="@+id/titleTextView"
         app:layout_constraintEnd_toEndOf="@id/personalRecordButton"
         app:layout_constraintHorizontal_bias="0.5"
@@ -497,11 +498,11 @@
         android:layout_marginStart="8dp"
         android:onClick="HistoryButtonClick"
         android:text="History"
-        app:layout_constraintBottom_toBottomOf="@+id/progressionButton"
-        app:layout_constraintEnd_toStartOf="@+id/progressionButton"
+        app:layout_constraintBottom_toBottomOf="@+id/chartButton"
+        app:layout_constraintEnd_toStartOf="@+id/chartButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/progressionButton" />
+        app:layout_constraintTop_toTopOf="@+id/chartButton" />
 
     <Button
         android:id="@+id/personalRecordButton"
@@ -509,9 +510,9 @@
         android:layout_height="wrap_content"
         android:onClick="RecordClick"
         android:text="Records"
-        app:layout_constraintBottom_toBottomOf="@+id/progressionButton"
+        app:layout_constraintBottom_toBottomOf="@+id/chartButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/progressionButton"
-        app:layout_constraintTop_toTopOf="@id/progressionButton" />
+        app:layout_constraintStart_toEndOf="@+id/chartButton"
+        app:layout_constraintTop_toTopOf="@id/chartButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

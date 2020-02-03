@@ -25,6 +25,7 @@
         <activity android:name=".Activities.HistoryActivity"></activity>
         <activity android:name=".Activities.PersonalRecordsActivity"></activity>
         <activity android:name=".Activities.LockerActivity"></activity>
+        <activity android:name=".Activities.ChartActivity"></activity>
     </application>
 
 </manifest>

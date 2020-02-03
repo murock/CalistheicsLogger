@@ -377,6 +377,10 @@ public class TrackActivity extends Activity implements Serializable {
 
     public void RecordClick(View view){ startActivity(PersonalRecordsActivity.class);}
 
+    public void ChartsButtonClick(View view){
+        startActivity(ChartActivity.class);
+    }
+
     public void DeleteButtonClick(View view){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -495,5 +499,4 @@ public class TrackActivity extends Activity implements Serializable {
                break;
        }
     }
-
 }
