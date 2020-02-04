@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginTop="11dp"
+        android:onClick="TrackButtonClick"
         android:text="Track"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

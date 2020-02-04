@@ -1,29 +1,57 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class ChartActivity extends Activity {
+public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
 
+    String currentExercise;
+    DatabaseCommunicator databaseCommunicator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chart_activity);
-        this.createGraph();
+        Intent i = getIntent();
+        currentExercise = (String)i.getSerializableExtra("Exercise");
+        TextView titleTextView = findViewById(R.id.titleTextView);
+        titleTextView.setText(currentExercise);
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
+        this.RequestData();
+     //   this.createGraph();
+    }
+
+    private void RequestData()
+    {
+        databaseCommunicator.getPersonalRecords(currentExercise);
+    }
+
+    private void PopulateGraph()
+    {
+        List<TrackedExercise> trackedExercises = databaseCommunicator.personalRecordsList;
     }
 
     private void createGraph()
@@ -87,5 +115,20 @@ public class ChartActivity extends Activity {
 
     }
 
-    public
+    public void TrackButtonClick(View v)
+    {
+        finish();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName() == "personalRecordsPopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PopulateGraph();
+                }
+            });
+        }
+    }
 }
