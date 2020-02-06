@@ -17,9 +17,11 @@ public class DatabaseCommunicator {
     private AppDatabase appDatabase;
     private static DatabaseCommunicator instance;
 
+    // TODO: send lists over the prop change event?
     public static List<TrackedExercise> trackedExercisesFromDate;
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
+    public static List<TrackedExercise> chartRepsData;
     public static List<Band> bandsList;
     public static  List<Angle> anglesList;
 
@@ -75,6 +77,16 @@ public class DatabaseCommunicator {
             public void run() {
                 personalRecordsList = appDatabase.trackedExerciseDao().getPersonalRecords(exerciseName);
                 support.firePropertyChange("personalRecordsPopulated", null, null);
+            }
+        });
+    }
+
+    public void getRepsChartData(final String exerciseName){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                chartRepsData = appDatabase.trackedExerciseDao().getRepsChartData(exerciseName);
+                support.firePropertyChange("chartRepsData", null, null);
             }
         });
     }

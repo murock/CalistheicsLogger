@@ -53,6 +53,13 @@ public interface TrackedExerciseDao {
             "order by band,reps" )
     List<TrackedExercise> getPersonalRecords(String name);
 
+    @Query("select *,max(reps) reps\n" +
+            "  from tracked_exercises\n" +
+            "  where exercise_name = :name\n" +
+            "  group by exercise_name, band, weight, timestamp\n" +
+            "  order by timestamp")
+    List<TrackedExercise> getRepsChartData(String name);
+
     @Insert
     void addTrackedExercise(TrackedExercise trackedExercise);
 

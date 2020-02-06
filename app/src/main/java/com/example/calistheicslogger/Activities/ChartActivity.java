@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,9 +22,14 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
 
@@ -46,12 +52,22 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private void RequestData()
     {
-        databaseCommunicator.getPersonalRecords(currentExercise);
+        databaseCommunicator.getRepsChartData(currentExercise);
     }
 
     private void PopulateGraph()
     {
-        List<TrackedExercise> trackedExercises = databaseCommunicator.personalRecordsList;
+        List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
+        Map<String, String> seriesDictionary = new HashMap();
+        Calendar calendar = Calendar.getInstance();
+        for(TrackedExercise exercise : trackedExercises)
+        {
+            String timestamp = exercise.getTimestamp();
+            Log.i("Alfie timestamp: ", timestamp);
+            Log.i("Alfie band: ", exercise.getBand());
+        }
     }
 
     private void createGraph()
@@ -122,7 +138,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "personalRecordsPopulated"){
+        if (evt.getPropertyName() == "chartRepsData"){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
