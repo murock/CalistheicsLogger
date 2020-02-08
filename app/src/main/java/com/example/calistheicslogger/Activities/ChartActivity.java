@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -63,14 +64,16 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     {
         List<Band> bands = databaseCommunicator.bandsList;
         Map<String, Integer> bandsmap = new HashMap<>();
+        List<String> bandNameList = new ArrayList<>();
         for(Band band : bands)
         {
             bandsmap.put(band.getColour(), band.getColourCode());
+            bandNameList.add(band.getColour());
         }
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
+      //  List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
         Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
         Calendar calendar = Calendar.getInstance();
         for(TrackedExercise exercise : trackedExercises)
@@ -90,8 +93,24 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             {
                 LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
                 DataPoint dataPoint = new DataPoint(calendar.getTime(),reps);
-              //  series.appendData();
+                series.appendData(dataPoint, true, trackedExercises.size());
+            }else
+            {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+                        new DataPoint(calendar.getTime(), reps)
+                });
+                seriesDictionary.put(band,series);
             }
+        }
+
+        for(String bandName : bandNameList)
+        {
+            LineGraphSeries<DataPoint> series;
+            if (seriesDictionary.containsKey(bandName))
+            {
+                series = seriesDictionary.get(bandName);
+            }
+
         }
     }
 
