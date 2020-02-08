@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -35,6 +36,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     String currentExercise;
     DatabaseCommunicator databaseCommunicator;
+    boolean bandsPopulated = false, chartDataPopulated = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,21 +54,27 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private void RequestData()
     {
+        databaseCommunicator.getBands();
         databaseCommunicator.getRepsChartData(currentExercise);
     }
 
     private void PopulateGraph()
     {
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
+        List<Band> bands = databaseCommunicator.bandsList;
         GraphView graph = (GraphView) findViewById(R.id.graph);
         List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
         Map<String, String> seriesDictionary = new HashMap();
         Calendar calendar = Calendar.getInstance();
         for(TrackedExercise exercise : trackedExercises)
         {
+
             String timestamp = exercise.getTimestamp();
+            String band = exercise.getBand();
             Log.i("Alfie timestamp: ", timestamp);
             Log.i("Alfie band: ", exercise.getBand());
+
+            if(seriesDictionary.containsKey())
         }
     }
 
@@ -139,6 +147,13 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "chartRepsData"){
+            this.chartDataPopulated = true;
+        }else if(evt.getPropertyName() == "bandsPopulated")
+        {
+            this.bandsPopulated = true;
+        }
+        if(this.bandsPopulated && this.chartDataPopulated)
+        {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
