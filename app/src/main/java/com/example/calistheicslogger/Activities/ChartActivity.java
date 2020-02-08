@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 
 public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
 
@@ -60,11 +61,17 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private void PopulateGraph()
     {
-        List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         List<Band> bands = databaseCommunicator.bandsList;
+        Map<String, Integer> bandsmap = new HashMap<>();
+        for(Band band : bands)
+        {
+            bandsmap.put(band.getColour(), band.getColourCode());
+        }
+
+        List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         GraphView graph = (GraphView) findViewById(R.id.graph);
         List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
-        Map<String, String> seriesDictionary = new HashMap();
+        Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
         Calendar calendar = Calendar.getInstance();
         for(TrackedExercise exercise : trackedExercises)
         {
@@ -74,7 +81,17 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             Log.i("Alfie timestamp: ", timestamp);
             Log.i("Alfie band: ", exercise.getBand());
 
-            if(seriesDictionary.containsKey())
+            int day = Integer.parseInt(timestamp.substring(0,1));
+            int month = Integer.parseInt(timestamp.substring(3,4));
+            int year = Integer.parseInt(timestamp.substring(6));
+            calendar.set(year,month,day);
+            int reps = exercise.getReps();
+            if(seriesDictionary.containsKey(band))
+            {
+                LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
+                DataPoint dataPoint = new DataPoint(calendar.getTime(),reps);
+              //  series.appendData();
+            }
         }
     }
 
