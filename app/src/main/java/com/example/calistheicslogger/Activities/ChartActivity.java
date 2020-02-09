@@ -83,6 +83,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             String band = exercise.getBand();
             Log.i("Alfie timestamp: ", timestamp);
             Log.i("Alfie band: ", exercise.getBand());
+            Log.i("Alfie reps is ", exercise.getReps() + "");
 
             int reps = exercise.getReps();
             if(seriesDictionary.containsKey(band))
