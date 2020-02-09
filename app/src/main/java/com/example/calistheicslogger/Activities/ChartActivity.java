@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -27,12 +26,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CancellationException;
 
 public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
 
@@ -75,29 +71,29 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         GraphView graph = (GraphView) findViewById(R.id.graph);
       //  List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
         Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
-        Calendar calendar = Calendar.getInstance();
+        String firstTimestamp = null, lastTimestamp = null;
         for(TrackedExercise exercise : trackedExercises)
         {
-
             String timestamp = exercise.getTimestamp();
+            if (firstTimestamp == null || firstTimestamp.isEmpty())
+            {
+                firstTimestamp = timestamp;
+            }
+            lastTimestamp = timestamp;
             String band = exercise.getBand();
             Log.i("Alfie timestamp: ", timestamp);
             Log.i("Alfie band: ", exercise.getBand());
 
-            int day = Integer.parseInt(timestamp.substring(0,1));
-            int month = Integer.parseInt(timestamp.substring(3,4));
-            int year = Integer.parseInt(timestamp.substring(6));
-            calendar.set(year,month,day);
             int reps = exercise.getReps();
             if(seriesDictionary.containsKey(band))
             {
                 LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
-                DataPoint dataPoint = new DataPoint(calendar.getTime(),reps);
+                DataPoint dataPoint = new DataPoint(this.getDateFromTimestamp(timestamp),reps);
                 series.appendData(dataPoint, true, trackedExercises.size());
             }else
             {
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(calendar.getTime(), reps)
+                        new DataPoint(this.getDateFromTimestamp(timestamp), reps)
                 });
                 seriesDictionary.put(band,series);
             }
@@ -109,9 +105,38 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             if (seriesDictionary.containsKey(bandName))
             {
                 series = seriesDictionary.get(bandName);
+                series.setColor(bandsmap.get(bandName));
+                series.setTitle(bandName);
+                graph.addSeries(series);
             }
-
         }
+
+        // Set up graph legend
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
+
+        // Set date label formatter
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+        // set manual x bounds to have nice steps
+//        graph.getViewport().setMinX(this.getDateFromTimestamp(firstTimestamp).getTime());
+//        graph.getViewport().setMaxX(this.getDateFromTimestamp(lastTimestamp).getTime());
+//        graph.getViewport().setXAxisBoundsManual(true);
+
+        // as we use dates as labels, the human rounding to nice readable numbers
+        // is not necessary
+        graph.getGridLabelRenderer().setHumanRounding(false);
+    }
+
+    private Date getDateFromTimestamp(String timestamp)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int day = Integer.parseInt(timestamp.substring(0,1));
+        int month = Integer.parseInt(timestamp.substring(3,4));
+        int year = Integer.parseInt(timestamp.substring(6));
+        calendar.set(year,month,day);
+        return calendar.getTime();
     }
 
     private void createGraph()
