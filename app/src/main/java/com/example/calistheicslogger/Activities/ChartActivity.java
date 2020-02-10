@@ -145,7 +145,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         calendar.set(year,month,day);
         return calendar.getTime();
     }
-    
+
 
     public void TrackButtonClick(View v)
     {

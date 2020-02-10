@@ -112,18 +112,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         return calendar.getTime();
     }
 
-    public void addExerciseClick(View view){
-        Intent addExercise = new Intent(this,ExerciseListActivity.class);
-        addExercise.putExtra("Date", selectedDate);
-        startActivity(addExercise);
-    }
-
-    public void calendarClick(View view)
-    {
-        databaseCommunicator.getExercisesFromDate(selectedDate);
-        populateDateTitle();
-    }
-
     private void populateDateTitle(){
         TextView dateTextView = findViewById(R.id.dateTextView);
         if (selectedDate == null)
@@ -245,5 +233,18 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
     };
 
+    public void addExerciseClick(View view){
+        Intent addExercise = new Intent(this,ExerciseListActivity.class);
+        addExercise.putExtra("Date", selectedDate);
+        startActivity(addExercise);
+    }
+
+    public void calendarClick(View view)
+    {
+        Intent calendar = new Intent(this, CalendarActivity.class);
+        startActivity(calendar);
+//        databaseCommunicator.getExercisesFromDate(selectedDate);
+//        populateDateTitle();
+    }
 
 }
