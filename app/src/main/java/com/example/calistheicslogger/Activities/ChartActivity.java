@@ -59,31 +59,37 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     private void PopulateGraph()
     {
         List<Band> bands = databaseCommunicator.bandsList;
-        Map<String, Integer> bandsmap = new HashMap<>();
+        Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
         for(Band band : bands)
         {
-            bandsmap.put(band.getColour(), band.getColourCode());
+            bandsMap.put(band.getColour(), band.getColourCode());
             bandNameList.add(band.getColour());
         }
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-      //  List<LineGraphSeries<DataPoint>> seriesList = new ArrayList<LineGraphSeries<DataPoint>>();
+        GraphView graph = findViewById(R.id.graph);
         Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
-        String firstTimestamp = null, lastTimestamp = null;
+        Date firstDate = null, lastDate = null;
+
         for(TrackedExercise exercise : trackedExercises)
         {
             String timestamp = exercise.getTimestamp();
-            if (firstTimestamp == null || firstTimestamp.isEmpty())
+            Date date = this.getDateFromTimestamp(timestamp);
+            if (firstDate == null)
             {
-                firstTimestamp = timestamp;
+                firstDate = date;
+                lastDate = date;
             }
-            lastTimestamp = timestamp;
+            if (date.compareTo(firstDate) < 0)
+            {
+                firstDate = date;
+            }
+            if(date.compareTo(lastDate) > 0)
+            {
+                lastDate = date;
+            }
             String band = exercise.getBand();
-            Log.i("Alfie timestamp: ", timestamp);
-            Log.i("Alfie band: ", exercise.getBand());
-            Log.i("Alfie reps is ", exercise.getReps() + "");
 
             int reps = exercise.getReps();
             if(seriesDictionary.containsKey(band))
@@ -106,7 +112,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             if (seriesDictionary.containsKey(bandName))
             {
                 series = seriesDictionary.get(bandName);
-                series.setColor(bandsmap.get(bandName));
+                series.setColor(bandsMap.get(bandName));
                 series.setTitle(bandName);
                 graph.addSeries(series);
             }
@@ -121,9 +127,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
         // set manual x bounds to have nice steps
-//        graph.getViewport().setMinX(this.getDateFromTimestamp(firstTimestamp).getTime());
-//        graph.getViewport().setMaxX(this.getDateFromTimestamp(lastTimestamp).getTime());
-//        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(firstDate.getTime());
+        graph.getViewport().setMaxX(lastDate.getTime());
+        graph.getViewport().setXAxisBoundsManual(true);
 
         // as we use dates as labels, the human rounding to nice readable numbers
         // is not necessary
@@ -133,73 +139,13 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     private Date getDateFromTimestamp(String timestamp)
     {
         Calendar calendar = Calendar.getInstance();
-        int day = Integer.parseInt(timestamp.substring(0,1));
-        int month = Integer.parseInt(timestamp.substring(3,4));
+        int day = Integer.parseInt(timestamp.substring(0,2));
+        int month = Integer.parseInt(timestamp.substring(3,5));
         int year = Integer.parseInt(timestamp.substring(6));
         calendar.set(year,month,day);
         return calendar.getTime();
     }
-
-    private void createGraph()
-    {
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2020,1,1);
-        Date d1 = calendar.getTime();
-        calendar.set(2020,1,4);
-        Date d2 = calendar.getTime();
-        calendar.set(2020,1,10);
-        Date d3 = calendar.getTime();
-        calendar.set(2020,1,12);
-        Date d4 = calendar.getTime();
-        calendar.set(2020,1,15);
-        Date d5 = calendar.getTime();
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 1),
-                new DataPoint(d2, 2),
-                new DataPoint(d3, 4),
-                new DataPoint(d4, 5),
-                new DataPoint(d5, 9)
-        });
-        series.setColor(Color.RED);
-        series.setTitle("tucked flag");
-
-        calendar.set(2020,1,17);
-        Date d6 = calendar.getTime();
-        calendar.set(2020,1,20);
-        Date d7 = calendar.getTime();
-        calendar.set(2020,1,27);
-        Date d8 = calendar.getTime();
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(d4, 1),
-                new DataPoint(d5, 1),
-                new DataPoint(d6, 2),
-                new DataPoint(d7, 2),
-                new DataPoint(d8, 4)
-        });
-        series2.setColor(Color.GREEN);
-        series2.setTitle("full flag");
-
-        graph.addSeries(series);
-        graph.addSeries(series2);
-        // Set up graph legend
-        graph.getLegendRenderer().setVisible(true);
-        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
-
-        // Set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-
-        // set manual x bounds to have nice steps
-        graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d8.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
-
-        // as we use dates as labels, the human rounding to nice readable numbers
-        // is not necessary
-        graph.getGridLabelRenderer().setHumanRounding(false);
-
-    }
+    
 
     public void TrackButtonClick(View v)
     {
@@ -216,6 +162,8 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         }
         if(this.bandsPopulated && this.chartDataPopulated)
         {
+            this.bandsPopulated = false;
+            this.chartDataPopulated = false;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
