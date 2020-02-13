@@ -17,6 +17,9 @@ public interface TrackedExerciseDao {
     @Query("SELECT exercise_name FROM tracked_exercises")
     List<String> getAllNames();
 
+    @Query("SELECT DISTINCT timestamp FROM tracked_exercises")
+    List<String> getAllUniqueTimestamps();
+
     @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name AND timestamp =:timestamp ORDER BY set_number")
     List<TrackedExercise> getTrackedExercisesFromNameAndDate(String name, String timestamp);
 

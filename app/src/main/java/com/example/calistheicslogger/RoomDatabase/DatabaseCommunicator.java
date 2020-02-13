@@ -23,7 +23,8 @@ public class DatabaseCommunicator {
     public static List<TrackedExercise> personalRecordsList;
     public static List<TrackedExercise> chartRepsData;
     public static List<Band> bandsList;
-    public static  List<Angle> anglesList;
+    public static List<Angle> anglesList;
+    public static List<String> uniqueTimestamps;
 
 
     protected DatabaseCommunicator(Context context){
@@ -158,6 +159,17 @@ public class DatabaseCommunicator {
                 appDatabase.angleDao().swapByRank(angle1Rank,angle2Rank);
                 anglesList = appDatabase.angleDao().getAll();
                 support.firePropertyChange("anglesPopulated", null, null);
+            }
+        });
+    }
+
+    public void getUniqueTimestamps()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                uniqueTimestamps = appDatabase.trackedExerciseDao().getAllUniqueTimestamps();
+                support.firePropertyChange("uniqueTimestampsPopulated", null,null);
             }
         });
     }
