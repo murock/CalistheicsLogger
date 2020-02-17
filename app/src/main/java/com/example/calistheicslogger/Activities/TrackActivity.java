@@ -450,8 +450,17 @@ public class TrackActivity extends Activity implements Serializable {
                 String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
                         liftEditText.getText().toString() + pause2EditText.getText().toString();
 
+                Group bandGroup = findViewById(R.id.bandGroup);
+                String bandValue;
+                if (bandGroup.getVisibility() == View.VISIBLE)
+                {
+                    bandValue = bandSpinner.getSelectedItem().toString();
+                }else{
+                    bandValue = "No";
+                }
+
                 final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
-                        repValue,weightValue,time,bandSpinner.getSelectedItem().toString(),
+                        repValue,weightValue,time,bandValue,
                         distance,tempo, angleString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
