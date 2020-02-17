@@ -1,6 +1,7 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,9 +19,12 @@ import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CalendarActivity extends Activity implements PropertyChangeListener {
 
@@ -48,11 +52,7 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
             int day = Integer.parseInt(timestamp.substring(0,2));
             int month = Integer.parseInt(timestamp.substring(3,5));
             int year = Integer.parseInt(timestamp.substring(6));
-            Log.i("Alfie year ", year + "");
-            Log.i("Alfie month ", month + "");
-            Log.i("Alfie day ", day + "");
             calendar.set(year,month - 1,day);
-            Log.i("Alfie calendar day ", calendar.getTime() + "");
             events.add(new EventDay(calendar, wrappedDrawable, Color.RED));
         }
         CalendarView calendarView = findViewById(R.id.calendarView);
@@ -76,9 +76,17 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
             @Override
             public void onDayClick(EventDay eventDay) {
                 Calendar clickedDayCalendar = eventDay.getCalendar();
+                String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(clickedDayCalendar.getTime());
                 Log.i("Alfie day is ", clickedDayCalendar.getTime().toString());
+                newMainAcitivity(date);
             }
         });
+    }
+
+    private void newMainAcitivity(String timestamp){
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.putExtra("Timestamp", timestamp);
+        startActivity(mainActivity);
     }
 
     @Override

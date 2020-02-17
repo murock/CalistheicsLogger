@@ -26,6 +26,7 @@ import com.example.calistheicslogger.Tools.PropertyTextView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements PropertyChangeListener {
+public class MainActivity extends AppCompatActivity implements PropertyChangeListener, Serializable {
 
     AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
@@ -74,7 +75,14 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
-        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        Intent i = getIntent();
+        selectedDate= (String)i.getSerializableExtra("Timestamp");
+        if (selectedDate == null || selectedDate.isEmpty())
+        {
+            // Default to todays date
+            selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        }
+        Log.i("Alfie selected date is", selectedDate);
         setContentView(R.layout.activity_main);
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
