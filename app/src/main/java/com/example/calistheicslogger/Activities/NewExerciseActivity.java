@@ -52,6 +52,7 @@ public class NewExerciseActivity extends Activity {
                 if (selectedType == "Weight and Reps")
                 {
                     weightCheckbox.setChecked(true);
+                    weightLoadableChecked = true;
                     weightCheckbox.setEnabled(false);
                 }else{
                     weightCheckbox.setEnabled(true);
@@ -156,27 +157,6 @@ public class NewExerciseActivity extends Activity {
         boolean exists = cursor.getCount() > 0;
         cursor.close();
         return exists;
-    }
-
-    public void onPrintExerciseButtonClick(View view){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<Exercise> exercises = appDatabase.exerciseDao().getAll();
-                int i = 1;
-                for(Exercise exercise : exercises) {
-                    Log.i("Exercise " + i,exercise.getName());
-                    Log.i("Exercise Category " + i,exercise.getCategories());
-                    Log.i("Exercise Type " + i,exercise.getType());
-                    Log.i("Exercise Band " + i,exercise.getBandAssisted().toString());
-                    Log.i("Exercise Weighted " + i,exercise.getWeightLoadable().toString());
-                    Log.i("Exercise Progression " + i,exercise.getProgression());
-                    i++;
-                }
-            }
-        });
-
-
     }
 
     public void onCheckboxClicked(View view) {

@@ -349,6 +349,7 @@ public class TrackActivity extends Activity implements Serializable {
             group.setVisibility(View.VISIBLE);
         }
         if (weighted){
+            Log.i("Alfie", "Exercise is weighted");
             group = findViewById(R.id.weightGroup);
             group.setVisibility(View.VISIBLE);
         }
