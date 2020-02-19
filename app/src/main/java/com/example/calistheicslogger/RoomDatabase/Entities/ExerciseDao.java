@@ -25,6 +25,9 @@ public interface ExerciseDao {
     @Query("SELECT exercise_name FROM exercises WHERE exercise_name = :exerciseName")
     Cursor checkExists(String exerciseName);
 
+    @Query("SELECT type FROM exercises WHERE exercise_name = :exerciseName")
+    String getTypeFromName(String exerciseName);
+
     @Insert
     void addExercise(Exercise exercise);
 

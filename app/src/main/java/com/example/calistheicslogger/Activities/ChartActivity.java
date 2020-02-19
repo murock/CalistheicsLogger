@@ -34,7 +34,8 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     String currentExercise;
     DatabaseCommunicator databaseCommunicator;
-    boolean bandsPopulated = false, chartDataPopulated = false;
+    String exerciseType;
+    boolean bandsPopulated = false, chartDataPopulated = false, exerciseTypePopulated = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,11 +54,18 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     private void RequestData()
     {
         databaseCommunicator.getBands();
+        databaseCommunicator.getExerciseTypeFromName(currentExercise);
         databaseCommunicator.getRepsChartData(currentExercise);
     }
 
     private void PopulateGraph()
     {
+        if(!this.exerciseType.equals("Weight and Reps"))
+        {
+            TextView titleTextView = findViewById(R.id.titleTextView);
+            titleTextView.setText("Only Weight and Reps charts supported more soon");
+            return;
+        }
         List<Band> bands = databaseCommunicator.bandsList;
         Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
@@ -159,8 +167,13 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         }else if(evt.getPropertyName() == "bandsPopulated")
         {
             this.bandsPopulated = true;
+        } else if(evt.getPropertyName() == "exerciseTypePopulated")
+        {
+            this.exerciseType = databaseCommunicator.exerciseType;
+            Log.i("Alfie Type",this.exerciseType );
+            this.exerciseTypePopulated = true;
         }
-        if(this.bandsPopulated && this.chartDataPopulated)
+        if(this.bandsPopulated && this.chartDataPopulated && this.exerciseTypePopulated)
         {
             this.bandsPopulated = false;
             this.chartDataPopulated = false;

@@ -26,6 +26,8 @@ public class DatabaseCommunicator {
     public static List<Angle> anglesList;
     public static List<String> uniqueTimestamps;
 
+    public static String exerciseType;
+
 
     protected DatabaseCommunicator(Context context){
         appDatabase = AppDatabase.getInstance(context);
@@ -170,6 +172,17 @@ public class DatabaseCommunicator {
             public void run() {
                 uniqueTimestamps = appDatabase.trackedExerciseDao().getAllUniqueTimestamps();
                 support.firePropertyChange("uniqueTimestampsPopulated", null,null);
+            }
+        });
+    }
+
+    public void getExerciseTypeFromName(final String exerciseName)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exerciseType = appDatabase.exerciseDao().getTypeFromName(exerciseName);
+                support.firePropertyChange("exerciseTypePopulated", null, null);
             }
         });
     }
