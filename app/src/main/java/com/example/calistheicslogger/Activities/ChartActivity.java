@@ -58,21 +58,39 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         databaseCommunicator.getRepsChartData(currentExercise);
     }
 
+    private int TimeToSeconds(String time)
+    {
+        String[] times = time.split(":");
+        int hour = Integer.parseInt(times[0]);
+        int mins = Integer.parseInt(times[1]);
+        int seconds = Integer.parseInt(times[2]);
+        return  (hour*3600) + (mins*60) + seconds;
+    }
+
+
     private void PopulateGraph()
     {
-        if(!this.exerciseType.equals("Weight and Reps"))
+        if(!this.exerciseType.equals("Weight and Reps") && !this.exerciseType.equals("Reps") && !this.exerciseType.equals("Isometric"))
         {
             TextView titleTextView = findViewById(R.id.titleTextView);
             titleTextView.setText("Only Weight and Reps charts supported more soon");
             return;
         }
+
         List<Band> bands = databaseCommunicator.bandsList;
         Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
         for(Band band : bands)
         {
-            bandsMap.put(band.getColour(), band.getColourCode());
-            bandNameList.add(band.getColour());
+            if (band.getColour().equals("No"))
+            {
+                // TODO: make band colours editable including No set the base color of blue there
+                bandsMap.put(band.getColour(), Color.BLUE);
+                bandNameList.add(band.getColour());
+            }else {
+                bandsMap.put(band.getColour(), band.getColourCode());
+                bandNameList.add(band.getColour());
+            }
         }
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
@@ -99,16 +117,24 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             }
             String band = exercise.getBand();
 
-            int reps = exercise.getReps();
+            int yAxisDataPoint;
+            if (this.exerciseType.equals("Isometric"))
+            {
+                yAxisDataPoint =  this.TimeToSeconds(exercise.getTime());
+            }
+            else
+            {
+                yAxisDataPoint = exercise.getReps();
+            }
             if(seriesDictionary.containsKey(band))
             {
                 LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
-                DataPoint dataPoint = new DataPoint(this.getDateFromTimestamp(timestamp),reps);
+                DataPoint dataPoint = new DataPoint(this.getDateFromTimestamp(timestamp),yAxisDataPoint);
                 series.appendData(dataPoint, true, trackedExercises.size());
             }else
             {
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(this.getDateFromTimestamp(timestamp), reps)
+                        new DataPoint(this.getDateFromTimestamp(timestamp), yAxisDataPoint)
                 });
                 seriesDictionary.put(band,series);
             }
