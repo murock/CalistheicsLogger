@@ -22,6 +22,7 @@ import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.DateFunctions;
 import com.example.calistheicslogger.Tools.PropertyTextView;
 
 import java.beans.PropertyChangeEvent;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         if (selectedDate == null || selectedDate.isEmpty())
         {
             // Default to todays date
-            selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
         Log.i("Alfie selected date is", selectedDate);
         setContentView(R.layout.activity_main);
@@ -106,9 +107,9 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
         LinearLayout linearLayout = findViewById(R.id.listviewBox);
         linearLayout.removeAllViews();
-        Date date = new SimpleDateFormat("dd-MM-yyyy").parse(selectedDate);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(selectedDate);
         date = addHoursToJavaUtilDate(date, hours);
-        selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date);
+        selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
     }
@@ -124,9 +125,10 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         TextView dateTextView = findViewById(R.id.dateTextView);
         if (selectedDate == null)
         {
-            selectedDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
-        dateTextView.setText(selectedDate);
+        Log.i("Alfie set text view",DateFunctions.GetUKDateFormat(selectedDate) );
+        dateTextView.setText(DateFunctions.GetUKDateFormat(selectedDate));
     }
 
     private void populateDaysExercises(){

@@ -20,6 +20,7 @@ import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.DateFunctions;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
@@ -101,7 +102,7 @@ public class TrackActivity extends Activity implements Serializable {
     {
         if(currentDate == null || currentDate.isEmpty())
         {
-            currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
     }
 
@@ -308,7 +309,7 @@ public class TrackActivity extends Activity implements Serializable {
         TextView title = findViewById(R.id.titleTextView);
         Log.i("Alfie current date", currentDate);
 
-        title.setText(exercise.getName() + " - " + currentDate);
+        title.setText(exercise.getName() + " - " +  DateFunctions.GetUKDateFormat(currentDate));
         String type = exercise.getType();
         //"Isometric", "Weight and Reps", "Negative"
         Group group;

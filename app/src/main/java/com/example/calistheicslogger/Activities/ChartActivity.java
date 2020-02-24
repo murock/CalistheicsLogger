@@ -14,6 +14,7 @@ import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.DateFunctions;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
@@ -23,11 +24,13 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
@@ -101,7 +104,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         for(TrackedExercise exercise : trackedExercises)
         {
             String timestamp = exercise.getTimestamp();
-            Date date = this.getDateFromTimestamp(timestamp);
+            Date date = DateFunctions.GetDateFromTimestamp(timestamp);
             if (firstDate == null)
             {
                 firstDate = date;
@@ -129,12 +132,13 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             if(seriesDictionary.containsKey(band))
             {
                 LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
-                DataPoint dataPoint = new DataPoint(this.getDateFromTimestamp(timestamp),yAxisDataPoint);
+                Log.i("Alfie x value is ", timestamp + "");
+                DataPoint dataPoint = new DataPoint(DateFunctions.GetDateFromTimestamp(timestamp),yAxisDataPoint);
                 series.appendData(dataPoint, true, trackedExercises.size());
             }else
             {
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(this.getDateFromTimestamp(timestamp), yAxisDataPoint)
+                        new DataPoint(DateFunctions.GetDateFromTimestamp(timestamp), yAxisDataPoint)
                 });
                 seriesDictionary.put(band,series);
             }
@@ -168,16 +172,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         // as we use dates as labels, the human rounding to nice readable numbers
         // is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
-    }
-
-    private Date getDateFromTimestamp(String timestamp)
-    {
-        Calendar calendar = Calendar.getInstance();
-        int day = Integer.parseInt(timestamp.substring(0,2));
-        int month = Integer.parseInt(timestamp.substring(3,5));
-        int year = Integer.parseInt(timestamp.substring(6));
-        calendar.set(year,month,day);
-        return calendar.getTime();
     }
 
 
