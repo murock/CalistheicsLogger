@@ -53,9 +53,13 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 public void drop(int from, int to) {
                     if (from != to) {
                         if (isBandMode) {
-                            databaseCommunicator.swapBands(from, to);
+                            // Stop No band from being moved
+                            if (from != databaseCommunicator.bandsList.size() - 1 &&
+                                to != databaseCommunicator.bandsList.size() - 1)
+                            {
+                                databaseCommunicator.swapBands(from, to);
+                            }
                         }else{
-                            Log.i("Angle", "swapping " + from + " to " + to);
                             databaseCommunicator.swapAngles(from, to);
                         }
                     }
@@ -71,15 +75,22 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     if (position == selectedPosition)
                     {
                         // Toggle off
+                        newBandEditText.setFocusable(true);
+                        newBandEditText.setFocusableInTouchMode(true);
                         selectedPosition = -1;
                         addRemoveButton.setText("+");
                         colorPickerButton.setText("pick color");
                         newBandEditText.setText("Enter Band Name");
-                        // TODO: adjust based on background color
                         newBandEditText.setTextColor(Color.BLACK);
                         newBandEditText.setBackgroundColor(defaultColor);
-                    }else{
+                        // Stop No band from being deleted
+                    }else if(position == databaseCommunicator.bandsList.size() - 1) {
+                        selectedPosition = -1;
+                    }else
+                    {
                         // Toggle on
+                        newBandEditText.setFocusable(false);
+                        newBandEditText.setFocusableInTouchMode(false);
                         selectedPosition = position;
                         addRemoveButton.setText("-");
                         colorPickerButton.setText("delete");

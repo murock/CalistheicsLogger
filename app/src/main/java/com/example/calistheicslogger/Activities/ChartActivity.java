@@ -97,10 +97,14 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         }
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
-        GraphView graph = findViewById(R.id.graph);
+        if (trackedExercises.size() == 0){
+            return;
+        }
+       GraphView graph = findViewById(R.id.graph);
         Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
         Date firstDate = null, lastDate = null;
 
+        String yAxisTitle = "Reps";
         for(TrackedExercise exercise : trackedExercises)
         {
             String timestamp = exercise.getTimestamp();
@@ -124,6 +128,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             if (this.exerciseType.equals("Isometric"))
             {
                 yAxisDataPoint =  this.TimeToSeconds(exercise.getTime());
+                yAxisTitle = "Hold Time";
             }
             else
             {
@@ -132,7 +137,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             if(seriesDictionary.containsKey(band))
             {
                 LineGraphSeries<DataPoint> series = seriesDictionary.get(band);
-                Log.i("Alfie x value is ", timestamp + "");
                 DataPoint dataPoint = new DataPoint(DateFunctions.GetDateFromTimestamp(timestamp),yAxisDataPoint);
                 series.appendData(dataPoint, true, trackedExercises.size());
             }else
@@ -163,6 +167,8 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         // Set date label formatter
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+        graph.getGridLabelRenderer().setVerticalAxisTitle(yAxisTitle);
 
         // set manual x bounds to have nice steps
         graph.getViewport().setMinX(firstDate.getTime());
