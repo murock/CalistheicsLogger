@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
+import com.example.calistheicslogger.Tools.DateFunctions;
 
 import org.w3c.dom.Text;
 
@@ -68,7 +69,7 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
         {
             TrackedExercise exercise = trackedExercises.get(i);
             TextView textView = new TextView(PersonalRecordsActivity.this);
-            String exerciseString = MainActivity.getTrackedExerciseString(exercise);
+            String exerciseString = MainActivity.getTrackedExerciseString(exercise, false) + " on " + DateFunctions.GetUKDateFormat(exercise.getTimestamp());
             textView.setText(exerciseString);
             linearLayout.addView(textView);
         }

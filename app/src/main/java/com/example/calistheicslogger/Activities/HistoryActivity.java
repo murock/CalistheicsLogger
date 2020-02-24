@@ -74,7 +74,7 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             }else {
                 textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.sides_border));
             }
-            textView.setText(MainActivity.getTrackedExerciseString(exercise));
+            textView.setText(MainActivity.getTrackedExerciseString(exercise, false));
             linearLayout.addView(textView);
 
             if ( exerciseHistory.size() == i + 1|| exerciseHistory.size() > i + 1 && ! exercise.getTimestamp().equals(exerciseHistory.get(i + 1).getTimestamp()))

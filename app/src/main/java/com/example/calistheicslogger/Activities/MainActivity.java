@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             }else{
                 textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
             }
-            String exerciseString = getTrackedExerciseString(exercise);
+            String exerciseString = getTrackedExerciseString(exercise, true);
             textView.setText(exerciseString);
             linearLayout.addView(textView);
 
@@ -175,11 +175,14 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
     }
 
-    public static String getTrackedExerciseString(TrackedExercise exercise){
+    public static String getTrackedExerciseString(TrackedExercise exercise, boolean includeSetNum){
         // TODO: adapt this for many different units e.g kgs/m etc
         ArrayList<String> trackedComponents = new ArrayList<String>();
-        //String result = Integer.toString(exercise.getSetNumber());
-        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
+
+        if (includeSetNum)
+        {
+            trackedComponents.add(Integer.toString(exercise.getSetNumber()));
+        }
         if (!(exercise.getReps() == -1)) {
             //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
