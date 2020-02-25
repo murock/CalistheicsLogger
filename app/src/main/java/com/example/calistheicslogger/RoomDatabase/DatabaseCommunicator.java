@@ -140,6 +140,17 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void addTool(final Tool tool){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.toolDao().addTool(tool);
+                toolsList = appDatabase.toolDao().getAll();
+                support.firePropertyChange("toolsPopulated", null, null);
+            }
+        });
+    }
+
     public void getTools(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

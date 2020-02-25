@@ -22,6 +22,7 @@ import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
+import com.example.calistheicslogger.Tools.Utilities;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 
@@ -42,7 +43,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     int defaultColor;
     EditText newBandEditText;
     // Indicates the total number of bands
-    int numBands;
+    int numBands, numTools;
 
     int selectedPosition = -1;
     Button addRemoveButton, colorPickerButton;
@@ -195,6 +196,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
     private void UpdateDSLVForTools(){
         final List<Tool> tools = databaseCommunicator.toolsList;
+        this.numTools = tools.size();
         ArrayList<String> arrayListTools = new ArrayList<>();
         for(Tool tool : tools)
         {
@@ -280,11 +282,18 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         this.databaseCommunicator.removeBand(selectedPosition);
     }
 
+    private void addToolToDatabase(){
+        String name = newBandEditText.getText().toString();
+        Tool newTool = new Tool(name,this.numTools);
+        this.databaseCommunicator.addTool(newTool);
+    }
+
     private void removeToolFromDatabase(){
         //TODO implement tool removal in DB
     }
 
     public void addRemoveButtonPress(View view){
+        Utilities.hideKeyboard(this);
         if (selectedPosition != -1)
         {
             if (isBandMode)
@@ -294,7 +303,13 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 removeToolFromDatabase();
             }
         }else{
-            addBandToDatabase();
+            if (isBandMode)
+            {
+                addBandToDatabase();
+            }else {
+                addToolToDatabase();
+            }
+
         }
     }
 
