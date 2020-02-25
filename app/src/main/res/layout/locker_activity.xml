@@ -27,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Thin"
+        android:text="Thick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleToggleButton" />
+        app:layout_constraintTop_toBottomOf="@+id/toolToggleButton" />
 
     <TextView
         android:id="@+id/hardTextView"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Thick"
+        android:text="Thin"
         app:layout_constraintBottom_toTopOf="@+id/colorButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -51,20 +51,20 @@
         android:text="ToggleButton"
         android:textOff="Bands"
         android:textOn="Bands"
-        app:layout_constraintEnd_toStartOf="@+id/angleToggleButton"
+        app:layout_constraintEnd_toStartOf="@+id/toolToggleButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/angleToggleButton" />
+        app:layout_constraintTop_toTopOf="@+id/toolToggleButton" />
 
     <ToggleButton
-        android:id="@+id/angleToggleButton"
+        android:id="@+id/toolToggleButton"
         android:layout_width="0dp"
         android:layout_height="78dp"
         android:layout_marginTop="16dp"
         android:onClick="OnToggleClick"
         android:text="ToggleButton"
-        android:textOff="Angles"
-        android:textOn="Angles"
+        android:textOff="Tools"
+        android:textOn="Tools"
         app:layout_constraintBottom_toTopOf="@id/easyTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -81,7 +81,8 @@
         app:layout_constraintEnd_toStartOf="@+id/colorButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/colorButton" />
+        app:layout_constraintTop_toTopOf="@+id/colorButton"
+        android:maxLength="15" />
 
     <Button
         android:id="@+id/addButton"

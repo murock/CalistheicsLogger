@@ -5,28 +5,28 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "angles")
-public class Angle
+@Entity(tableName = "tools")
+public class Tool
 {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "angle")
-    private String angle;
+    @ColumnInfo(name = "name")
+    private String name;
 
     // 0 is hardest 0=>n
     @ColumnInfo(name = "rank" )
     private int rank;
 
-    public Angle(int id, String angle, int rank){
+    public Tool(int id, String name, int rank){
         this.id = id;
-        this.angle = angle;
+        this.name = name;
         this.rank = rank;
     }
 
     @Ignore
-    public Angle(String angle, int rank){
-        this.angle = angle;
+    public Tool(String name, int rank){
+        this.name = name;
         this.rank = rank;
     }
 
@@ -38,12 +38,12 @@ public class Angle
         this.id = id;
     }
 
-    public String getAngle() {
-        return angle;
+    public String getName() {
+        return name;
     }
 
-    public void setAngle(String angle) {
-        this.angle = angle;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -56,11 +56,11 @@ public class Angle
     }
 
     // TODO Remove this and replace with band selecting/creating dialog
-    public static Angle[] populateData(){
-        return new Angle[]{
-                new Angle("Shallow",2),
-                new Angle("Medium",1),
-                new Angle("Steep",0),
+    public static Tool[] populateData(){
+        return new Tool[]{
+                new Tool("Parallettes",2),
+                new Tool("Shallow Angle",1),
+                new Tool("Steep Angle",0),
         };
     }
 }

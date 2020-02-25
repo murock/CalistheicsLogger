@@ -79,7 +79,7 @@ public class TrackActivity extends Activity implements Serializable {
         SetDate();
         SetUpActivity(exerciseString);
         setUpBandSpinner();
-        setUpAngleSpinner();
+        setUpToolsSpinner();
         SetUpFilters();
         SetUpDSLV();
     }
@@ -177,14 +177,14 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     // TODO: Do not repeat code fix
-    private void setUpAngleSpinner(){
+    private void setUpToolsSpinner(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> angles = appDatabase.angleDao().getAllAngles();
-                Spinner angleSpinner = findViewById(R.id.angleSpinner);
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, angles);
-                angleSpinner.setAdapter(arrayAdapter);
+                List<String> tools = appDatabase.toolDao().getAllNames();
+                Spinner toolsSpinner = findViewById(R.id.toolSpinner);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, tools);
+                toolsSpinner.setAdapter(arrayAdapter);
             }
         });
     }
@@ -245,10 +245,10 @@ public class TrackActivity extends Activity implements Serializable {
           //  result += "    " + exercise.getBand() + " band";
             trackedComponents.add(exercise.getBand() + " band");
         }
-        Group angleGroup = findViewById(R.id.angleGroup);
-        if (angleGroup.getVisibility() == View.VISIBLE && !exercise.getAngle().isEmpty())
+        Group toolsGroup = findViewById(R.id.toolGroup);
+        if (toolsGroup.getVisibility() == View.VISIBLE && !exercise.getTool().isEmpty())
         {
-            trackedComponents.add(exercise.getAngle());
+            trackedComponents.add(exercise.getTool());
         }
         int distance = exercise.getDistance();
         if (distance != -1)
@@ -319,7 +319,7 @@ public class TrackActivity extends Activity implements Serializable {
         group.setVisibility(View.GONE);
         group = findViewById(R.id.tempoGroup);
         group.setVisibility(View.GONE);
-        group = findViewById(R.id.angleGroup);
+        group = findViewById(R.id.toolGroup);
         group.setVisibility(View.GONE);
         group = findViewById(R.id.weightGroup);
         group.setVisibility(View.GONE);
@@ -343,7 +343,7 @@ public class TrackActivity extends Activity implements Serializable {
         Boolean bandAssisted = exercise.getBandAssisted();
         Boolean weighted = exercise.getWeightLoadable();
         Boolean tempoControlled = exercise.getTempoControlled();
-        Boolean adjustableAngle = exercise.getAngle();
+        Boolean toolsRequired = exercise.getTool();
         if (bandAssisted)
         {
             group = findViewById(R.id.bandGroup);
@@ -358,8 +358,8 @@ public class TrackActivity extends Activity implements Serializable {
             group = findViewById(R.id.tempoGroup);
             group.setVisibility(View.VISIBLE);
         }
-        if (adjustableAngle){
-            group = findViewById(R.id.angleGroup);
+        if (toolsRequired){
+            group = findViewById(R.id.toolGroup);
             group.setVisibility(View.VISIBLE);
         }
 
@@ -432,11 +432,11 @@ public class TrackActivity extends Activity implements Serializable {
                         + AddPrefixToItem(secondText.getText().toString(),2, "0");
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
-                Spinner angleSpinner = findViewById(R.id.angleSpinner);
-                String angleString = "";
-                Group angleGroup = findViewById(R.id.angleGroup);
-                if (angleGroup.getVisibility() == View.VISIBLE){
-                    angleString = angleSpinner.getSelectedItem().toString();
+                Spinner toolSpinner = findViewById(R.id.toolSpinner);
+                String toolString = "";
+                Group toolGroup = findViewById(R.id.toolGroup);
+                if (toolGroup.getVisibility() == View.VISIBLE){
+                    toolString = toolSpinner.getSelectedItem().toString();
                 }
                 EditText distanceText = findViewById(R.id.distanceEditText);
                 int distance = -1;
@@ -463,7 +463,7 @@ public class TrackActivity extends Activity implements Serializable {
 
                 final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
                         repValue,weightValue,time,bandValue,
-                        distance,tempo, angleString);
+                        distance,tempo, toolString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
                 updateTrackingList();

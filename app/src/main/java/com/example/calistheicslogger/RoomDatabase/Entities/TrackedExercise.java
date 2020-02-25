@@ -39,10 +39,10 @@ public class TrackedExercise
     @ColumnInfo(name = "tempo")
     private String tempo;
 
-    @ColumnInfo(name = "angle")
-    private String angle;
+    @ColumnInfo(name = "tool")
+    private String tool;
 
-    public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String angle){
+    public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool){
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
@@ -53,11 +53,11 @@ public class TrackedExercise
         this.band = band;
         this.distance = distance;
         this.tempo = tempo;
-        this.angle = angle;
+        this.tool = tool;
     }
 
     @Ignore
-    public TrackedExercise(String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String angle){
+    public TrackedExercise(String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool){
         this.name = name;
         this.timestamp = timestamp;
         this.setNumber = setNumber;
@@ -67,7 +67,7 @@ public class TrackedExercise
         this.band = band;
         this.distance = distance;
         this.tempo = tempo;
-        this.angle = angle;
+        this.tool = tool;
     }
 
     public int getId() {
@@ -150,11 +150,11 @@ public class TrackedExercise
         this.tempo = tempo;
     }
 
-    public String getAngle() {
-        return angle;
+    public String getTool() {
+        return tool;
     }
 
-    public void setAngle(String angle) {
-        this.angle = angle;
+    public void setTool(String tool) {
+        this.tool = tool;
     }
 }

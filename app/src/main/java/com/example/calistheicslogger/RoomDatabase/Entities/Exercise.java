@@ -32,8 +32,8 @@ public class Exercise
     @ColumnInfo(name = "tempo_controlled")
     private Boolean tempoControlled;
 
-    @ColumnInfo(name = "angle")
-    private Boolean angle;
+    @ColumnInfo(name = "tool")
+    private Boolean tool;
 
     @ColumnInfo(name = "progression_name")
     private String progression;
@@ -41,7 +41,7 @@ public class Exercise
     @ColumnInfo(name = "weight_increment")
     private double weightIncrement;
 
-    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean angle, double weightIncrement){
+    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, double weightIncrement){
         this.id = id;
         this.name = name;
         this.categories = categories;
@@ -50,12 +50,12 @@ public class Exercise
         this.weightLoadable = weightLoadable;
         this.progression = progression;
         this.tempoControlled = tempoControlled;
-        this.angle = angle;
+        this.tool = tool;
         this.weightIncrement = weightIncrement;
     }
 
     @Ignore
-    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean angle, double weightIncrement){
+    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, double weightIncrement){
         this.name = name;
         this.categories = categories;
         this.type = type;
@@ -63,7 +63,7 @@ public class Exercise
         this.weightLoadable = weightLoadable;
         this.progression = progression;
         this.tempoControlled = tempoControlled;
-        this.angle = angle;
+        this.tool = tool;
         this.weightIncrement = weightIncrement;
     }
 
@@ -115,11 +115,11 @@ public class Exercise
         this.bandAssisted = bandAssisted;
     }
 
-    public Boolean getAngle(){
-        return angle;
+    public Boolean getTool(){
+        return tool;
     }
 
-    public void setAngle(Boolean angle) {this.angle = angle; }
+    public void setTool(Boolean tool) {this.tool = tool; }
 
     public Boolean getWeightLoadable() {
         return weightLoadable;

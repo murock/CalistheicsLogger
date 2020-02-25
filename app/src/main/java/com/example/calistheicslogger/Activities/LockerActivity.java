@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -20,8 +21,8 @@ import androidx.core.graphics.ColorUtils;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
-import com.example.calistheicslogger.RoomDatabase.Entities.Angle;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
+import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 
@@ -60,7 +61,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                                 databaseCommunicator.swapBands(from, to);
                             }
                         }else{
-                            databaseCommunicator.swapAngles(from, to);
+                            databaseCommunicator.swapTools(from, to);
                         }
                     }
                 }
@@ -186,15 +187,15 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         });
     }
 
-    private void UpdateDSLVForAngles(){
-        final List<Angle> angles = databaseCommunicator.anglesList;
-        ArrayList<String> arrayListAngles = new ArrayList<>();
-        for(Angle angle : angles)
+    private void UpdateDSLVForTools(){
+        final List<Tool> tools = databaseCommunicator.toolsList;
+        ArrayList<String> arrayListTools = new ArrayList<>();
+        for(Tool tool : tools)
         {
-            arrayListAngles.add(angle.getAngle());
+            arrayListTools.add(tool.getName());
         }
 
-        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListAngles);
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListTools);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -205,28 +206,28 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
     public void OnToggleClick(View view){
         ToggleButton bandsButton = findViewById(R.id.bandToggleButton);
-        ToggleButton angleButton = findViewById(R.id.angleToggleButton);
+        ToggleButton toolButton = findViewById(R.id.toolToggleButton);
         TextView easyTextView = findViewById(R.id.easyTextView);
         TextView hardTextView = findViewById(R.id.hardTextView);
-        if (view.getId() == R.id.angleToggleButton && bandsButton.isChecked())
+        if (view.getId() == R.id.toolToggleButton && bandsButton.isChecked())
         {
-            // Switching to angles
+            // Switching to tools
             bandsButton.setEnabled(true);
             bandsButton.setChecked(false);
-            angleButton.setEnabled(false);
+            toolButton.setEnabled(false);
             isBandMode = false;
-            databaseCommunicator.getAngles();
+            databaseCommunicator.getTools();
             easyTextView.setText("Lowest");
             hardTextView.setText("Highest");
-        }else if(view.getId() == R.id.bandToggleButton && angleButton.isChecked()){
+        }else if(view.getId() == R.id.bandToggleButton && toolButton.isChecked()){
             // Switching to bands
-            angleButton.setChecked(false);
-            angleButton.setEnabled(true);
+            toolButton.setChecked(false);
+            toolButton.setEnabled(true);
             bandsButton.setEnabled(false);
             isBandMode = true;
             databaseCommunicator.getBands();
-            easyTextView.setText("Thin");
-            hardTextView.setText("Thick");
+            easyTextView.setText("Thick");
+            hardTextView.setText("Thin");
         }
     }
 
@@ -286,12 +287,11 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 }
             });
         }
-        if(evt.getPropertyName() == "anglesPopulated"){
+        if(evt.getPropertyName() == "toolsPopulated"){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i("Angle", "angles populated");
-                    UpdateDSLVForAngles();
+                    UpdateDSLVForTools();
                 }
             });
         }

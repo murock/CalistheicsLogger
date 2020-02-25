@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,7 +30,7 @@ public class NewExerciseActivity extends Activity {
     AppDatabase appDatabase;
     Spinner progressionSpinner, typeSpinner;
     MultiSelectionSpinner categorySpinner;
-    Boolean bandChecked = false, weightLoadableChecked = false, tempoChecked = false, angleChecked = false;
+    Boolean bandChecked = false, weightLoadableChecked = false, tempoChecked = false, toolChecked = false;
 
 
     @Override
@@ -125,7 +124,7 @@ public class NewExerciseActivity extends Activity {
                             categories += item.getName();
                         }
                         Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-                                bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, angleChecked, 1.25);
+                                bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, toolChecked, 1.25);
                         appDatabase.exerciseDao().addExercise(exercise);
                         newTrackAcitivity(exerciseNameEditText.getText().toString());
                     }
@@ -186,11 +185,11 @@ public class NewExerciseActivity extends Activity {
                     tempoChecked = false;
                 }
                 break;
-            case R.id.angleCheckBox:
+            case R.id.toolCheckBox:
                 if (checked){
-                    angleChecked = true;
+                    toolChecked = true;
                 }else{
-                    angleChecked = false;
+                    toolChecked = false;
                 }
             default:
                 //"Not possible to get here??";

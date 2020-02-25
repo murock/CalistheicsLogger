@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/angleSpinner"
+        android:id="@+id/toolSpinner"
         android:layout_width="204dp"
         android:layout_height="29dp"
         android:layout_marginStart="74dp"
@@ -31,16 +31,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/toolTextView" />
 
     <TextView
-        android:id="@+id/angleTextView"
+        android:id="@+id/toolTextView"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginTop="8dp"
-        android:text="Angle"
+        android:text="Tool"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/angleSpinner"
+        app:layout_constraintBottom_toTopOf="@+id/toolSpinner"
         app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
         app:layout_constraintStart_toStartOf="@+id/bandSpinner"
         app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
@@ -59,7 +59,7 @@
         app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/toolSpinner" />
 
     <TextView
         android:id="@+id/tempoTextView"
@@ -217,11 +217,11 @@
         app:constraint_referenced_ids="tempoTextView,tempoEccentricEditText,tempoPause1EditText,tempoConcentricEditText,tempoPause2EditText" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/angleGroup"
+        android:id="@+id/toolGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="angleTextView,angleSpinner" />
+        app:constraint_referenced_ids="toolTextView,toolSpinner" />
 
     <TextView
         android:id="@+id/repsTextView"
@@ -330,7 +330,7 @@
         android:layout_marginRight="54dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/angleTextView"
+        app:layout_constraintBottom_toTopOf="@+id/toolTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"

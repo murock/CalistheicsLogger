@@ -9,8 +9,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.calistheicslogger.RoomDatabase.Entities.Angle;
-import com.example.calistheicslogger.RoomDatabase.Entities.AngleDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.BandDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.Category;
@@ -19,6 +17,8 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.ExerciseDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgressionDao;
+import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
+import com.example.calistheicslogger.RoomDatabase.Entities.ToolDao;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExerciseDao;
 
@@ -26,7 +26,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Exercise.class, Category.class, FinalProgression.class, Band.class, TrackedExercise.class, Angle.class},version = 1)
+@Database(entities = {Exercise.class, Category.class, FinalProgression.class, Band.class, TrackedExercise.class, Tool.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
@@ -67,7 +67,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     getInstance(context).finalProgressionDao().addMultipleFinalProgressions(FinalProgression.populateData());
                                     getInstance(context).exerciseDao().addMultipleExercises(Exercise.populateData());
                                     getInstance(context).bandDao().addMultipleBands(Band.populateData());
-                                    getInstance(context).angleDao().addMultipleAngles(Angle.populateData());
+                                    getInstance(context).toolDao().addMultipleTools(Tool.populateData());
                                     instance.OnDatabaseInitialised();
                                 }
                             });
@@ -88,5 +88,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TrackedExerciseDao trackedExerciseDao();
 
-    public abstract AngleDao angleDao();
+    public abstract ToolDao toolDao();
 }

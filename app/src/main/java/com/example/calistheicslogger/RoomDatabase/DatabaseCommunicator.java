@@ -3,7 +3,7 @@ package com.example.calistheicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.calistheicslogger.RoomDatabase.Entities.Angle;
+import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 
@@ -23,7 +23,7 @@ public class DatabaseCommunicator {
     public static List<TrackedExercise> personalRecordsList;
     public static List<TrackedExercise> chartRepsData;
     public static List<Band> bandsList;
-    public static List<Angle> anglesList;
+    public static List<Tool> toolsList;
     public static List<String> uniqueTimestamps;
 
     public static String exerciseType;
@@ -140,27 +140,26 @@ public class DatabaseCommunicator {
         });
     }
 
-    public void getAngles(){
+    public void getTools(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                anglesList = appDatabase.angleDao().getAll();
-                support.firePropertyChange("anglesPopulated", null, null);
+                toolsList = appDatabase.toolDao().getAll();
+                support.firePropertyChange("toolsPopulated", null, null);
             }
         });
     }
 
-    public void swapAngles(final int anglePos1, final int anglePos2)
+    public void swapTools(final int toolPos1, final int toolPos2)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                int angle1Rank = anglesList.size() - anglePos1 - 1;
-                int angle2Rank = anglesList.size() - anglePos2 - 1;
-                Log.i("Angle", "swapping rank " + angle1Rank + " to " + angle2Rank);
-                appDatabase.angleDao().swapByRank(angle1Rank,angle2Rank);
-                anglesList = appDatabase.angleDao().getAll();
-                support.firePropertyChange("anglesPopulated", null, null);
+                int tool1Rank = toolsList.size() - toolPos1 - 1;
+                int tool2Rank = toolsList.size() - toolPos2 - 1;
+                appDatabase.toolDao().swapByRank(tool1Rank,tool2Rank);
+                toolsList = appDatabase.toolDao().getAll();
+                support.firePropertyChange("toolsPopulated", null, null);
             }
         });
     }

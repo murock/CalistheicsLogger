@@ -200,9 +200,9 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             //  result += "    " + exercise.getBand() + " band";
             trackedComponents.add(exercise.getBand() + " band");
         }
-        if (!exercise.getAngle().isEmpty())
+        if (!exercise.getTool().isEmpty())
         {
-            trackedComponents.add(exercise.getAngle());
+            trackedComponents.add(exercise.getTool());
         }
         int distance = exercise.getDistance();
         if (distance != -1)
