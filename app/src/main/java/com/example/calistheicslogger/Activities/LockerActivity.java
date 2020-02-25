@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -76,12 +75,19 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     if (position == selectedPosition)
                     {
                         // Toggle off
+                        if (isBandMode)
+                        {
+                            newBandEditText.setText("Enter Band Name");
+                        }else
+                        {
+                            newBandEditText.setText("Enter Tool Name");
+                        }
                         newBandEditText.setFocusable(true);
                         newBandEditText.setFocusableInTouchMode(true);
                         selectedPosition = -1;
                         addRemoveButton.setText("+");
                         colorPickerButton.setText("pick color");
-                        newBandEditText.setText("Enter Band Name");
+
                         newBandEditText.setTextColor(Color.BLACK);
                         newBandEditText.setBackgroundColor(defaultColor);
                         // Stop No band from being deleted
@@ -212,15 +218,19 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         if (view.getId() == R.id.toolToggleButton && bandsButton.isChecked())
         {
             // Switching to tools
+            newBandEditText.setText("Enter Tool Name");
+            colorPickerButton.setEnabled(false);
             bandsButton.setEnabled(true);
             bandsButton.setChecked(false);
             toolButton.setEnabled(false);
             isBandMode = false;
             databaseCommunicator.getTools();
-            easyTextView.setText("Lowest");
-            hardTextView.setText("Highest");
+            easyTextView.setText("Most\nAssist");
+            hardTextView.setText("Least\nAssist");
         }else if(view.getId() == R.id.bandToggleButton && toolButton.isChecked()){
             // Switching to bands
+            newBandEditText.setText("Enter Band Name");
+            colorPickerButton.setEnabled(true);
             toolButton.setChecked(false);
             toolButton.setEnabled(true);
             bandsButton.setEnabled(false);
@@ -234,7 +244,13 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     public void openColorPicker(View view){
         if (selectedPosition != -1)
         {
-            removeBandFromDatabase();
+            if (isBandMode)
+            {
+                removeBandFromDatabase();
+            }else{
+                removeToolFromDatabase();
+            }
+
         }else {
             AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, defaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
                 @Override
@@ -261,16 +277,22 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     private void removeBandFromDatabase(){
-        Log.i("Alfie", "selected pos is" + selectedPosition);
         this.databaseCommunicator.removeBand(selectedPosition);
+    }
 
+    private void removeToolFromDatabase(){
+        //TODO implement tool removal in DB
     }
 
     public void addRemoveButtonPress(View view){
         if (selectedPosition != -1)
         {
-            // RemoveBand
-            removeBandFromDatabase();
+            if (isBandMode)
+            {
+                removeBandFromDatabase();
+            }else{
+                removeToolFromDatabase();
+            }
         }else{
             addBandToDatabase();
         }
