@@ -90,28 +90,35 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     private void setUpListView(final ArrayList<String> exercises){
         ListView exercisesListView = findViewById(R.id.exercisesListView);
 
-//        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
-//
-//        exercisesListView.setAdapter(arrayAdapter);
+        if(this.isInitialView) {
+            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exercises);
+            exercisesListView.setAdapter(arrayAdapter);
+        }else{
+            TextViewCloseArrayAdapter textViewCloseArrayAdapter = new TextViewCloseArrayAdapter(exercises, this);
+            textViewCloseArrayAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    Log.i("Alfie", textViewCloseArrayAdapter.removedItem);
+                    Alert(textViewCloseArrayAdapter.removedItem);
+                }
+            });
+            exercisesListView.setAdapter(textViewCloseArrayAdapter);
+        }
 
-        TextViewCloseArrayAdapter textViewCloseArrayAdapter = new TextViewCloseArrayAdapter(exercises, this);
-        textViewCloseArrayAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                Log.i("Alfie", textViewCloseArrayAdapter.removedItem);
-                Alert();
-            }
-        });
-        exercisesListView.setAdapter(textViewCloseArrayAdapter);
 
         exercisesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("TextClick","click ok" );
-                RelativeLayout test = (RelativeLayout)view;
-                TextView textView = (TextView)test.getChildAt(0);
-               // TextView textView = (TextView)view;
+                TextView textView;
+                if (isInitialView)
+                {
+                    textView = (TextView)view;
+                }else{
+                    RelativeLayout layout = (RelativeLayout)view;
+                    textView = (TextView)layout.getChildAt(0);
+                }
+
                 if (isInitialView){
                     isInitialView = false;
                     // Go into secondary view
@@ -170,21 +177,23 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         }
     }
 
-    public void Alert( ){
+    public void Alert(String exercise ){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
+        alertDialogBuilder.setMessage("Are you sure, you want to delete " + exercise + " from the app?");
                 alertDialogBuilder.setPositiveButton("yes",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(ExerciseListActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                                databaseCommunicator.removeExercise(exercise);
+                                isInitialView = true;
+                                setUpInitialView();
                             }
                         });
 
         alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ExerciseListActivity.this,"You clicked no button",Toast.LENGTH_LONG).show();
+               // Toast.makeText(ExerciseListActivity.this,"You clicked no button",Toast.LENGTH_LONG).show();
             }
         });
 

@@ -223,6 +223,16 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void removeExercise(String exercise)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.exerciseDao().delete(appDatabase.exerciseDao().getExerciseFromName(exercise));
+            }
+        });
+    }
+
     public void getAllProgressions()
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
