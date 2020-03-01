@@ -2,7 +2,9 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,15 +13,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
-import com.example.calistheicslogger.RoomDatabase.AppDatabase;
-import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
-import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,7 +32,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     List<String> exerciseNames;
     List<String> progressions;
     String currentDate;
-    Boolean isIntialView = true;
+    SharedPreferences prefs;
+    Boolean isInitialView = true;
     Boolean isProgressionView = true;
 
     @Override
@@ -46,7 +45,10 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         Intent i = getIntent();
         currentDate = (String)i.getSerializableExtra("Date");
 
-        databaseCommunicator.getAllProgressions();
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        isProgressionView = prefs.getBoolean("isProgressionView", true);
+
+        setUpInitialView();
         setUpSearchView();
     }
 
@@ -54,17 +56,17 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     protected void onResume()
     {
         super.onResume();
-        isIntialView = true;
-        databaseCommunicator.getAllProgressions();
+        isInitialView = true;
+        setUpInitialView();
     }
 
     @Override
     public void onBackPressed() {
-        if (this.isIntialView)
+        if (this.isInitialView)
         {
             super.onBackPressed();
         }else{
-            this.isIntialView = true;
+            this.isInitialView = true;
             this.setUpInitialView();
         }
     }
@@ -77,20 +79,6 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
                 setUpListView((ArrayList<String>)exercisesList);
             }
         });
-
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                stringListExercises = appDatabase.exerciseDao().getAllNames();
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        setUpListView((ArrayList<String>)stringListExercises);
-//                    }
-//                });
-//
-//            }
-//        });
     }
 
     private void setUpListView(final ArrayList<String> exercises){
@@ -104,8 +92,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView)view;
-                if (isIntialView){
-                    isIntialView = false;
+                if (isInitialView){
+                    isInitialView = false;
                     // Go into secondary view
                     if (isProgressionView) {
                         databaseCommunicator.getNamesFromProgression(textView.getText().toString());
@@ -148,6 +136,20 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         });
     }
 
+    private void setUpInitialView(){
+        ImageButton toggleButton = findViewById(R.id.toggleSearchButton);
+        if (this.isProgressionView)
+        {
+            prefs.edit().putBoolean("isProgressionView", true).commit();
+            toggleButton.setImageResource(R.drawable.muscle_icon);
+            databaseCommunicator.getAllProgressions();
+        }else{
+            prefs.edit().putBoolean("isProgressionView", false).commit();
+            toggleButton.setImageResource(R.drawable.progression_icon);
+            databaseCommunicator.getAllCategories();
+        }
+    }
+
     public void newExerciseClick(View view){
         Intent newExercise = new Intent(this,NewExerciseActivity.class);
         startActivity(newExercise);
@@ -161,25 +163,10 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     }
 
     public void ToggleSearchClick(View view){
-        ImageButton toggleButton = findViewById(R.id.toggleSearchButton);
-        if (this.isProgressionView)
-        {
-            this.isProgressionView = false;
-            toggleButton.setImageResource(R.drawable.progression_icon);
-        }else{
-            this.isProgressionView = true;
-            toggleButton.setImageResource(R.drawable.muscle_icon);
-        }
+        this.isProgressionView = !this.isProgressionView;
+        this.prefs.edit().putBoolean("isProgressionView", this.isProgressionView).commit();
+        Log.i("Alfie", this.isProgressionView + "");
         setUpInitialView();
-    }
-
-    private void setUpInitialView(){
-        if (this.isProgressionView)
-        {
-            databaseCommunicator.getAllProgressions();
-        }else {
-            databaseCommunicator.getAllCategories();
-        }
     }
 
     @Override
