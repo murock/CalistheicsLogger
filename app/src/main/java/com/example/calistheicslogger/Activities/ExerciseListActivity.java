@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 
 import java.beans.PropertyChangeEvent;
@@ -27,21 +28,23 @@ import java.util.List;
 
 public class ExerciseListActivity extends Activity implements PropertyChangeListener, Serializable {
 
-    AppDatabase appDatabase;
+    DatabaseCommunicator databaseCommunicator;
     ArrayAdapter<String> arrayAdapter;
-    List<String> stringListExercises;
+    List<String> exerciseNames;
+    List<String> progressions;
     String currentDate;
+    Boolean isIntialView = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        appDatabase = AppDatabase.getInstance(this);
-        appDatabase.addPropertyChangeListener(this);
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_list_activity);
         Intent i = getIntent();
         currentDate = (String)i.getSerializableExtra("Date");
 
-        setUpExercisesList();
+        databaseCommunicator.getAllProgressions();
         setUpSearchView();
     }
 
@@ -49,24 +52,43 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     protected void onResume()
     {
         super.onResume();
-        setUpExercisesList();
+        isIntialView = true;
+        databaseCommunicator.getAllProgressions();
     }
 
-    private void setUpExercisesList()
+    @Override
+    public void onBackPressed() {
+        if (this.isIntialView)
+        {
+            super.onBackPressed();
+        }else{
+            this.isIntialView = true;
+            databaseCommunicator.getAllProgressions();
+        }
+    }
+
+    private void setUpExercisesList(List<String> exercisesList)
     {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                stringListExercises = appDatabase.exerciseDao().getAllNames();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setUpListView((ArrayList<String>)stringListExercises);
-                    }
-                });
-
+                setUpListView((ArrayList<String>)exercisesList);
             }
         });
+
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                stringListExercises = appDatabase.exerciseDao().getAllNames();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        setUpListView((ArrayList<String>)stringListExercises);
+//                    }
+//                });
+//
+//            }
+//        });
     }
 
     private void setUpListView(final ArrayList<String> exercises){
@@ -80,7 +102,14 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView)view;
-                newTrackAcitivity(textView.getText().toString());
+                if (isIntialView){
+                    isIntialView = false;
+                    // Go into secondary view
+                    databaseCommunicator.getNamesFromProgression(textView.getText().toString());
+                }else{
+                    // Open track exercise activity for selected exercise
+                    newTrackAcitivity(textView.getText().toString());
+                }
             }
         });
     }
@@ -106,7 +135,6 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (arrayAdapter != null) {
-                    Log.i("Alfie", newText);
                     arrayAdapter.getFilter().filter(newText);
                 }
                 return true;
@@ -129,6 +157,12 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // Trigger after database has populated
-        setUpExercisesList();
+        if (evt.getPropertyName() == "progressions"){
+            this.progressions = databaseCommunicator.progressions;
+            setUpExercisesList(this.progressions);
+        }else if(evt.getPropertyName() == "exerciseNames"){
+            this.exerciseNames = databaseCommunicator.exerciseNames;
+            setUpExercisesList(this.exerciseNames);
+        }
     }
 }

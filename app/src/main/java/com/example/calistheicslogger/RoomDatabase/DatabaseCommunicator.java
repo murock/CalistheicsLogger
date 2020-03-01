@@ -25,6 +25,8 @@ public class DatabaseCommunicator {
     public static List<Band> bandsList;
     public static List<Tool> toolsList;
     public static List<String> uniqueTimestamps;
+    public static List<String> exerciseNames;
+    public static List<String> progressions;
 
     public static String exerciseType;
 
@@ -193,6 +195,28 @@ public class DatabaseCommunicator {
             public void run() {
                 exerciseType = appDatabase.exerciseDao().getTypeFromName(exerciseName);
                 support.firePropertyChange("exerciseTypePopulated", null, null);
+            }
+        });
+    }
+
+    public void getNamesFromProgression(String progression)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exerciseNames = appDatabase.exerciseDao().getNamesFromProgression(progression);
+                support.firePropertyChange("exerciseNames", null, null);
+            }
+        });
+    }
+
+    public void getAllProgressions()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                progressions = appDatabase.finalProgressionDao().getAllNames();
+                support.firePropertyChange("progressions",null,null);
             }
         });
     }

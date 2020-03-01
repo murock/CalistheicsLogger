@@ -28,6 +28,9 @@ public interface ExerciseDao {
     @Query("SELECT type FROM exercises WHERE exercise_name = :exerciseName")
     String getTypeFromName(String exerciseName);
 
+    @Query("SELECT exercise_name FROM exercises WHERE progression_name = :progressionName")
+    List<String> getNamesFromProgression(String progressionName);
+
     @Insert
     void addExercise(Exercise exercise);
 
