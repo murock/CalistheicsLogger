@@ -3,11 +3,13 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -77,8 +79,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         exercisesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ExerciseListActivity.this, "You pressed: " + exercises.get(position),Toast.LENGTH_SHORT).show();
-                newTrackAcitivity(exercises.get(position));
+                TextView textView = (TextView)view;
+                newTrackAcitivity(textView.getText().toString());
             }
         });
     }
@@ -104,6 +106,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (arrayAdapter != null) {
+                    Log.i("Alfie", newText);
                     arrayAdapter.getFilter().filter(newText);
                 }
                 return true;
