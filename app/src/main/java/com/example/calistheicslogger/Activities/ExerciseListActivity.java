@@ -1,8 +1,11 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -11,13 +14,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.Tools.TextViewCloseArrayAdapter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -84,14 +90,28 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     private void setUpListView(final ArrayList<String> exercises){
         ListView exercisesListView = findViewById(R.id.exercisesListView);
 
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
+//        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,exercises);
+//
+//        exercisesListView.setAdapter(arrayAdapter);
 
-        exercisesListView.setAdapter(arrayAdapter);
+        TextViewCloseArrayAdapter textViewCloseArrayAdapter = new TextViewCloseArrayAdapter(exercises, this);
+        textViewCloseArrayAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                Log.i("Alfie", textViewCloseArrayAdapter.removedItem);
+                Alert();
+            }
+        });
+        exercisesListView.setAdapter(textViewCloseArrayAdapter);
 
         exercisesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView)view;
+                Log.i("TextClick","click ok" );
+                RelativeLayout test = (RelativeLayout)view;
+                TextView textView = (TextView)test.getChildAt(0);
+               // TextView textView = (TextView)view;
                 if (isInitialView){
                     isInitialView = false;
                     // Go into secondary view
@@ -148,6 +168,28 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             toggleButton.setImageResource(R.drawable.progression_icon);
             databaseCommunicator.getAllCategories();
         }
+    }
+
+    public void Alert( ){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
+                alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Toast.makeText(ExerciseListActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ExerciseListActivity.this,"You clicked no button",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     public void newExerciseClick(View view){
