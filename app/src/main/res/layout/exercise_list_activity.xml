@@ -3,7 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ImageButton
+        android:id="@+id/toggleSearchButton"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="ToggleSearchClick"
+        android:scaleType="centerCrop"
+        android:src="@drawable/muscle_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/newExerciseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newExerciseButton"
+        app:layout_constraintTop_toTopOf="@+id/newExerciseButton" />
 
     <ListView
         android:id="@+id/exercisesListView"
@@ -18,7 +34,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </ListView>
 
     <SearchView
         android:id="@+id/exerciseSearchView"
@@ -40,16 +58,15 @@
         android:layout_width="40dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="45dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="35dp"
         android:onClick="newExerciseClick"
         android:text="+"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/exercisesListView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/toggleSearchButton"
         app:layout_constraintStart_toEndOf="@+id/exerciseSearchView"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

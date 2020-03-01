@@ -31,6 +31,9 @@ public interface ExerciseDao {
     @Query("SELECT exercise_name FROM exercises WHERE progression_name = :progressionName")
     List<String> getNamesFromProgression(String progressionName);
 
+    @Query("SELECT exercise_name FROM exercises WHERE categories LIKE :category")
+    List<String> getNamesFromCategory(String category);
+
     @Insert
     void addExercise(Exercise exercise);
 

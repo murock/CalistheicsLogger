@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     List<String> progressions;
     String currentDate;
     Boolean isIntialView = true;
+    Boolean isProgressionView = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             super.onBackPressed();
         }else{
             this.isIntialView = true;
-            databaseCommunicator.getAllProgressions();
+            this.setUpInitialView();
         }
     }
 
@@ -105,7 +107,11 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
                 if (isIntialView){
                     isIntialView = false;
                     // Go into secondary view
-                    databaseCommunicator.getNamesFromProgression(textView.getText().toString());
+                    if (isProgressionView) {
+                        databaseCommunicator.getNamesFromProgression(textView.getText().toString());
+                    }else{
+                        databaseCommunicator.getNamesFromCategory(textView.getText().toString());
+                    }
                 }else{
                     // Open track exercise activity for selected exercise
                     newTrackAcitivity(textView.getText().toString());
@@ -154,6 +160,28 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         startActivity(trackActivity);
     }
 
+    public void ToggleSearchClick(View view){
+        ImageButton toggleButton = findViewById(R.id.toggleSearchButton);
+        if (this.isProgressionView)
+        {
+            this.isProgressionView = false;
+            toggleButton.setImageResource(R.drawable.progression_icon);
+        }else{
+            this.isProgressionView = true;
+            toggleButton.setImageResource(R.drawable.muscle_icon);
+        }
+        setUpInitialView();
+    }
+
+    private void setUpInitialView(){
+        if (this.isProgressionView)
+        {
+            databaseCommunicator.getAllProgressions();
+        }else {
+            databaseCommunicator.getAllCategories();
+        }
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // Trigger after database has populated
@@ -161,8 +189,11 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             this.progressions = databaseCommunicator.progressions;
             setUpExercisesList(this.progressions);
         }else if(evt.getPropertyName() == "exerciseNames"){
+            Log.i("Alfie", "exercise names updated");
             this.exerciseNames = databaseCommunicator.exerciseNames;
             setUpExercisesList(this.exerciseNames);
+        } else if(evt.getPropertyName() == "categories"){
+            setUpExercisesList(databaseCommunicator.categories);
         }
     }
 }

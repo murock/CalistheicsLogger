@@ -27,6 +27,7 @@ public class DatabaseCommunicator {
     public static List<String> uniqueTimestamps;
     public static List<String> exerciseNames;
     public static List<String> progressions;
+    public static  List<String> categories;
 
     public static String exerciseType;
 
@@ -210,6 +211,18 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void getNamesFromCategory(String category)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                String categoryWithPerc = "%" + category + "%";
+                exerciseNames = appDatabase.exerciseDao().getNamesFromCategory(categoryWithPerc);
+                support.firePropertyChange("exerciseNames", null, null);
+            }
+        });
+    }
+
     public void getAllProgressions()
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -217,6 +230,17 @@ public class DatabaseCommunicator {
             public void run() {
                 progressions = appDatabase.finalProgressionDao().getAllNames();
                 support.firePropertyChange("progressions",null,null);
+            }
+        });
+    }
+
+    public void getAllCategories()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                categories = appDatabase.categoryDao().getAllNames();
+                support.firePropertyChange("categories",null,null);
             }
         });
     }
