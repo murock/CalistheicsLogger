@@ -2,18 +2,24 @@ package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.graphics.ColorUtils;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
@@ -47,6 +53,8 @@ public class TrackActivity extends Activity implements Serializable {
     // TODO: re-order set numbers when dragged
     int globalSetNumber = 1;
 
+    int selectedPosition = -1;
+
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
                 @Override
@@ -57,6 +65,33 @@ public class TrackActivity extends Activity implements Serializable {
                         dslvAdapter.remove(item);
                         dslvAdapter.insert(item, to);
                     }
+                }
+            };
+
+    private DragSortListView.OnItemClickListener onClick =
+            new DragSortListView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View v, int position, long arg)
+                {
+                    Button deleteButton = findViewById(R.id.deleteButton);
+                    if (position == selectedPosition)
+                    {
+                        // Toggle off
+                        deleteButton.setText("Delete last");
+                        deleteButton.setFocusable(true);
+                        deleteButton.setFocusableInTouchMode(true);
+                        selectedPosition = -1;
+                        // Stop No band from being deleted
+                    }else
+                    {
+                        // Toggle on
+                        deleteButton.setText("Delete");
+                        deleteButton.setFocusable(false);
+                        deleteButton.setFocusableInTouchMode(false);
+                        selectedPosition = position;
+                    }
+                    Log.i("Selected", "pos" + position);
+                    dslvAdapter.notifyDataSetChanged();
                 }
             };
 
@@ -113,10 +148,24 @@ public class TrackActivity extends Activity implements Serializable {
         dragSortController = buildController(dslv);
         dslv.setFloatViewManager(dragSortController);
         dslv.setOnTouchListener(dragSortController);
+        dslv.setOnItemClickListener(onClick);
     }
 
     private void UpdateDSLV(ArrayList<String> items){
-        dslvAdapter = new ArrayAdapter<>(this,R.layout.center_spinner_text,items);
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,items){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                final View view = super.getView(position,convertView,parent);
+                if (position == selectedPosition)
+                {
+                    int backgroundColor = Color.parseColor("#c2d4f0");
+                    view.setBackgroundColor(backgroundColor);
+                }else {
+                    view.setBackgroundColor(Color.WHITE);
+                }
+                return view;
+            }
+        };
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
