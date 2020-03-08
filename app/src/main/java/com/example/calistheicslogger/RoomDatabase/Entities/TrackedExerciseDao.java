@@ -35,10 +35,6 @@ public interface TrackedExerciseDao {
     @Query("UPDATE tracked_exercises SET set_number = set_number - 1 WHERE set_number > :setNo")
     void updateRemovedSet(int setNo);
 
-    @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name AND timestamp =:timestamp AND set_number =:setNo")
-    TrackedExercise getTrackedExercise(String name, String timestamp, int setNo);
-
-    //@Query("UPDATE tracked_exercises set set_number = -set_number where set_number =:setNo1 or set_number =:setNo2;")
     @Query("UPDATE tracked_exercises set set_number = (case set_number when :setNo1 then :setNo2 else :setNo1 end) where set_number in (:setNo1, :setNo2)")
     void swapBySetNumber(int setNo1, int setNo2);
 

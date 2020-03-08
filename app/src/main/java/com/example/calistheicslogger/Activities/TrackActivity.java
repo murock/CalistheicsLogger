@@ -50,7 +50,6 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
     String currentExercise;
     String currentDate;
     DragSortListView dslv;
-    SimpleFloatViewManager floatViewManager;
     DragSortController dragSortController;
 
     ArrayAdapter<String> dslvAdapter;
@@ -58,7 +57,6 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
     int globalSetNumber = 1;
 
     int selectedPosition = -1;
-    TrackedExercise selectedTrackedExercise;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -82,17 +80,12 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                     if (position == selectedPosition)
                     {
                         // Toggle off
-                        deleteButton.setText("Delete last");
-                        deleteButton.setFocusable(true);
-                        deleteButton.setFocusableInTouchMode(true);
+                        deleteButton.setEnabled(false);
                         selectedPosition = -1;
-                        // Stop No band from being deleted
                     }else
                     {
                         // Toggle on
-                        deleteButton.setText("Delete");
-                        deleteButton.setFocusable(false);
-                        deleteButton.setFocusableInTouchMode(false);
+                        deleteButton.setEnabled(true);
                         selectedPosition = position;
                     }
                     Log.i("Selected", "pos" + position);
