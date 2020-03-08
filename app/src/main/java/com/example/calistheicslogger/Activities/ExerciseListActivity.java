@@ -168,11 +168,11 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         if (this.isProgressionView)
         {
             prefs.edit().putBoolean("isProgressionView", true).commit();
-            toggleButton.setImageResource(R.drawable.muscle_icon);
+            toggleButton.setImageResource(R.drawable.biceps_icon);
             databaseCommunicator.getAllProgressions();
         }else{
             prefs.edit().putBoolean("isProgressionView", false).commit();
-            toggleButton.setImageResource(R.drawable.progression_icon);
+            toggleButton.setImageResource(R.drawable.dumbell_sizes_icon);
             databaseCommunicator.getAllCategories();
         }
     }

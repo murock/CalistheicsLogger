@@ -23,12 +23,14 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <Button
+    <ImageButton
         android:id="@+id/addExerciseButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="addExerciseClick"
+        android:src="@drawable/add_icon"
         android:text="Add Exercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendarButton"
@@ -36,12 +38,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/calendarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="calendarClick"
+        android:src="@drawable/calendar"
         android:text="Calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,25 +53,29 @@
         app:layout_constraintStart_toEndOf="@+id/addExerciseButton"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="navigationButtonClick"
+        android:src="@drawable/navigate_right_icon"
         android:text="Next"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/prevButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="navigationButtonClick"
+        android:src="@drawable/navigate_left_icon"
         android:text="Previous"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No Date Selected"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/prevButton"
         app:layout_constraintEnd_toStartOf="@+id/nextButton"
         app:layout_constraintStart_toEndOf="@+id/prevButton"

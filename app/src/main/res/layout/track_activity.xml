@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
         android:id="@+id/chartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="ChartsButtonClick"
+        android:src="@drawable/chart_icon"
         android:text="Chart"
         app:layout_constraintBottom_toTopOf="@+id/titleTextView"
         app:layout_constraintEnd_toEndOf="@id/personalRecordButton"
@@ -131,13 +133,14 @@
         app:layout_constraintStart_toEndOf="@+id/weightMinusButton"
         app:layout_constraintTop_toBottomOf="@+id/weightTextView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/weightPlusButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="OnButtonClick"
+        android:src="@drawable/arrow_right_icon"
         android:text="+"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
@@ -146,13 +149,14 @@
         app:layout_constraintStart_toEndOf="@+id/weightEditText"
         app:layout_constraintTop_toTopOf="@+id/weightEditText" />
 
-    <Button
+    <ImageButton
         android:id="@+id/weightMinusButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="OnButtonClick"
+        android:src="@drawable/arrow_left_icon"
         android:text="-"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
@@ -235,13 +239,14 @@
         app:layout_constraintStart_toStartOf="@+id/repsEditText"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/repsPlusButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="OnButtonClick"
+        android:src="@drawable/arrow_right_icon"
         android:text="+"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
@@ -250,13 +255,14 @@
         app:layout_constraintStart_toEndOf="@+id/repsEditText"
         app:layout_constraintTop_toTopOf="@+id/repsEditText" />
 
-    <Button
+    <ImageButton
         android:id="@+id/repsMinusButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="OnButtonClick"
+        android:src="@drawable/arrow_left_icon"
         android:text="-"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
@@ -466,12 +472,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saveButton" />
 
-    <Button
+    <ImageButton
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="SaveButtonClick"
+        android:src="@drawable/add_icon"
         android:text="Save"
         app:layout_constraintBottom_toTopOf="@+id/trackedExerciseDSLV"
         app:layout_constraintEnd_toStartOf="@+id/deleteButton"
@@ -479,12 +487,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempoPause1EditText" />
 
-    <Button
+    <ImageButton
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
         android:enabled="false"
         android:onClick="DeleteButtonClick"
+        android:src="@drawable/remove_icon"
         android:text="Delete"
         app:layout_constraintBottom_toBottomOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -492,12 +502,14 @@
         app:layout_constraintStart_toEndOf="@+id/saveButton"
         app:layout_constraintTop_toTopOf="@+id/saveButton" />
 
-    <Button
+    <ImageButton
         android:id="@+id/historyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="HistoryButtonClick"
+        android:src="@drawable/history_icon"
         android:text="History"
         app:layout_constraintBottom_toBottomOf="@+id/chartButton"
         app:layout_constraintEnd_toStartOf="@+id/chartButton"
@@ -505,11 +517,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/chartButton" />
 
-    <Button
+    <ImageButton
         android:id="@+id/personalRecordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="RecordClick"
+        android:src="@drawable/records_icon"
         android:text="Records"
         app:layout_constraintBottom_toBottomOf="@+id/chartButton"
         app:layout_constraintEnd_toEndOf="parent"
