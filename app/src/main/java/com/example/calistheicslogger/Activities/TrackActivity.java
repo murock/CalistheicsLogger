@@ -88,7 +88,6 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                         deleteButton.setEnabled(true);
                         selectedPosition = position;
                     }
-                    Log.i("Selected", "pos" + position);
                     dslvAdapter.notifyDataSetChanged();
                 }
             };

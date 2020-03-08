@@ -216,7 +216,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     public void ToggleSearchClick(View view){
         this.isProgressionView = !this.isProgressionView;
         this.prefs.edit().putBoolean("isProgressionView", this.isProgressionView).commit();
-        Log.i("Alfie", this.isProgressionView + "");
+        this.isInitialView = true;
         setUpInitialView();
     }
 
