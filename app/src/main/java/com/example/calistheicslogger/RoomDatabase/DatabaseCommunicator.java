@@ -29,6 +29,7 @@ public class DatabaseCommunicator {
     public static List<String> progressions;
     public static  List<String> categories;
 
+    public static TrackedExercise trackedExercise;
     public static String exerciseType;
 
 
@@ -52,6 +53,27 @@ public class DatabaseCommunicator {
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
+    }
+
+    public void deleteTrackedExercise(String name, String timestamp, int setNo){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                //trackedExercise = appDatabase.trackedExerciseDao().getTrackedExercise(name,timestamp,setNo);
+                appDatabase.trackedExerciseDao().deleteTrackedExercise(name,timestamp,setNo);
+                appDatabase.trackedExerciseDao().updateRemovedSet(setNo);
+                support.firePropertyChange("trackedExerciseDeleted", null, null);
+            }
+        });
+    }
+
+    public void removeTrackedExercise(TrackedExercise trackedExerciseToDelete){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.trackedExerciseDao().delete(trackedExerciseToDelete);
+            }
+        });
     }
 
     public void getExercisesFromDate(final String date)

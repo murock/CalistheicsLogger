@@ -24,6 +24,7 @@ import androidx.core.graphics.ColorUtils;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.DateFunctions;
@@ -32,6 +33,8 @@ import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 import com.example.calistheicslogger.Tools.dslv.SimpleFloatViewManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,9 +43,10 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class TrackActivity extends Activity implements Serializable {
+public class TrackActivity extends Activity implements Serializable, PropertyChangeListener {
 
     AppDatabase appDatabase;
+    DatabaseCommunicator databaseCommunicator;
     String currentExercise;
     String currentDate;
     DragSortListView dslv;
@@ -54,6 +58,7 @@ public class TrackActivity extends Activity implements Serializable {
     int globalSetNumber = 1;
 
     int selectedPosition = -1;
+    TrackedExercise selectedTrackedExercise;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -95,14 +100,6 @@ public class TrackActivity extends Activity implements Serializable {
                 }
             };
 
-//    private DragSortListView.DragListener onDrag =
-//            new DragSortListView.DragListener() {
-//                @Override
-//                public void drag(int from, int to) {
-//                    // TODO: put code in here for selection of record???
-//                }
-//            };
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         appDatabase = AppDatabase.getInstance(this);
@@ -111,6 +108,8 @@ public class TrackActivity extends Activity implements Serializable {
         Intent i = getIntent();
         final String exerciseString = (String)i.getSerializableExtra("Exercise");
         currentDate = (String)i.getSerializableExtra("Date");
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
+        databaseCommunicator.addPropertyChangeListener(this);
         SetDate();
         SetUpActivity(exerciseString);
         setUpBandSpinner();
@@ -433,14 +432,10 @@ public class TrackActivity extends Activity implements Serializable {
     }
 
     public void DeleteButtonClick(View view){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                TrackedExercise trackedExercise = appDatabase.trackedExerciseDao().getLastTrackedExercise(currentDate);
-                appDatabase.trackedExerciseDao().delete(trackedExercise);
-                updateTrackingList();
-            }
-        });
+        if(this.selectedPosition !=  -1)
+        {
+            databaseCommunicator.deleteTrackedExercise(this.currentExercise,this.currentDate,this.selectedPosition + 1);
+        }
     }
 
     public void SaveButtonClick(View view){
@@ -558,5 +553,17 @@ public class TrackActivity extends Activity implements Serializable {
                }
                break;
        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName() == "trackedExerciseDeleted"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTrackingList();
+                }
+            });
+        }
     }
 }
