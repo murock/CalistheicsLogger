@@ -33,7 +33,7 @@
         android:src="@drawable/add_icon"
         android:text="Add Exercise"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/calendarButton"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/addExerciseButton"
+        app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
     <ImageButton
@@ -91,6 +91,19 @@
         app:layout_constraintEnd_toStartOf="@+id/nextButton"
         app:layout_constraintStart_toEndOf="@+id/prevButton"
         app:layout_constraintTop_toTopOf="@+id/prevButton" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/calendarButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addExerciseButton"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView"
+        app:srcCompat="@drawable/tools_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

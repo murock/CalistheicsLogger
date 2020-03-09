@@ -494,7 +494,7 @@
         android:backgroundTint="#00FFFFFF"
         android:enabled="false"
         android:onClick="DeleteButtonClick"
-        android:src="@drawable/remove_icon"
+        android:src="@drawable/faded_remove_icon"
         android:text="Delete"
         app:layout_constraintBottom_toBottomOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"

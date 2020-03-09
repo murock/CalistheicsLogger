@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -76,16 +77,18 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View v, int position, long arg)
                 {
-                    Button deleteButton = findViewById(R.id.deleteButton);
+                    ImageButton deleteButton = findViewById(R.id.deleteButton);
                     if (position == selectedPosition)
                     {
                         // Toggle off
                         deleteButton.setEnabled(false);
+                        deleteButton.setImageResource(R.drawable.faded_remove_icon);
                         selectedPosition = -1;
                     }else
                     {
                         // Toggle on
                         deleteButton.setEnabled(true);
+                        deleteButton.setImageResource(R.drawable.remove_icon);
                         selectedPosition = position;
                     }
                     dslvAdapter.notifyDataSetChanged();

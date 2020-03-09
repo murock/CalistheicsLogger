@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -213,29 +214,31 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     public void OnToggleClick(View view){
-        ToggleButton bandsButton = findViewById(R.id.bandToggleButton);
-        ToggleButton toolButton = findViewById(R.id.toolToggleButton);
+        ImageButton bandsButton = findViewById(R.id.bandToggleButton);
+        ImageButton toolButton = findViewById(R.id.toolToggleButton);
         TextView easyTextView = findViewById(R.id.easyTextView);
         TextView hardTextView = findViewById(R.id.hardTextView);
-        if (view.getId() == R.id.toolToggleButton && bandsButton.isChecked())
+        if (view.getId() == R.id.toolToggleButton && isBandMode)
         {
             // Switching to tools
             newBandEditText.setText("Enter Tool Name");
             colorPickerButton.setEnabled(false);
             bandsButton.setEnabled(true);
-            bandsButton.setChecked(false);
+            bandsButton.setImageResource(R.drawable.band_icon);
             toolButton.setEnabled(false);
+            toolButton.setImageResource(R.drawable.faded_tools_icon);
             isBandMode = false;
             databaseCommunicator.getTools();
             easyTextView.setText("Most\nAssist");
             hardTextView.setText("Least\nAssist");
-        }else if(view.getId() == R.id.bandToggleButton && toolButton.isChecked()){
+        }else if(view.getId() == R.id.bandToggleButton && !isBandMode){
             // Switching to bands
             newBandEditText.setText("Enter Band Name");
             colorPickerButton.setEnabled(true);
-            toolButton.setChecked(false);
             toolButton.setEnabled(true);
+            toolButton.setImageResource(R.drawable.tools_icon);
             bandsButton.setEnabled(false);
+            bandsButton.setImageResource(R.drawable.faded_band_icon);
             isBandMode = true;
             databaseCommunicator.getBands();
             easyTextView.setText("Thick");
