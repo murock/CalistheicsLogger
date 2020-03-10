@@ -234,6 +234,17 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void getAllNames()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exerciseNames = appDatabase.exerciseDao().getAllNames();
+                support.firePropertyChange("exerciseNames", null, null);
+            }
+        });
+    }
+
     public void removeExercise(String exercise)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

@@ -41,6 +41,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
     SharedPreferences prefs;
     Boolean isInitialView = true;
     Boolean isProgressionView = true;
+    Boolean fullListLoaded = false;
+    String filterText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,15 +157,35 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (arrayAdapter != null) {
-                    arrayAdapter.getFilter().filter(newText);
+                filterText = newText;
+                isInitialView = false;
+                if (!fullListLoaded)
+                {
+                    databaseCommunicator.getAllNames();
+                    fullListLoaded = true;
+                }else
+                {
+                    applyFilter();
                 }
                 return true;
             }
         });
     }
 
+    private void applyFilter()
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (arrayAdapter != null && filterText != null) {
+                    arrayAdapter.getFilter().filter(filterText);
+                }
+            }
+        });
+    }
+
     private void setUpInitialView(){
+        this.fullListLoaded = false;
         ImageButton toggleButton = findViewById(R.id.toggleSearchButton);
         if (this.isProgressionView)
         {
@@ -230,6 +252,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             Log.i("Alfie", "exercise names updated");
             this.exerciseNames = databaseCommunicator.exerciseNames;
             setUpExercisesList(this.exerciseNames);
+            this.applyFilter();
         } else if(evt.getPropertyName() == "categories"){
             setUpExercisesList(databaseCommunicator.categories);
         }
