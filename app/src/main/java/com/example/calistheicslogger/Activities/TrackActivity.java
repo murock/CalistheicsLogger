@@ -212,6 +212,7 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
             @Override
             public void run() {
                 List<String> bands = appDatabase.bandDao().getAllBandColours();
+                bands.add(0,"");
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
                 bandSpinner.setAdapter(arrayAdapter);

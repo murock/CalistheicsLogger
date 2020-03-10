@@ -76,7 +76,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         if(!this.exerciseType.equals("Weight and Reps") && !this.exerciseType.equals("Reps") && !this.exerciseType.equals("Isometric"))
         {
             TextView titleTextView = findViewById(R.id.titleTextView);
-            titleTextView.setText("Only Weight and Reps charts supported more soon");
+            titleTextView.setText("More exercise types soon");
             return;
         }
 
@@ -95,6 +95,8 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 bandNameList.add(band.getColour());
             }
         }
+        bandsMap.put("", Color.BLUE);
+        bandNameList.add("");
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         if (trackedExercises.size() == 0){
@@ -123,7 +125,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 lastDate = date;
             }
             String band = exercise.getBand();
-
+            Log.i("Band is", band);
             int yAxisDataPoint;
             if (this.exerciseType.equals("Isometric"))
             {
@@ -156,6 +158,10 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 series = seriesDictionary.get(bandName);
                 series.setColor(bandsMap.get(bandName));
                 series.setTitle(bandName);
+                if (bandName.isEmpty())
+                {
+                    series.setTitle("None");
+                }
                 graph.addSeries(series);
             }
         }
