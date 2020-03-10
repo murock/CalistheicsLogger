@@ -256,8 +256,12 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     {
         Intent calendar = new Intent(this, CalendarActivity.class);
         startActivity(calendar);
-//        databaseCommunicator.getExercisesFromDate(selectedDate);
-//        populateDateTitle();
+    }
+
+    public void toolsClick(View view)
+    {
+        Intent locker = new Intent(this,LockerActivity.class);
+        startActivity(locker);
     }
 
 }
