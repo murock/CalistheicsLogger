@@ -35,6 +35,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
 
     DatabaseCommunicator databaseCommunicator;
     ArrayAdapter<String> arrayAdapter;
+    TextViewCloseArrayAdapter textViewCloseArrayAdapter;
     List<String> exerciseNames;
     List<String> progressions;
     String currentDate;
@@ -74,6 +75,9 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         {
             super.onBackPressed();
         }else{
+            SearchView exerciseSearchView = findViewById(R.id.exerciseSearchView);
+            exerciseSearchView.setQuery("", false);
+            exerciseSearchView.clearFocus();
             this.isInitialView = true;
             this.setUpInitialView();
         }
@@ -96,13 +100,14 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exercises);
             exercisesListView.setAdapter(arrayAdapter);
         }else{
-            TextViewCloseArrayAdapter textViewCloseArrayAdapter = new TextViewCloseArrayAdapter(exercises, this);
+            textViewCloseArrayAdapter = new TextViewCloseArrayAdapter(exercises, this);
             textViewCloseArrayAdapter.registerDataSetObserver(new DataSetObserver() {
                 @Override
                 public void onChanged() {
                     super.onChanged();
-                    Log.i("Alfie", textViewCloseArrayAdapter.removedItem);
-                    Alert(textViewCloseArrayAdapter.removedItem);
+                    if (textViewCloseArrayAdapter.removedItem != null) {
+                        Alert(textViewCloseArrayAdapter.removedItem);
+                    }
                 }
             });
             exercisesListView.setAdapter(textViewCloseArrayAdapter);
@@ -177,8 +182,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (arrayAdapter != null && filterText != null) {
-                    arrayAdapter.getFilter().filter(filterText);
+                if(textViewCloseArrayAdapter != null && filterText != null && !isInitialView){
+                    textViewCloseArrayAdapter.getFilter().filter(filterText);
                 }
             }
         });

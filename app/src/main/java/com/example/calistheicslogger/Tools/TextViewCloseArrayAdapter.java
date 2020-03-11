@@ -1,11 +1,14 @@
 package com.example.calistheicslogger.Tools;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -13,8 +16,9 @@ import com.example.calistheicslogger.R;
 
 import java.util.ArrayList;
 
-public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapter {
+public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapter, Filterable {
     private ArrayList<String> list = new ArrayList<String>();
+    private  ArrayList<String> fullList = new ArrayList<>();
     private Context context;
     public String removedItem;
 
@@ -22,6 +26,7 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
 
     public TextViewCloseArrayAdapter(ArrayList<String> list, Context context) {
         this.list = list;
+        this.fullList = list;
         this.context = context;
     }
 
@@ -69,4 +74,45 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
         return view;
     }
 
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                FilterResults results = new FilterResults();
+                ArrayList<String> FilteredArrayNames = new ArrayList<String>();
+
+                // perform your search here using the searchConstraint String.
+
+                constraint = constraint.toString().toLowerCase();
+                for (int i = 0; i < fullList.size(); i++) {
+                    String dataNames = fullList.get(i);
+                    String[] words = dataNames.split("\\s+");
+                    boolean filterItem = false;
+                    for(String word : words)
+                    {
+                        if (word.toLowerCase().startsWith(constraint.toString()))  {
+                            filterItem = true;
+                        }
+                    }
+                    if(filterItem){
+                        FilteredArrayNames.add(dataNames);
+                    }
+                }
+
+                results.count = FilteredArrayNames.size();
+                results.values = FilteredArrayNames;
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (ArrayList<String>)results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
+    }
 }
