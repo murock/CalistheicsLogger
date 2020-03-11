@@ -28,6 +28,12 @@ public interface BandDao {
             "end)")
     void swapByRank(int band1Rank, int band2Rank);
 
+    @Query("DELETE FROM bands WHERE rank == :rank")
+    void removeBandByRank(int rank);
+
+    @Query("UPDATE bands SET rank = rank - 1 WHERE rank > :rank")
+    void updateRemovedBand(int rank);
+
     @Insert
     void addBand(Band band);
 

@@ -131,13 +131,16 @@ public class DatabaseCommunicator {
 
     public void removeBand(final int bandPos){
         // TODO: make this remove a band based on band rank and reassign ranks of bands
-//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                int bandRank = bandsList.size() - bandPos - 1;
-//                appDatabase.bandDao().
-//            }
-//        });
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int bandRank = bandsList.size() - bandPos - 1;
+                appDatabase.bandDao().removeBandByRank(bandRank);
+                appDatabase.bandDao().updateRemovedBand(bandRank);
+                bandsList = appDatabase.bandDao().getAll();
+                support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
     }
 
     public void swapBands(final int bandPos1, final int bandPos2)
