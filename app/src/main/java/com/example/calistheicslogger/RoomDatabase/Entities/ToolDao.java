@@ -27,6 +27,12 @@ public interface ToolDao {
             "end)")
     void swapByRank(int tool1Rank, int tool2Rank);
 
+    @Query("DELETE FROM tools WHERE rank == :rank")
+    void removeToolByRank(int rank);
+
+    @Query("UPDATE tools SET rank = rank - 1 WHERE rank > :rank")
+    void updateRemovedTool(int rank);
+
     @Insert
     void addTool(Tool tool);
 

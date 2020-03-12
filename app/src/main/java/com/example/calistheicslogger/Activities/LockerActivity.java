@@ -204,7 +204,23 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             arrayListTools.add(tool.getName());
         }
 
-        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListTools);
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListTools){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Get the current item from ListView
+                final View view = super.getView(position,convertView,parent);
+
+                if (position == selectedPosition)
+                {
+                    int backgroundColor = ColorUtils.blendARGB(Color.WHITE, Color.WHITE, 0.4f);
+                    newBandEditText.setText(tools.get(position).getName());
+                    newBandEditText.setBackgroundColor(Color.WHITE);
+                    view.setBackgroundColor(backgroundColor);
+                }
+
+                return  view;
+            }
+        };
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -292,7 +308,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     private void removeToolFromDatabase(){
-        //TODO implement tool removal in DB
+        this.databaseCommunicator.removeTool(selectedPosition);
     }
 
     public void addRemoveButtonPress(View view){

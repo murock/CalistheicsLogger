@@ -130,7 +130,6 @@ public class DatabaseCommunicator {
     }
 
     public void removeBand(final int bandPos){
-        // TODO: make this remove a band based on band rank and reassign ranks of bands
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -153,6 +152,19 @@ public class DatabaseCommunicator {
                 appDatabase.bandDao().swapByRank(band1Rank,band2Rank);
                 bandsList = appDatabase.bandDao().getAll();
                 support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
+
+    public void removeTool(final int toolPos){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int toolRank = toolsList.size() - toolPos - 1;
+                appDatabase.toolDao().removeToolByRank(toolRank);
+                appDatabase.bandDao().updateRemovedBand(toolRank);
+                toolsList = appDatabase.toolDao().getAll();
+                support.firePropertyChange("toolsPopulated", null, null);
             }
         });
     }
