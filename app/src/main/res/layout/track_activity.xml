@@ -21,7 +21,7 @@
         app:layout_constraintStart_toEndOf="@+id/historyButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
+    <com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
         android:id="@+id/toolSpinner"
         android:layout_width="204dp"
         android:layout_height="29dp"

@@ -30,6 +30,8 @@ import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.DateFunctions;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
+import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
+import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 import com.example.calistheicslogger.Tools.dslv.SimpleFloatViewManager;
@@ -226,10 +228,12 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
             @Override
             public void run() {
                 List<String> tools = appDatabase.toolDao().getAllNames();
-                tools.add(0,"");
-                Spinner toolsSpinner = findViewById(R.id.toolSpinner);
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, tools);
-                toolsSpinner.setAdapter(arrayAdapter);
+                ArrayList<Item> items = new ArrayList<>();
+                for (String tool : tools){
+                    items.add(new Item(tool,false));
+                }
+                MultiSelectionSpinner toolsSpinner = findViewById(R.id.toolSpinner);
+                toolsSpinner.setItems(items);
             }
         });
     }
