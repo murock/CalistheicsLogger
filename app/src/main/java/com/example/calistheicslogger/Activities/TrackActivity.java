@@ -226,6 +226,7 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
             @Override
             public void run() {
                 List<String> tools = appDatabase.toolDao().getAllNames();
+                tools.add(0,"");
                 Spinner toolsSpinner = findViewById(R.id.toolSpinner);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, tools);
                 toolsSpinner.setAdapter(arrayAdapter);

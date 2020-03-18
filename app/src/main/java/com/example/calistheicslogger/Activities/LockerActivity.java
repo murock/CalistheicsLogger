@@ -117,7 +117,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
         databaseCommunicator.getBands();
-        defaultColor = ContextCompat.getColor(LockerActivity.this, R.color.colorPrimary);
+        defaultColor = Color.WHITE;
         newBandEditText = findViewById(R.id.newBandEditText);
         newBandEditText.setBackgroundColor(defaultColor);
         addRemoveButton = findViewById(R.id.addButton);
@@ -238,6 +238,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         {
             // Switching to tools
             newBandEditText.setText("Enter Tool Name");
+            newBandEditText.setBackgroundColor(Color.WHITE);
             colorPickerButton.setEnabled(false);
             bandsButton.setEnabled(true);
             bandsButton.setImageResource(R.drawable.band_icon);
@@ -250,6 +251,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         }else if(view.getId() == R.id.bandToggleButton && !isBandMode){
             // Switching to bands
             newBandEditText.setText("Enter Band Name");
+            newBandEditText.setBackgroundColor(defaultColor);
             colorPickerButton.setEnabled(true);
             toolButton.setEnabled(true);
             toolButton.setImageResource(R.drawable.tools_icon);
@@ -335,7 +337,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "bandsPopulated"){
-            Log.i("Alfie", "band populated");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

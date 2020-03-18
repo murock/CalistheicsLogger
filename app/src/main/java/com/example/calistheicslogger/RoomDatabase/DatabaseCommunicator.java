@@ -195,9 +195,7 @@ public class DatabaseCommunicator {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                int tool1Rank = toolsList.size() - toolPos1 - 1;
-                int tool2Rank = toolsList.size() - toolPos2 - 1;
-                appDatabase.toolDao().swapByRank(tool1Rank,tool2Rank);
+                appDatabase.toolDao().swapByRank(toolPos1,toolPos2);
                 toolsList = appDatabase.toolDao().getAll();
                 support.firePropertyChange("toolsPopulated", null, null);
             }
