@@ -175,6 +175,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
         graph.getGridLabelRenderer().setVerticalAxisTitle(yAxisTitle);
+        graph.getGridLabelRenderer().setPadding(50);
 
         // set manual x bounds to have nice steps
         graph.getViewport().setMinX(firstDate.getTime());
