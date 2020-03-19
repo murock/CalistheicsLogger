@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
+import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.DateFunctions;
 import com.jjoe64.graphview.GraphView;
@@ -39,6 +40,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     String currentExercise;
     DatabaseCommunicator databaseCommunicator;
     String exerciseType;
+    GraphView graph;
+    String yAxisTitle;
+    Date firstDate = null, lastDate = null;
     boolean bandsPopulated = false, chartDataPopulated = false, exerciseTypePopulated = false, isBandMode = true;
 
     @Override
@@ -49,6 +53,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         currentExercise = (String)i.getSerializableExtra("Exercise");
         TextView titleTextView = findViewById(R.id.titleTextView);
         titleTextView.setText(currentExercise);
+        graph = findViewById(R.id.graph);
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
         this.RequestData();
@@ -81,6 +86,34 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             return;
         }
 
+        if(isBandMode){
+            SetUpBandChart();
+        }
+
+        // Set up graph legend
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
+
+        // Set date label formatter
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+        graph.getGridLabelRenderer().setVerticalAxisTitle(yAxisTitle);
+        graph.getGridLabelRenderer().setPadding(50);
+
+        // set manual x bounds to have nice steps
+        graph.getViewport().setMinX(firstDate.getTime());
+        graph.getViewport().setMaxX(lastDate.getTime());
+        graph.getViewport().setXAxisBoundsManual(true);
+
+        // as we use dates as labels, the human rounding to nice readable numbers
+        // is not necessary
+        graph.getGridLabelRenderer().setHumanRounding(false);
+    }
+
+    private void SetUpBandChart()
+    {
+        // Band Set-up
         List<Band> bands = databaseCommunicator.bandsList;
         Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
@@ -99,15 +132,14 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         bandsMap.put("", Color.BLUE);
         bandNameList.add("");
 
+
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         if (trackedExercises.size() == 0){
             return;
         }
-       GraphView graph = findViewById(R.id.graph);
         Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
-        Date firstDate = null, lastDate = null;
 
-        String yAxisTitle = "Reps";
+        yAxisTitle = "Reps";
         for(TrackedExercise exercise : trackedExercises)
         {
             String timestamp = exercise.getTimestamp();
@@ -166,28 +198,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 graph.addSeries(series);
             }
         }
-
-        // Set up graph legend
-        graph.getLegendRenderer().setVisible(true);
-        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
-
-        // Set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
-        graph.getGridLabelRenderer().setVerticalAxisTitle(yAxisTitle);
-        graph.getGridLabelRenderer().setPadding(50);
-
-        // set manual x bounds to have nice steps
-        graph.getViewport().setMinX(firstDate.getTime());
-        graph.getViewport().setMaxX(lastDate.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
-
-        // as we use dates as labels, the human rounding to nice readable numbers
-        // is not necessary
-        graph.getGridLabelRenderer().setHumanRounding(false);
     }
-
 
     public void TrackButtonClick(View v)
     {
