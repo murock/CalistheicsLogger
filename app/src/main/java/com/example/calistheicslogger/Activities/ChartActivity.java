@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -38,7 +39,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     String currentExercise;
     DatabaseCommunicator databaseCommunicator;
     String exerciseType;
-    boolean bandsPopulated = false, chartDataPopulated = false, exerciseTypePopulated = false;
+    boolean bandsPopulated = false, chartDataPopulated = false, exerciseTypePopulated = false, isBandMode = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -191,6 +192,27 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     public void TrackButtonClick(View v)
     {
         finish();
+    }
+
+    public void ToggleButtonClick(View v)
+    {
+        ImageButton bandsButton = findViewById(R.id.bandsButton);
+        ImageButton toolsButton = findViewById(R.id.toolsButton);
+        if(v.getId() == R.id.bandsButton && !isBandMode)
+        {
+            isBandMode = true;
+            bandsButton.setEnabled(true);
+            bandsButton.setImageResource(R.drawable.faded_band_icon);
+            toolsButton.setEnabled(true);
+            toolsButton.setImageResource(R.drawable.tools_icon);
+        }else if(v.getId() == R.id.toolsButton && isBandMode)
+        {
+            isBandMode = false;
+            bandsButton.setEnabled(true);
+            bandsButton.setImageResource(R.drawable.band_icon);
+            toolsButton.setEnabled(false);
+            toolsButton.setImageResource(R.drawable.faded_tools_icon);
+        }
     }
 
     @Override

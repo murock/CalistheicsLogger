@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/toolsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="ToggleButtonClick"
+        android:src="@drawable/tools_icon"
+        android:text="Track"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -16,8 +29,9 @@
         android:text="Exercise Name Here"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/graph"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/toolsButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bandsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.jjoe64.graphview.GraphView
@@ -34,14 +48,15 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <ImageButton
-        android:id="@+id/trackButton"
+        android:id="@+id/bandsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="11dp"
-        android:onClick="TrackButtonClick"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="ToggleButtonClick"
         android:src="@drawable/faded_band_icon"
         android:text="Track"
+        app:layout_constraintEnd_toStartOf="@+id/titleTextView"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
