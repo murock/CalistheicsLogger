@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class ChartActivity extends Activity  implements Serializable, PropertyChangeListener {
 
@@ -79,6 +80,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private void PopulateGraph()
     {
+        graph.removeAllSeries();
         if(!this.exerciseType.equals("Weight and Reps") && !this.exerciseType.equals("Reps") && !this.exerciseType.equals("Isometric"))
         {
             TextView titleTextView = findViewById(R.id.titleTextView);
@@ -86,6 +88,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             return;
         }
 
+        // TODO: Can the below two functions be merged to reduce repeating code?
         if(!isBandMode){
             SetUpToolChart();
         } else{
@@ -115,10 +118,77 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private void SetUpToolChart()
     {
-        Map<String, Integer> toolsMap = new HashMap<>();
+        ArrayList<String> toolsList = new ArrayList<>();
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         if(trackedExercises.size() == 0){
             return;
+        }
+
+        Map<String, LineGraphSeries<DataPoint>> seriesDictionary = new HashMap();
+        yAxisTitle = "Reps";
+        for(TrackedExercise exercise : trackedExercises)
+        {
+            Log.i("Alfie", exercise.getReps() + " Tool: " + exercise.getTool());
+            String timestamp = exercise.getTimestamp();
+            Date date = DateFunctions.GetDateFromTimestamp(timestamp);
+            if (firstDate == null)
+            {
+                firstDate = date;
+                lastDate = date;
+            }
+            if (date.compareTo(firstDate) < 0)
+            {
+                firstDate = date;
+            }
+            if(date.compareTo(lastDate) > 0)
+            {
+                lastDate = date;
+            }
+            String tool = exercise.getTool();
+            if (!toolsList.contains(tool))
+            {
+                toolsList.add(tool);
+            }
+            int yAxisDataPoint;
+            if (this.exerciseType.equals("Isometric"))
+            {
+                yAxisDataPoint =  this.TimeToSeconds(exercise.getTime());
+                yAxisTitle = "Hold Time";
+            }
+            else
+            {
+                yAxisDataPoint = exercise.getReps();
+            }
+            if(seriesDictionary.containsKey(tool))
+            {
+                LineGraphSeries<DataPoint> series = seriesDictionary.get(tool);
+                DataPoint dataPoint = new DataPoint(DateFunctions.GetDateFromTimestamp(timestamp),yAxisDataPoint);
+                series.appendData(dataPoint, true, trackedExercises.size());
+            }else
+            {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+                        new DataPoint(DateFunctions.GetDateFromTimestamp(timestamp), yAxisDataPoint)
+                });
+                seriesDictionary.put(tool,series);
+            }
+        }
+
+        for(String toolName : toolsList)
+        {
+            LineGraphSeries<DataPoint> series;
+            if (seriesDictionary.containsKey(toolName))
+            {
+                series = seriesDictionary.get(toolName);
+                Random rnd = new Random();
+                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                series.setColor(color);
+                series.setTitle(toolName);
+                if (toolName.isEmpty())
+                {
+                    series.setTitle("None");
+                }
+                graph.addSeries(series);
+            }
         }
     }
 
@@ -235,6 +305,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             toolsButton.setEnabled(false);
             toolsButton.setImageResource(R.drawable.faded_tools_icon);
         }
+        this.RequestData();
     }
 
     @Override
