@@ -86,7 +86,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
             return;
         }
 
-        if(isBandMode){
+        if(!isBandMode){
+            SetUpToolChart();
+        } else{
             SetUpBandChart();
         }
 
@@ -109,6 +111,15 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         // as we use dates as labels, the human rounding to nice readable numbers
         // is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
+    }
+
+    private void SetUpToolChart()
+    {
+        Map<String, Integer> toolsMap = new HashMap<>();
+        List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
+        if(trackedExercises.size() == 0){
+            return;
+        }
     }
 
     private void SetUpBandChart()
