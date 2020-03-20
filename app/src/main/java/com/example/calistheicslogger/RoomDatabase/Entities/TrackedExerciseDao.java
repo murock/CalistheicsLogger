@@ -29,6 +29,9 @@ public interface TrackedExerciseDao {
     @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name")
     List<TrackedExercise> getTrackedExercisesFromName(String name);
 
+    @Query("SELECT * FROM tracked_exercises WHERE exercise_name =:name order by timestamp desc limit 1")
+    TrackedExercise getLatestTrackedExercise(String name);
+
     @Query("DELETE FROM tracked_exercises WHERE exercise_name =:name AND timestamp =:timestamp AND set_number =:setNo")
     void deleteTrackedExercise(String name, String timestamp, int setNo);
 

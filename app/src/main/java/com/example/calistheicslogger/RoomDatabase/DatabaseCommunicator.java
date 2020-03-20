@@ -22,6 +22,7 @@ public class DatabaseCommunicator {
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
     public static List<TrackedExercise> chartRepsData;
+    public static TrackedExercise latestExercise;
     public static List<Band> bandsList;
     public static List<Tool> toolsList;
     public static List<String> uniqueTimestamps;
@@ -52,6 +53,16 @@ public class DatabaseCommunicator {
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
+    }
+
+    public void getLatestExercise(String name){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                latestExercise = appDatabase.trackedExerciseDao().getLatestTrackedExercise(name);
+                support.firePropertyChange("latestExercise", null, null);
+            }
+        });
     }
 
     public void deleteTrackedExercise(String name, String timestamp, int setNo){

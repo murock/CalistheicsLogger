@@ -113,15 +113,12 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
         setUpToolsSpinner();
         SetUpFilters();
         SetUpDSLV();
+        databaseCommunicator.getLatestExercise(exerciseString);
     }
 
     public DragSortController buildController(DragSortListView dslv) {
         // defaults are
-        //   dragStartMode = onDown
-        //   removeMode = flingRight
         DragSortController controller = new DragSortController(dslv);
-   //     controller.setDragHandleId(R.id.drag_handle);
-     //   controller.setClickRemoveId(R.id.click_remove);
         controller.setRemoveEnabled(false);
         controller.setSortEnabled(true);
         controller.setDragInitMode(DragSortController.ON_LONG_PRESS);
@@ -414,6 +411,37 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
 
     }
 
+    private void populateControlsWithExercise(TrackedExercise trackedExercise){
+        if (trackedExercise == null)
+        {
+            return;
+        }
+        EditText repsEditText = findViewById(R.id.repsEditText);
+        EditText weightEditText = findViewById(R.id.weightEditText);
+        EditText hourEditText = findViewById(R.id.hourEditText);
+        EditText minuteEditText = findViewById(R.id.minuteEditText);
+        EditText secondEditText = findViewById(R.id.secondEditText);
+        EditText distanceEditText = findViewById(R.id.distanceEditText);
+        EditText tempoEccentricEditText = findViewById(R.id.tempoEccentricEditText);
+        EditText tempoPause1EditText = findViewById(R.id.tempoPause1EditText);
+        EditText tempoConcentricEditText = findViewById(R.id.tempoConcentricEditText);
+        EditText tempoPause2EditText = findViewById(R.id.tempoPause2EditText);
+        Spinner bandSpinner = findViewById(R.id.bandSpinner);
+        Spinner toolSpinner = findViewById(R.id.toolSpinner);
+
+        repsEditText.setText(Integer.toString(trackedExercise.getReps()));
+        weightEditText.setText(Double.toString(trackedExercise.getWeight()));
+        String time = trackedExercise.getTime();
+        String[] times = time.split(":");
+        hourEditText.setText(times[0]);
+        minuteEditText.setText(times[1]);
+        secondEditText.setText(times[2]);
+        //distanceEditText.setText(trackedExercise.getDistance());
+        String tempo = trackedExercise.getTempo();
+        Log.i("Tempo", tempo);
+      //  tempoEccentricEditText.setText(trackedExercise);
+    }
+
     private void startActivity(Class<?> activityToStart){
         Intent activity = new Intent(this, activityToStart);
         activity.putExtra("Exercise", currentExercise);
@@ -494,7 +522,7 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                 EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
                 EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
                 EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
-                String tempo = lowerEditText.getText().toString() + pause1EditText.getText().toString() +
+                String tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() +
                         liftEditText.getText().toString() + pause2EditText.getText().toString();
 
                 Group bandGroup = findViewById(R.id.bandGroup);
@@ -563,6 +591,13 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                 @Override
                 public void run() {
                     updateTrackingList();
+                }
+            });
+        } else if(evt.getPropertyName() == "latestExercise"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    populateControlsWithExercise(databaseCommunicator.latestExercise);
                 }
             });
         }
