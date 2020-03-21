@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -16,6 +17,7 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
+import com.example.calistheicslogger.Tools.PropertyTextView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -39,6 +41,7 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
         databaseCommunicator.addPropertyChangeListener(this);
         databaseCommunicator.getUniqueTimestamps();
         this.CreateCalendarView();
+        this.PopulateScrollView();
     }
 
     private void PopulateCalendar(){
@@ -61,17 +64,7 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
     }
 
     private void CreateCalendarView(){
-//        List<EventDay> events = new ArrayList<>();
-//
-//        Calendar calendar = Calendar.getInstance();
-//
-//        Drawable unwrappedDrawable = AppCompatResources.getDrawable(this, R.drawable.calendar_dot);
-//        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-//        DrawableCompat.setTint(wrappedDrawable, Color.GREEN);
-//        events.add(new EventDay(calendar, wrappedDrawable, Color.GREEN));
-//
         CalendarView calendarView = findViewById(R.id.calendarView);
-//        calendarView.setEvents(events);
 
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
@@ -82,6 +75,18 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
                 newMainAcitivity(date);
             }
         });
+    }
+
+    private void PopulateScrollView(){
+        LinearLayout exercisePeakList = findViewById(R.id.linearLayout);
+        for(int i = 0; i < 10 ; i++)
+        {
+            PropertyTextView exerciseTextView = new PropertyTextView(CalendarActivity.this);
+            exerciseTextView.setClickable(true);
+            exerciseTextView.exerciseName = "Test";
+            exerciseTextView.setText("This is a test " + i);
+            exercisePeakList.addView(exerciseTextView);
+        }
     }
 
     private void newMainAcitivity(String timestamp){
