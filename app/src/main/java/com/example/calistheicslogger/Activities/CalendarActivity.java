@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -32,6 +34,7 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
 
     DatabaseCommunicator databaseCommunicator;
     List<String> uniqueTimestamps;
+    String lastDateSelected;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,22 +74,31 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
             public void onDayClick(EventDay eventDay) {
                 Calendar clickedDayCalendar = eventDay.getCalendar();
                 String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(clickedDayCalendar.getTime());
+                if(date.equals(lastDateSelected))
+                {
+                    // Second click
+                    newMainAcitivity(date);
+                }else{
+                    // First Click
+                    databaseCommunicator.getExercisesFromDate(date);
+                }
+                lastDateSelected = date;
                 Log.i("Alfie day is ", clickedDayCalendar.getTime().toString());
-                newMainAcitivity(date);
+
             }
         });
     }
 
     private void PopulateScrollView(){
-        LinearLayout exercisePeakList = findViewById(R.id.linearLayout);
-        for(int i = 0; i < 10 ; i++)
-        {
-            PropertyTextView exerciseTextView = new PropertyTextView(CalendarActivity.this);
-            exerciseTextView.setClickable(true);
-            exerciseTextView.exerciseName = "Test";
-            exerciseTextView.setText("This is a test " + i);
-            exercisePeakList.addView(exerciseTextView);
-        }
+//        LinearLayout exercisePeakList = findViewById(R.id.linearLayout);
+//        for(int i = 0; i < 10 ; i++)
+//        {
+//            PropertyTextView exerciseTextView = new PropertyTextView(CalendarActivity.this);
+//            exerciseTextView.setClickable(true);
+//            exerciseTextView.exerciseName = "Test";
+//            exerciseTextView.setText("This is a test " + i);
+//            exercisePeakList.addView(exerciseTextView);
+//        }
     }
 
     private void newMainAcitivity(String timestamp){
@@ -94,6 +106,22 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
         mainActivity.putExtra("Timestamp", timestamp);
         startActivity(mainActivity);
     }
+
+    private void newTrackAcitivity(String exercise){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exercise);
+        trackActivity.putExtra("Date", lastDateSelected);
+        startActivity(trackActivity);
+    }
+
+    private View.OnClickListener handleExerciseClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PropertyTextView textView = (PropertyTextView)v;
+            Toast.makeText(CalendarActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+            newTrackAcitivity(textView.exerciseName);
+        }
+    };
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -103,6 +131,14 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
                 public void run() {
                     uniqueTimestamps = databaseCommunicator.uniqueTimestamps;
                     PopulateCalendar();
+                }
+            });
+        } else if (evt.getPropertyName() == "exerciseFromDatePopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout linearLayout = findViewById(R.id.linearLayout);
+                    MainActivity.populateDaysExercises(linearLayout, handleExerciseClick, CalendarActivity.this);
                 }
             });
         }

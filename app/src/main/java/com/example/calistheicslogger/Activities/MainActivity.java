@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +40,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements PropertyChangeListener, Serializable {
 
     AppDatabase appDatabase;
-    DatabaseCommunicator databaseCommunicator;
+    static DatabaseCommunicator databaseCommunicator;
     String selectedDate;
 
     @Override
@@ -131,34 +132,32 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         dateTextView.setText(DateFunctions.GetUKDateFormat(selectedDate));
     }
 
-    private void populateDaysExercises(){
-        LinearLayout linearLayout = findViewById(R.id.listviewBox);
+    public static LinearLayout populateDaysExercises(LinearLayout linearLayout, View.OnClickListener clickListener, Context context){
         linearLayout.removeAllViews();
         List<TrackedExercise> trackedExercises = databaseCommunicator.trackedExercisesFromDate;
         if (trackedExercises.size() <= 0)
         {
-            return;
+            return null;
         }
         boolean isNewExercise = true;
-        //for(TrackedExercise exercise : databaseCommunicator.trackedExercisesFromDate){
           for (int i = 0; i < trackedExercises.size(); i++){
             TrackedExercise exercise = trackedExercises.get(i);
             String exerciseName = exercise.getName();
-            PropertyTextView textView = new PropertyTextView(MainActivity.this);
+            PropertyTextView textView = new PropertyTextView(context);
             textView.setClickable(true);
             textView.exerciseName = exerciseName;
-            textView.setOnClickListener(handleExerciseClick);
+            textView.setOnClickListener(clickListener);
             if (isNewExercise){
-                PropertyTextView title = new PropertyTextView(MainActivity.this);
+                PropertyTextView title = new PropertyTextView(context);
                 title.setClickable(true);
                 title.exerciseName = exerciseName;
                 title.setText(exerciseName);
-                title.setOnClickListener(handleExerciseClick);
+                title.setOnClickListener(clickListener);
                 linearLayout.addView(title);
-                textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_and_sides_border));
+                textView.setBackground(ContextCompat.getDrawable(context,R.drawable.top_and_sides_border));
                 isNewExercise = false;
             }else{
-                textView.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.sides_border));
+                textView.setBackground(ContextCompat.getDrawable(context,R.drawable.sides_border));
             }
             String exerciseString = getTrackedExerciseString(exercise, true);
             textView.setText(exerciseString);
@@ -168,11 +167,12 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             {
                 // Do something when its a new exercise
                 isNewExercise = true;
-                PropertyTextView spacer = new PropertyTextView(MainActivity.this);
-                spacer.setBackground(ContextCompat.getDrawable(MainActivity.this,R.drawable.top_border));
+                PropertyTextView spacer = new PropertyTextView(context);
+                spacer.setBackground(ContextCompat.getDrawable(context,R.drawable.top_border));
                 linearLayout.addView(spacer);
             }
         }
+          return linearLayout;
     }
 
     public static String getTrackedExerciseString(TrackedExercise exercise, boolean includeSetNum){
@@ -230,7 +230,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    populateDaysExercises();
+                    LinearLayout linearLayout = findViewById(R.id.listviewBox);
+                    populateDaysExercises(linearLayout, handleExerciseClick, MainActivity.this);
                 }
             });
         }
