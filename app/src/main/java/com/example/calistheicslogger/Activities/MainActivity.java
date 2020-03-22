@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
         if (!exercise.getTempo().isEmpty())
         {
-            trackedComponents.add(exercise.getTempo().replaceAll(".(?=.)", "$0:"));
+            trackedComponents.add(exercise.getTempo());
         }
         return TrackActivity.ListToRow(trackedComponents);
     }
