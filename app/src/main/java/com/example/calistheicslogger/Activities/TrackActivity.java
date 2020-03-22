@@ -54,7 +54,7 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
     String currentDate;
     DragSortListView dslv;
     DragSortController dragSortController;
-
+    ArrayAdapter<String> bandArrayAdapter;
     ArrayAdapter<String> dslvAdapter;
     // TODO: re-order set numbers when dragged
     int globalSetNumber = 1;
@@ -213,13 +213,12 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                 List<String> bands = appDatabase.bandDao().getAllBandColours();
                 bands.add(0,"");
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
-                bandSpinner.setAdapter(arrayAdapter);
+                bandArrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
+                bandSpinner.setAdapter(bandArrayAdapter);
             }
         });
     }
 
-    // TODO: Do not repeat code fix
     private void setUpToolsSpinner(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -416,6 +415,11 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
         {
             return;
         }
+        Log.i("Info", "name: " + trackedExercise.getName());
+        Log.i("Info", "tool " + trackedExercise.getTool());
+        Log.i("Info", "band " + trackedExercise.getBand());
+        Log.i("Info", "set " + trackedExercise.getSetNumber());
+        Log.i("Info", "timestamp " +trackedExercise.getTimestamp());
         EditText repsEditText = findViewById(R.id.repsEditText);
         EditText weightEditText = findViewById(R.id.weightEditText);
         EditText hourEditText = findViewById(R.id.hourEditText);
@@ -427,7 +431,7 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
         EditText tempoConcentricEditText = findViewById(R.id.tempoConcentricEditText);
         EditText tempoPause2EditText = findViewById(R.id.tempoPause2EditText);
         Spinner bandSpinner = findViewById(R.id.bandSpinner);
-        Spinner toolSpinner = findViewById(R.id.toolSpinner);
+        MultiSelectionSpinner toolSpinner = findViewById(R.id.toolSpinner);
 
         repsEditText.setText(Integer.toString(trackedExercise.getReps()));
         weightEditText.setText(Double.toString(trackedExercise.getWeight()));
@@ -438,8 +442,27 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
         secondEditText.setText(times[2]);
         //distanceEditText.setText(trackedExercise.getDistance());
         String tempo = trackedExercise.getTempo();
-        Log.i("Tempo", tempo);
-      //  tempoEccentricEditText.setText(trackedExercise);
+        times = tempo.split(":");
+        if (times.length == 4) {
+            tempoEccentricEditText.setText(times[0]);
+            tempoPause1EditText.setText(times[1]);
+            tempoConcentricEditText.setText(times[2]);
+            tempoPause2EditText.setText(times[3]);
+        }
+        String band = trackedExercise.getBand();
+        int spinnerPos = bandArrayAdapter.getPosition(band);
+        bandSpinner.setSelection(spinnerPos);
+        String tool = trackedExercise.getTool();
+        String[] tools = tool.split(",");
+        ArrayList<Item> items = new ArrayList<>();
+        for(String item : tools)
+        {
+            item = item.trim();
+            Log.i("tool ", item);
+            items.add(new Item(item, false));
+        }
+        Log.i("Sel is", "got here");
+        toolSpinner.setSelection(items);
     }
 
     private void startActivity(Class<?> activityToStart){
@@ -522,8 +545,8 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
                 EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
                 EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
                 EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
-                String tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() +
-                        liftEditText.getText().toString() + pause2EditText.getText().toString();
+                String tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() + ":" +
+                        liftEditText.getText().toString() + ":" + pause2EditText.getText().toString();
 
                 Group bandGroup = findViewById(R.id.bandGroup);
                 String bandValue;

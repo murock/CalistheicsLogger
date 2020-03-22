@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -91,9 +92,9 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
 
         for (Item sel : selection) {
             for (int j = 0; j < items.size(); ++j) {
-                if (items.get(j).getValue().equals(sel.getValue())) {
-                    this.selection[j] = true;
-                }
+                    if (items.get(j).getName().equals(sel.getName())) {
+                        this.selection[j] = true;
+                    }
             }
         }
 
