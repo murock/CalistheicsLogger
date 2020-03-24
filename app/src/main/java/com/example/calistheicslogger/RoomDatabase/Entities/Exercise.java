@@ -148,8 +148,9 @@ public class Exercise
     public static Exercise[] populateData(){
         return new Exercise[]{
                 new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false, 1.25),
-                new Exercise("Back Lever","Chest Abs Back", "Isometric", false, false, "Back Lever", false, false, 1.25),
+                new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, 1.25),
                 new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false, 1.25),
+                new Exercise("Front Lever", "Back", "Isometric", true, false,"Front Lever", false, true, 1.25),
         };
     }
 }
