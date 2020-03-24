@@ -311,7 +311,9 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
         {
             trackedComponents.add(distance + " m");
         }
-        if (!exercise.getTempo().isEmpty())
+        Group tempoGroup = findViewById(R.id.tempoGroup);
+        if (tempoGroup.getVisibility() == View.VISIBLE && !exercise.getTempo().isEmpty() &&
+            !exercise.getTempo().equals(":::"))
         {
             trackedComponents.add(exercise.getTempo());
         }

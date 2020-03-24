@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         {
             trackedComponents.add(distance + " m");
         }
-        if (!exercise.getTempo().isEmpty())
+        if (!exercise.getTempo().isEmpty() && !exercise.getTempo().equals(":::"))
         {
             trackedComponents.add(exercise.getTempo());
         }
