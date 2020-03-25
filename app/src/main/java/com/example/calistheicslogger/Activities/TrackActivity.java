@@ -51,6 +51,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
+    Exercise exercise;
     String currentExercise;
     String currentDate;
     DragSortListView dslv;
@@ -61,6 +62,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     int globalSetNumber = 1;
 
     int selectedPosition = -1;
+
+    Boolean bandAssisted, weighted, tempoControlled, toolsRequired;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -100,11 +103,27 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.i("main menu", "Inflating3");
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.tracker_menu, menu);
         super.onCreateOptionsMenu(menu);
-        Log.i("main menu", "Inflating2");
+        MenuItem menuItem;
+        if (bandAssisted)
+        {
+            menuItem = menu.findItem(R.id.bandAssisted);
+            menuItem.setChecked(true);
+        }
+        if (weighted){
+            menuItem = menu.findItem(R.id.weighted);
+            menuItem.setChecked(true);
+        }
+        if(tempoControlled){
+            menuItem = menu.findItem(R.id.tempo);
+            menuItem.setChecked(true);
+        }
+        if (toolsRequired){
+            menuItem = menu.findItem(R.id.tools);
+            menuItem.setChecked(true);
+        }
         return true;
     }
 
@@ -112,20 +131,26 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-
+        item.setChecked(!item.isChecked());
         switch(item.getItemId()){
             case R.id.tools:
-                Log.i("Item selected","tools");
-                return true;
+                exercise.setTool(item.isChecked());
+                break;
             case R.id.tempo:
-                Log.i("Item selected","tempo");
-                return true;
+                exercise.setTempoControlled(item.isChecked());
+                break;
             case R.id.bandAssisted:
-                    Log.i("Item selected","band assisted");
-                return true;
+                exercise.setBandAssisted(item.isChecked());
+                break;
+            case R.id.weighted:
+                exercise.setWeightLoadable(item.isChecked());
+                break;
             default:
-                return  false;
+                return false;
+
         }
+        databaseCommunicator.updateExercise(exercise);
+        return true;
     }
 
     @Override
@@ -225,7 +250,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                final Exercise exercise = appDatabase.exerciseDao().getExerciseFromName(exerciseName);
+                exercise = appDatabase.exerciseDao().getExerciseFromName(exerciseName);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -418,17 +443,16 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 break;
                 default:
         }
-        Boolean bandAssisted = exercise.getBandAssisted();
-        Boolean weighted = exercise.getWeightLoadable();
-        Boolean tempoControlled = exercise.getTempoControlled();
-        Boolean toolsRequired = exercise.getTool();
+        bandAssisted = exercise.getBandAssisted();
+        weighted = exercise.getWeightLoadable();
+        tempoControlled = exercise.getTempoControlled();
+        toolsRequired = exercise.getTool();
         if (bandAssisted)
         {
             group = findViewById(R.id.bandGroup);
             group.setVisibility(View.VISIBLE);
         }
         if (weighted){
-            Log.i("Alfie", "Exercise is weighted");
             group = findViewById(R.id.weightGroup);
             group.setVisibility(View.VISIBLE);
         }
@@ -654,6 +678,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 @Override
                 public void run() {
                     populateControlsWithExercise(databaseCommunicator.latestExercise);
+                }
+            });
+        } else if(evt.getPropertyName() == "exerciseUpdated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SetUpControls(exercise);
                 }
             });
         }

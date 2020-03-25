@@ -3,6 +3,7 @@ package com.example.calistheicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
@@ -231,6 +232,17 @@ public class DatabaseCommunicator {
             public void run() {
                 exerciseType = appDatabase.exerciseDao().getTypeFromName(exerciseName);
                 support.firePropertyChange("exerciseTypePopulated", null, null);
+            }
+        });
+    }
+
+    public void updateExercise(Exercise updatedExercise)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.exerciseDao().updateExercise(updatedExercise);
+                support.firePropertyChange("exerciseUpdated", null, null);
             }
         });
     }
