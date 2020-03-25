@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
-import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.example.calistheicslogger.Tools.DateFunctions;
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
-
+        Log.i("main menu", "Inflating");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -58,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         super.onOptionsItemSelected(item);
 
         switch(item.getItemId()){
-            case R.id.settings:
+            case R.id.tools:
                 Log.i("Item selected","Settings");
                 return true;
-            case R.id.locker:
+            case R.id.bandAssisted:
                 Log.i("Item selected","locker");
                 Intent locker = new Intent(this,LockerActivity.class);
                 startActivity(locker);

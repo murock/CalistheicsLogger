@@ -58,6 +58,9 @@ public class Tool
     // TODO Remove this and replace with band selecting/creating dialog
     public static Tool[] populateData(){
         return new Tool[]{
+                new Tool("Wall",7),
+                new Tool("Box",6),
+                new Tool("Straddle",5),
                 new Tool("Adv",4),
                 new Tool("Tucked",3),
                 new Tool("Parallettes",2),

@@ -3,26 +3,26 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
-import androidx.core.graphics.ColorUtils;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
@@ -36,7 +36,6 @@ import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
-import com.example.calistheicslogger.Tools.dslv.SimpleFloatViewManager;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -48,7 +47,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class TrackActivity extends Activity implements Serializable, PropertyChangeListener {
+public class TrackActivity extends AppCompatActivity implements Serializable, PropertyChangeListener {
 
     AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
@@ -101,11 +100,32 @@ public class TrackActivity extends Activity implements Serializable, PropertyCha
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        Log.i("main menu", "Inflating3");
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.tracker_menu, menu);
+        super.onCreateOptionsMenu(menu);
+        Log.i("main menu", "Inflating2");
+        return true;
+    }
 
-        return super.onCreateOptionsMenu(menu);
+    // Handle clicks on elipsis menu items
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.tools:
+                Log.i("Item selected","tools");
+                return true;
+            case R.id.tempo:
+                Log.i("Item selected","tempo");
+                return true;
+            case R.id.bandAssisted:
+                    Log.i("Item selected","band assisted");
+                return true;
+            default:
+                return  false;
+        }
     }
 
     @Override
