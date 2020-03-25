@@ -309,7 +309,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
-                    trackedExercisesArrayList.add(getTrackedExerciseString(exercise));
+                    trackedExercisesArrayList.add(MainActivity.getTrackedExerciseString(exercise,true));//getTrackedExerciseString(exercise));
                 }
                 UpdateDSLV(trackedExercisesArrayList);
             }
@@ -317,54 +317,54 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     //    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
-    private String getTrackedExerciseString(TrackedExercise exercise)
-    {
-        // TODO: adapt this for many different units e.g kgs/m etc
-        ArrayList<String> trackedComponents = new ArrayList<String>();
-        //String result = Integer.toString(exercise.getSetNumber());
-        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-        Group repGroup = findViewById(R.id.repsGroup);
-        if (repGroup.getVisibility() == View.VISIBLE)
-        {
-          //  result += "    " + exercise.getReps() + " reps";
-            trackedComponents.add(exercise.getReps() + " reps");
-        }
-        Group weightGroup = findViewById(R.id.weightGroup);
-        if (weightGroup.getVisibility() == View.VISIBLE )
-        {
-          //  result += "    " + exercise.getWeight() + " kgs";
-            trackedComponents.add(exercise.getWeight() + " kgs");
-        }
-        Group timeGroup = findViewById(R.id.timeGroup);
-        if (timeGroup.getVisibility() == View.VISIBLE && !exercise.getTime().isEmpty())
-        {
-            trackedComponents.add(exercise.getTime());
-        }
-        Group bandGroup = findViewById(R.id.bandGroup);
-        if (bandGroup.getVisibility() == View.VISIBLE && !exercise.getBand().isEmpty())
-        {
-          //  result += "    " + exercise.getBand() + " band";
-            trackedComponents.add(exercise.getBand() + " band");
-        }
-        Group toolsGroup = findViewById(R.id.toolGroup);
-        if (toolsGroup.getVisibility() == View.VISIBLE && !exercise.getTool().isEmpty())
-        {
-            trackedComponents.add(exercise.getTool());
-        }
-        int distance = exercise.getDistance();
-        if (distance != -1)
-        {
-            trackedComponents.add(distance + " m");
-        }
-        Group tempoGroup = findViewById(R.id.tempoGroup);
-        if (tempoGroup.getVisibility() == View.VISIBLE && !exercise.getTempo().isEmpty() &&
-            !exercise.getTempo().equals(":::"))
-        {
-            trackedComponents.add(exercise.getTempo());
-        }
-        return ListToRow(trackedComponents);
-    }
-
+//    private String getTrackedExerciseString(TrackedExercise exercise)
+//    {
+//        // TODO: adapt this for many different units e.g kgs/m etc
+//        ArrayList<String> trackedComponents = new ArrayList<String>();
+//        //String result = Integer.toString(exercise.getSetNumber());
+//        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
+//        Group repGroup = findViewById(R.id.repsGroup);
+//        if (repGroup.getVisibility() == View.VISIBLE)
+//        {
+//          //  result += "    " + exercise.getReps() + " reps";
+//            trackedComponents.add(exercise.getReps() + " reps");
+//        }
+//        Group weightGroup = findViewById(R.id.weightGroup);
+//        if (weightGroup.getVisibility() == View.VISIBLE )
+//        {
+//          //  result += "    " + exercise.getWeight() + " kgs";
+//            trackedComponents.add(exercise.getWeight() + " kgs");
+//        }
+//        Group timeGroup = findViewById(R.id.timeGroup);
+//        if (timeGroup.getVisibility() == View.VISIBLE && !exercise.getTime().isEmpty())
+//        {
+//            trackedComponents.add(exercise.getTime());
+//        }
+//        Group bandGroup = findViewById(R.id.bandGroup);
+//        if (bandGroup.getVisibility() == View.VISIBLE && !exercise.getBand().isEmpty())
+//        {
+//          //  result += "    " + exercise.getBand() + " band";
+//            trackedComponents.add(exercise.getBand() + " band");
+//        }
+//        Group toolsGroup = findViewById(R.id.toolGroup);
+//        if (toolsGroup.getVisibility() == View.VISIBLE && !exercise.getTool().isEmpty())
+//        {
+//            trackedComponents.add(exercise.getTool());
+//        }
+//        int distance = exercise.getDistance();
+//        if (distance != -1)
+//        {
+//            trackedComponents.add(distance + " m");
+//        }
+//        Group tempoGroup = findViewById(R.id.tempoGroup);
+//        if (tempoGroup.getVisibility() == View.VISIBLE && !exercise.getTempo().isEmpty() &&
+//            !exercise.getTempo().equals(":::"))
+//        {
+//            trackedComponents.add(exercise.getTempo());
+//        }
+//        return ListToRow(trackedComponents);
+//    }
+//
     public static String ListToRow(ArrayList<String> list)
     {
         String result = new String();
@@ -494,10 +494,12 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         weightEditText.setText(Double.toString(trackedExercise.getWeight()));
         String time = trackedExercise.getTime();
         String[] times = time.split(":");
-        hourEditText.setText(times[0]);
-        minuteEditText.setText(times[1]);
-        secondEditText.setText(times[2]);
-        //distanceEditText.setText(trackedExercise.getDistance());
+        if (times.length == 3) {
+            hourEditText.setText(times[0]);
+            minuteEditText.setText(times[1]);
+            secondEditText.setText(times[2]);
+        }
+        distanceEditText.setText(Integer.toString(trackedExercise.getDistance()));
         String tempo = trackedExercise.getTempo();
         times = tempo.split(":");
         if (times.length == 4) {
@@ -581,8 +583,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 EditText hourText = findViewById(R.id.hourEditText);
                 EditText minText = findViewById(R.id.minuteEditText);
                 EditText secondText = findViewById(R.id.secondEditText);
-                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(),2, "0" ) + ":"
-                        + AddPrefixToItem(secondText.getText().toString(),2, "0");
+                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(), 2, "0") + ":"
+                            + AddPrefixToItem(secondText.getText().toString(), 2, "0");
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 Spinner toolSpinner = findViewById(R.id.toolSpinner);
@@ -598,12 +600,17 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 }
 
                 // Tempo
-                EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
-                EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
-                EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
-                EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
-                String tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() + ":" +
-                        liftEditText.getText().toString() + ":" + pause2EditText.getText().toString();
+                Group tempoGroup = findViewById(R.id.tempoGroup);
+                String tempo = "";
+                if(tempoGroup.getVisibility() == View.VISIBLE)
+                {
+                    EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
+                    EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
+                    EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
+                    EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+                    tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() + ":" +
+                            liftEditText.getText().toString() + ":" + pause2EditText.getText().toString();
+                }
 
                 Group bandGroup = findViewById(R.id.bandGroup);
                 String bandValue;

@@ -50,15 +50,9 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
         databaseCommunicator.getPersonalRecords(currentExercise);
     }
 
-    private void populatePersonalRecords(){ ;
-        TextView test = new TextView(PersonalRecordsActivity.this);
-        test.setText("Alfie test");
-
-
+    private void populatePersonalRecords(){
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
         linearLayout.removeAllViews();
-
-        linearLayout.addView(test);
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.personalRecordsList;
         if (trackedExercises.size() <= 0)
