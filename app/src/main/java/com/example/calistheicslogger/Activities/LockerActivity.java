@@ -55,12 +55,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 public void drop(int from, int to) {
                     if (from != to) {
                         if (isBandMode) {
-                            // Stop No band from being moved
-                            if (from != databaseCommunicator.bandsList.size() - 1 &&
-                                to != databaseCommunicator.bandsList.size() - 1)
-                            {
-                                databaseCommunicator.swapBands(from, to);
-                            }
+                            databaseCommunicator.swapBands(from, to);
                         }else{
                             databaseCommunicator.swapTools(from, to);
                         }
@@ -92,9 +87,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
                         newBandEditText.setTextColor(Color.BLACK);
                         newBandEditText.setBackgroundColor(defaultColor);
-                        // Stop No band from being deleted
-                    }else if(position == databaseCommunicator.bandsList.size() - 1) {
-                        selectedPosition = -1;
                     }else
                     {
                         // Toggle on

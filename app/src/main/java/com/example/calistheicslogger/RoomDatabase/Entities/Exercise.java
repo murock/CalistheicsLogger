@@ -151,6 +151,10 @@ public class Exercise
                 new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, 1.25),
                 new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false, 1.25),
                 new Exercise("Front Lever", "Back", "Isometric", true, false,"Front Lever", false, true, 1.25),
+                new Exercise("Push Up", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, 1.25),
+                new Exercise("Dip", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, 1.25),
+                new Exercise("Handstand", "Triceps, Shoulders", "Isometric", false, false,"Handstand", false, true, 1.25),
+                new Exercise("Pike Push up", "Triceps, Shoulders", "Reps", false, false,"Handstand", false, true, 1.25),
         };
     }
 }
