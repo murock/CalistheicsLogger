@@ -11,10 +11,10 @@ import java.util.List;
 @Dao
 public interface ToolDao {
 
-    @Query("SELECT * FROM tools order by rank")
+    @Query("SELECT * FROM tools order by rank desc")
     List<Tool> getAll();
 
-    @Query("SELECT name FROM tools order by rank")
+    @Query("SELECT name FROM tools order by rank desc")
     List<String> getAllNames();
 
     @Query("UPDATE tools " +
