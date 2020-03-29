@@ -34,6 +34,7 @@ import com.example.calistheicslogger.Tools.DateFunctions;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
+import com.example.calistheicslogger.Tools.TextViewPRArrayAdapter;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 
@@ -57,7 +58,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     DragSortListView dslv;
     DragSortController dragSortController;
     ArrayAdapter<String> bandArrayAdapter;
-    ArrayAdapter<String> dslvAdapter;
+   // ArrayAdapter<String> dslvAdapter;
+    TextViewPRArrayAdapter dslvAdapter;
+    List<TrackedExercise> trackedExercises;
+    ArrayList<Integer> personalRecordPositions = new ArrayList<>();
     // TODO: re-order set numbers when dragged
     int globalSetNumber = 1;
 
@@ -97,6 +101,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                         deleteButton.setImageResource(R.drawable.remove_icon);
                         selectedPosition = position;
                     }
+                    dslvAdapter.setSelectedPostion(selectedPosition);
                     dslvAdapter.notifyDataSetChanged();
                 }
             };
@@ -170,6 +175,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpFilters();
         SetUpDSLV();
         databaseCommunicator.getLatestExercise(exerciseString);
+        databaseCommunicator.getPersonalRecords(exerciseString);
     }
 
     public DragSortController buildController(DragSortListView dslv) {
@@ -201,24 +207,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void UpdateDSLV(ArrayList<String> items){
-        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,items){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                final View view = super.getView(position,convertView,parent);
-                if (position == selectedPosition)
-                {
-                    int backgroundColor = Color.parseColor("#c2d4f0");
-                    view.setBackgroundColor(backgroundColor);
-                }else {
-                    view.setBackgroundColor(Color.WHITE);
-                }
-                return view;
-            }
-        };
+        dslvAdapter = new TextViewPRArrayAdapter(items,this);//ArrayAdapter<String>(this,R.layout.center_spinner_text,items){
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //dslv = findViewById(R.id.trackedExerciseDSLV);
                 dslv.setAdapter(dslvAdapter);
             }
         });
@@ -305,7 +298,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<TrackedExercise> trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
+                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
@@ -316,55 +309,20 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         });
     }
 
-    //    public TrackedExercise(int id, String name, String timestamp, int setNumber, String reps, String weight, String time, String band, int distance, String tempo){
-//    private String getTrackedExerciseString(TrackedExercise exercise)
-//    {
-//        // TODO: adapt this for many different units e.g kgs/m etc
-//        ArrayList<String> trackedComponents = new ArrayList<String>();
-//        //String result = Integer.toString(exercise.getSetNumber());
-//        trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-//        Group repGroup = findViewById(R.id.repsGroup);
-//        if (repGroup.getVisibility() == View.VISIBLE)
-//        {
-//          //  result += "    " + exercise.getReps() + " reps";
-//            trackedComponents.add(exercise.getReps() + " reps");
-//        }
-//        Group weightGroup = findViewById(R.id.weightGroup);
-//        if (weightGroup.getVisibility() == View.VISIBLE )
-//        {
-//          //  result += "    " + exercise.getWeight() + " kgs";
-//            trackedComponents.add(exercise.getWeight() + " kgs");
-//        }
-//        Group timeGroup = findViewById(R.id.timeGroup);
-//        if (timeGroup.getVisibility() == View.VISIBLE && !exercise.getTime().isEmpty())
-//        {
-//            trackedComponents.add(exercise.getTime());
-//        }
-//        Group bandGroup = findViewById(R.id.bandGroup);
-//        if (bandGroup.getVisibility() == View.VISIBLE && !exercise.getBand().isEmpty())
-//        {
-//          //  result += "    " + exercise.getBand() + " band";
-//            trackedComponents.add(exercise.getBand() + " band");
-//        }
-//        Group toolsGroup = findViewById(R.id.toolGroup);
-//        if (toolsGroup.getVisibility() == View.VISIBLE && !exercise.getTool().isEmpty())
-//        {
-//            trackedComponents.add(exercise.getTool());
-//        }
-//        int distance = exercise.getDistance();
-//        if (distance != -1)
-//        {
-//            trackedComponents.add(distance + " m");
-//        }
-//        Group tempoGroup = findViewById(R.id.tempoGroup);
-//        if (tempoGroup.getVisibility() == View.VISIBLE && !exercise.getTempo().isEmpty() &&
-//            !exercise.getTempo().equals(":::"))
-//        {
-//            trackedComponents.add(exercise.getTempo());
-//        }
-//        return ListToRow(trackedComponents);
-//    }
-//
+    private void checkForPR(){
+        this.personalRecordPositions.clear();
+        for(int i = 0; i < trackedExercises.size(); i++)
+        {
+            for(TrackedExercise trackedExercise:  databaseCommunicator.personalRecordsList){
+                if (trackedExercise.getId() == trackedExercises.get(i).getId()){
+                    this.personalRecordPositions.add(i);
+                }
+            }
+        }
+        dslvAdapter.setPrPositions(personalRecordPositions);
+        dslvAdapter.notifyDataSetChanged();
+    }
+
     public static String ListToRow(ArrayList<String> list)
     {
         String result = new String();
@@ -626,6 +584,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                         distance,tempo, toolString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
+                databaseCommunicator.getPersonalRecords(currentExercise);
                 updateTrackingList();
             }
         });
@@ -692,6 +651,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 @Override
                 public void run() {
                     SetUpControls(exercise);
+                }
+            });
+        } else if (evt.getPropertyName() == "personalRecordsPopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    checkForPR();
                 }
             });
         }

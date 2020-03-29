@@ -1,7 +1,6 @@
 package com.example.calistheicslogger.Tools;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +63,7 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
                 removedItem = list.get(position);
-             //   list.remove(position); //or some other task
                 notifyDataSetChanged();
             }
         });
