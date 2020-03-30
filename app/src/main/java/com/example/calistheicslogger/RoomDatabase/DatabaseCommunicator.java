@@ -104,11 +104,19 @@ public class DatabaseCommunicator {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                personalRecordsList = appDatabase.trackedExerciseDao().getPersonalRecords(exerciseName);
+                exerciseType = appDatabase.exerciseDao().getTypeFromName(exerciseName);
+                if (exerciseType.equals("Isometric"))
+                {
+                    personalRecordsList = appDatabase.trackedExerciseDao().getPersonalIsometricRecords(exerciseName);
+                }else{
+                    personalRecordsList = appDatabase.trackedExerciseDao().getPersonalRecords(exerciseName);
+                }
+
                 support.firePropertyChange("personalRecordsPopulated", null, null);
             }
         });
     }
+
 
     public void getRepsChartData(final String exerciseName){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

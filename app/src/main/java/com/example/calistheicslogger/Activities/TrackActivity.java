@@ -199,6 +199,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     private void SetUpDSLV()
     {
         dslv = findViewById(R.id.trackedExerciseDSLV);
+
         dslv.setDropListener(onDrop);
         dragSortController = buildController(dslv);
         dslv.setFloatViewManager(dragSortController);
@@ -208,7 +209,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void UpdateDSLV(ArrayList<String> items){
         dslvAdapter = new TextViewPRArrayAdapter(items,this);//ArrayAdapter<String>(this,R.layout.center_spinner_text,items){
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -228,8 +228,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         EditText weightText = findViewById(R.id.weightEditText);
 
         hourEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
-        minText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60)});
-        secondText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60)});
+        minText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 59)});
+        secondText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 59)});
         lowerEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
         pause1EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
         liftEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
@@ -310,6 +310,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void checkForPR(){
+        if(trackedExercises == null)
+        {
+            return;
+        }
         this.personalRecordPositions.clear();
         for(int i = 0; i < trackedExercises.size(); i++)
         {
@@ -372,7 +376,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
         title.setText(exercise.getName() + " - " +  DateFunctions.GetUKDateFormat(currentDate));
         String type = exercise.getType();
-        //"Isometric", "Weight and Reps", "Negative"
+        //"Isometric", "Weight and Reps"
         Group group;
         group = findViewById(R.id.distanceGroup);
         group.setVisibility(View.GONE);
@@ -387,7 +391,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         switch(type){
             case "Weight and Reps":
             case "Reps":
-            case "Negative":
                 group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.GONE);
                 group = findViewById(R.id.repsGroup);
@@ -541,8 +544,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 EditText hourText = findViewById(R.id.hourEditText);
                 EditText minText = findViewById(R.id.minuteEditText);
                 EditText secondText = findViewById(R.id.secondEditText);
-                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") + ":" + AddPrefixToItem(minText.getText().toString(), 2, "0") + ":"
-                            + AddPrefixToItem(secondText.getText().toString(), 2, "0");
+                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") +  AddPrefixToItem(minText.getText().toString(), 2, "0")
+                        + AddPrefixToItem(secondText.getText().toString(), 2, "0");
 
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 Spinner toolSpinner = findViewById(R.id.toolSpinner);
@@ -584,8 +587,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                         distance,tempo, toolString);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
-                databaseCommunicator.getPersonalRecords(currentExercise);
                 updateTrackingList();
+                databaseCommunicator.getPersonalRecords(currentExercise);
             }
         });
     }

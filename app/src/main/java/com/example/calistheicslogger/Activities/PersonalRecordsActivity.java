@@ -48,6 +48,7 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
     private void startPersonalRecordLookUp()
     {
         databaseCommunicator.getPersonalRecords(currentExercise);
+
     }
 
     private void populatePersonalRecords(){

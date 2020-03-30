@@ -41,7 +41,7 @@ public class NewExerciseActivity extends Activity {
 
         setUpCategorySpinner(R.id.categorySpinner);
         setUpProgressionSpinner(R.id.progressionSpinner);
-        ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Reps", "Isometric", "Weight and Reps", "Negative"));
+        ArrayList<String> exerciseTypes = new ArrayList<String>(Arrays.asList("Reps", "Isometric", "Weight and Reps"));
         typeSpinner = setUpSpinner(R.id.typeSpinner,exerciseTypes);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

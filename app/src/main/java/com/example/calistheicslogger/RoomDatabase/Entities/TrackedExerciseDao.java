@@ -61,6 +61,26 @@ public interface TrackedExerciseDao {
             "order by band,reps" )
     List<TrackedExercise> getPersonalRecords(String name);
 
+    @Query("-- gets the max time at each set of exercise_name, band, weight\n" +
+            "with repsCTE as (\n" +
+            "  select *,max(time) time\n" +
+            "  from tracked_exercises\n" +
+            "  where exercise_name = :name\n" +
+            "  group by exercise_name, band, weight ), \n" +
+            "\n" +
+            "-- gets the max weight at each set of exercise_name, band, time\n" +
+            "weightCTE as (\n" +
+            "  select *,max(weight) weight\n" +
+            "  from tracked_exercises\n" +
+            "  where exercise_name = :name\n" +
+            "  group by exercise_name, band, time ) \n" +
+            "\n" +
+            "select * \n" +
+            "from repsCTE r join weightCTE w\n" +
+            "on r.id = w.id\n" +
+            "order by band,time" )
+    List<TrackedExercise> getPersonalIsometricRecords(String name);
+
     @Query("select *,max(reps) reps\n" +
             "  from tracked_exercises\n" +
             "  where exercise_name = :name\n" +
