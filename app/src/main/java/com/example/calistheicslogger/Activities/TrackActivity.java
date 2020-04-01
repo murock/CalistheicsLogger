@@ -147,6 +147,15 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             case R.id.weighted:
                 exercise.setWeightLoadable(item.isChecked());
                 break;
+            case R.id.historyButton:
+                startActivity(HistoryActivity.class);
+                break;
+            case R.id.chartButton:
+                startActivity(ChartActivity.class);
+                break;
+            case R.id.personalRecordButton:
+                startActivity(PersonalRecordsActivity.class);
+                break;
             default:
                 return false;
 

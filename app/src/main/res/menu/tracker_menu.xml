@@ -11,6 +11,22 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/chartButton"
+        android:backgroundTint="#00FFFFFF"
+        android:icon="@drawable/chart_icon"
+        android:text="Chart"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/personalRecordButton"
+        android:backgroundTint="#00FFFFFF"
+        android:icon="@drawable/records_icon"
+        android:text="Records"
+        android:title=""
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/tools"
         android:checkable="true"
         android:title="Tools"></item>
