@@ -254,7 +254,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                     @Override
                     public void run() {
                         SetUpControls(exercise);
-                        updateTrackingList();
+                        databaseCommunicator.getPersonalRecords(currentExercise);
                     }
                 });
             }
@@ -308,7 +308,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
-                    trackedExercisesArrayList.add(MainActivity.getTrackedExerciseString(exercise,true));//getTrackedExerciseString(exercise));
+                    trackedExercisesArrayList.add(MainActivity.getTrackedExerciseString(exercise,true));
                 }
                 UpdateDSLV(trackedExercisesArrayList);
             }

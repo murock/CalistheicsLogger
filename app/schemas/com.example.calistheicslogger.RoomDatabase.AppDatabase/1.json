@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "db7824d083896ea7a2d3be521df5ed85",
+    "identityHash": "ed4cd2be4d1d6aabb908c72ffa851cec",
     "entities": [
       {
         "tableName": "exercises",
@@ -179,7 +179,7 @@
       },
       {
         "tableName": "tracked_exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` INTEGER NOT NULL, `weight` REAL NOT NULL, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `tool` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` INTEGER NOT NULL, `weight` REAL NOT NULL, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `tool` TEXT, `free_text` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -246,6 +246,12 @@
             "columnName": "tool",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "freeText",
+            "columnName": "free_text",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -293,7 +299,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'db7824d083896ea7a2d3be521df5ed85')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed4cd2be4d1d6aabb908c72ffa851cec')"
     ]
   }
 }

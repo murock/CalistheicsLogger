@@ -42,6 +42,9 @@ public class TrackedExercise
     @ColumnInfo(name = "tool")
     private String tool;
 
+    @ColumnInfo(name = "free_text")
+    private String freeText;
+
     public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool){
         this.id = id;
         this.name = name;
@@ -156,5 +159,13 @@ public class TrackedExercise
 
     public void setTool(String tool) {
         this.tool = tool;
+    }
+
+    public String getFreeText() {
+        return freeText;
+    }
+
+    public void setFreeText(String freeText) {
+        this.freeText = freeText;
     }
 }
