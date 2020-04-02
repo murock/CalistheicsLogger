@@ -60,21 +60,17 @@ public class TextViewPRArrayAdapter extends BaseAdapter implements ListAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-//        if (view == null) {
-//            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            view = inflater.inflate(R.layout.textview_close_button, null);
-//        }
-
-        //final View posView = super.getView(position,convertView,parent);
-
 
         //Handle TextView and display string from your list
-        TextView listItemTextView = new TextView(this.context);//(TextView)view.findViewById(R.id.list_item_string);
-        listItemTextView.setText(list.get(position));
+        TextView listItemTextView = new TextView(this.context);
+
 
         if (this.prPositions.contains(position))
         {
             listItemTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.pr_medal_icon, 0, 0, 0);
+            listItemTextView.setText(list.get(position));
+        } else {
+            listItemTextView.setText("       " + list.get(position));
         }
 
         if (position == selectedPosition)
