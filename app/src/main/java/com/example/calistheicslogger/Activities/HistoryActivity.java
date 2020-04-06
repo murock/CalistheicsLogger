@@ -64,9 +64,13 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
         for(int i = 0; i < exerciseHistory.size(); i++)
         {
             TrackedExercise exercise = exerciseHistory.get(i);
-            TextView textView = new TextView(HistoryActivity.this);
+            PropertyTextView textView = new PropertyTextView(HistoryActivity.this);
+            textView.exerciseName = exercise.getName();
             if (isNewDate){
-                TextView title = new TextView(HistoryActivity.this);
+                PropertyTextView title = new PropertyTextView(HistoryActivity.this);
+                title.exerciseName = exercise.getName();
+                title.setTag(exercise.getTimestamp());
+                title.setOnClickListener(handleExerciseClick);
                 title.setText(exercise.getName() + " : " + exercise.getTimestamp());
                 linearLayout.addView(title);
                 textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.top_and_sides_border));
@@ -75,6 +79,8 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
                 textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.sides_border));
             }
             textView.setText(MainActivity.getTrackedExerciseString(exercise, false));
+            textView.setTag(exercise.getTimestamp());
+            textView.setOnClickListener(handleExerciseClick);
             linearLayout.addView(textView);
 
             if ( exerciseHistory.size() == i + 1|| exerciseHistory.size() > i + 1 && ! exercise.getTimestamp().equals(exerciseHistory.get(i + 1).getTimestamp()))
@@ -87,6 +93,21 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             }
         }
     }
+
+    private void newTrackAcitivity(String exercise, String date){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exercise);
+        trackActivity.putExtra("Date", date);
+        startActivity(trackActivity);
+    }
+
+    private View.OnClickListener handleExerciseClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PropertyTextView textView = (PropertyTextView)v;
+            newTrackAcitivity(textView.exerciseName, (String)(textView.getTag()));
+        }
+    };
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
