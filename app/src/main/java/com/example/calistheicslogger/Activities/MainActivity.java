@@ -264,4 +264,11 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         startActivity(locker);
     }
 
+    public void homeClick(View view)
+    {
+        selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        populateDateTitle();
+        databaseCommunicator.getExercisesFromDate(selectedDate);
+    }
+
 }
