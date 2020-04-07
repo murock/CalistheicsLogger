@@ -224,9 +224,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 bandNameList.add(band.getColour());
             }
         }
-        bandsMap.put("", Color.BLUE);
-        bandNameList.add("");
-
 
         List<TrackedExercise> trackedExercises = databaseCommunicator.chartRepsData;
         if (trackedExercises.size() == 0){
