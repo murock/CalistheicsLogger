@@ -254,7 +254,6 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             this.progressions = databaseCommunicator.progressions;
             setUpExercisesList(this.progressions);
         }else if(evt.getPropertyName() == "exerciseNames"){
-            Log.i("Alfie", "exercise names updated");
             this.exerciseNames = databaseCommunicator.exerciseNames;
             setUpExercisesList(this.exerciseNames);
             this.applyFilter();

@@ -379,7 +379,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     private void SetUpControls(Exercise exercise)
     {
         TextView title = findViewById(R.id.titleTextView);
-        Log.i("Alfie current date", currentDate);
 
         title.setText(exercise.getName() + " - " +  DateFunctions.GetUKDateFormat(currentDate));
         String type = exercise.getType();
@@ -440,11 +439,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         {
             return;
         }
-        Log.i("Info", "name: " + trackedExercise.getName());
-        Log.i("Info", "tool " + trackedExercise.getTool());
-        Log.i("Info", "band " + trackedExercise.getBand());
-        Log.i("Info", "set " + trackedExercise.getSetNumber());
-        Log.i("Info", "timestamp " +trackedExercise.getTimestamp());
         EditText repsEditText = findViewById(R.id.repsEditText);
         EditText weightEditText = findViewById(R.id.weightEditText);
         EditText hourEditText = findViewById(R.id.hourEditText);
@@ -485,10 +479,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         for(String item : tools)
         {
             item = item.trim();
-            Log.i("tool ", item);
             items.add(new Item(item, false));
         }
-        Log.i("Sel is", "got here");
         toolSpinner.setSelection(items);
     }
 

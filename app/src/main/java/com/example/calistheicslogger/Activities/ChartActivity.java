@@ -142,7 +142,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         yAxisTitle = "Reps";
         for(TrackedExercise exercise : trackedExercises)
         {
-            Log.i("Alfie", exercise.getReps() + " Tool: " + exercise.getTool());
             String timestamp = exercise.getTimestamp();
             Date date = DateFunctions.GetDateFromTimestamp(timestamp);
             if (firstDate == null)
@@ -254,7 +253,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 lastDate = date;
             }
             String band = exercise.getBand();
-            Log.i("Band is", band);
             int yAxisDataPoint;
             if (this.exerciseType.equals("Isometric"))
             {
@@ -333,7 +331,6 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         } else if(evt.getPropertyName() == "exerciseTypePopulated")
         {
             this.exerciseType = databaseCommunicator.exerciseType;
-            Log.i("Alfie Type",this.exerciseType );
             this.exerciseTypePopulated = true;
         }
         if(this.bandsPopulated && this.chartDataPopulated && this.exerciseTypePopulated)

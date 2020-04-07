@@ -84,7 +84,6 @@ public class DatabaseCommunicator {
             public void run() {
                 trackedExercisesFromDate = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
                 // Fire event
-                Log.i("tracked exercise null", "blank");
                 support.firePropertyChange("exerciseFromDatePopulated", null, null);
             }
         });

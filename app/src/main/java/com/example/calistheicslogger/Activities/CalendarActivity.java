@@ -58,7 +58,6 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
             int year = Integer.parseInt(timestamp.substring(0,4));
             int month = Integer.parseInt(timestamp.substring(5,7));
             int day = Integer.parseInt(timestamp.substring(8));
-            Log.i("Alfie time ", timestamp );
             calendar.set(year,month - 1,day);
             events.add(new EventDay(calendar, wrappedDrawable, Color.RED));
         }
@@ -83,8 +82,6 @@ public class CalendarActivity extends Activity implements PropertyChangeListener
                     databaseCommunicator.getExercisesFromDate(date);
                 }
                 lastDateSelected = date;
-                Log.i("Alfie day is ", clickedDayCalendar.getTime().toString());
-
             }
         });
     }

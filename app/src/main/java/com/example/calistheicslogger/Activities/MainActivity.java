@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
-        Log.i("main menu", "Inflating");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -57,10 +56,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         switch(item.getItemId()){
             case R.id.tools:
-                Log.i("Item selected","Settings");
                 return true;
             case R.id.bandAssisted:
-                Log.i("Item selected","locker");
                 Intent locker = new Intent(this,LockerActivity.class);
                 startActivity(locker);
                 return true;
@@ -82,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             // Default to todays date
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
-        Log.i("Alfie selected date is", selectedDate);
         setContentView(R.layout.activity_main);
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
@@ -126,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         {
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
-        Log.i("Alfie set text view",DateFunctions.GetUKDateFormat(selectedDate) );
         dateTextView.setText(DateFunctions.GetUKDateFormat(selectedDate));
     }
 
@@ -224,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Log.i("Alfie prop name: ", evt.getPropertyName());
         if (evt.getPropertyName() == "exerciseFromDatePopulated"){
             runOnUiThread(new Runnable() {
                 @Override

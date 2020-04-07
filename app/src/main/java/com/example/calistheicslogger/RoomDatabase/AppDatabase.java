@@ -61,7 +61,6 @@ public abstract class AppDatabase extends RoomDatabase {
                             Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.i("Exercise ","got here");
                                     // Pre populate database
                                     getInstance(context).categoryDao().addMultipleCategories(Category.populateData());
                                     getInstance(context).finalProgressionDao().addMultipleFinalProgressions(FinalProgression.populateData());
