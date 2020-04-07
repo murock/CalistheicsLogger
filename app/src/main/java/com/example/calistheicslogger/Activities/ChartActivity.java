@@ -70,13 +70,27 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
 
     private int TimeToSeconds(String time)
     {
-        String[] times = time.split(":");
+        String[] times = splitStringEvery(time,2);
         int hour = Integer.parseInt(times[0]);
         int mins = Integer.parseInt(times[1]);
         int seconds = Integer.parseInt(times[2]);
         return  (hour*3600) + (mins*60) + seconds;
     }
 
+    public String[] splitStringEvery(String s, int interval) {
+        int arrayLength = (int) Math.ceil(((s.length() / (double)interval)));
+        String[] result = new String[arrayLength];
+
+        int j = 0;
+        int lastIndex = result.length - 1;
+        for (int i = 0; i < lastIndex; i++) {
+            result[i] = s.substring(j, j + interval);
+            j += interval;
+        } //Add the last bit
+        result[lastIndex] = s.substring(j);
+
+        return result;
+    }
 
     private void PopulateGraph()
     {
@@ -196,6 +210,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     {
         // Band Set-up
         List<Band> bands = databaseCommunicator.bandsList;
+        bands.add(new Band("No",bands.size(),Color.BLUE));
         Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
         for(Band band : bands)

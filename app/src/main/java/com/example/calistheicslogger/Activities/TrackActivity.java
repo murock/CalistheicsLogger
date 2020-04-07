@@ -181,6 +181,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpFilters();
         SetUpDSLV();
         databaseCommunicator.getLatestExercise(exerciseString);
+        updateTrackingList();
         databaseCommunicator.getPersonalRecords(exerciseString);
     }
 
