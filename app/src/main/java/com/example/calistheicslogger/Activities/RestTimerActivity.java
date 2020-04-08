@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class RestTimerActivity extends Activity {
         setContentView(R.layout.rest_timer_activity);
         this.SetUpWindowLayout();
         this.SetUpTimerValue();
+        this.SetUpCheckboxes();
     }
 
     private void SetUpWindowLayout()
@@ -63,5 +65,11 @@ public class RestTimerActivity extends Activity {
 
             }
         });
+    }
+
+    private void SetUpCheckboxes()
+    {
+        CheckBox vibrateCheckbox = findViewById(R.id.vibrateCheckBox);
+        CheckBox soundCheckbox
     }
 }
