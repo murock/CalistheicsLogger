@@ -156,6 +156,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             case R.id.personalRecordButton:
                 startActivity(PersonalRecordsActivity.class);
                 break;
+            case R.id.restButton:
+                startActivity(RestTimerActivity.class);
+                break;
             default:
                 return false;
 

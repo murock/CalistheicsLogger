@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/restButton"
+        android:backgroundTint="#00FFFFFF"
+        android:icon="@drawable/rest_timer_icon"
+        android:text="Rest"
+        android:title=""
+        app:showAsAction="always" />
+
+
+    <item
         android:id="@+id/historyButton"
         android:backgroundTint="#00FFFFFF"
         android:icon="@drawable/history_icon"
@@ -23,6 +32,14 @@
         android:backgroundTint="#00FFFFFF"
         android:icon="@drawable/records_icon"
         android:text="Records"
+        android:title=""
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/stopWatchButton"
+        android:backgroundTint="#00FFFFFF"
+        android:icon="@drawable/stopwatch"
+        android:text="Stopwatch"
         android:title=""
         app:showAsAction="always"/>
 
