@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/square_border">
 
     <TextView
         android:id="@+id/titleTextView"
@@ -26,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/valueEditText"
         app:layout_constraintTop_toTopOf="@+id/valueEditText"
-        app:srcCompat="@drawable/arrow_right_icon" />
+        android:src="@drawable/arrow_right_icon" />
 
     <ImageButton
         android:id="@+id/negativeButton"
@@ -38,16 +39,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/valueEditText"
-        app:srcCompat="@drawable/arrow_left_icon" />
+        android:src="@drawable/arrow_left_icon" />
 
     <EditText
         android:id="@+id/valueEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="number"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/vibrateCheckBox"
         app:layout_constraintEnd_toStartOf="@+id/positiveButton"
         app:layout_constraintHorizontal_bias="0.5"
