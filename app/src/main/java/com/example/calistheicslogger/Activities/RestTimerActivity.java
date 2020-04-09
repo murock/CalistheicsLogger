@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
+import com.example.calistheicslogger.Tools.InputFilterMinMax;
 
 public class RestTimerActivity extends Activity {
 
@@ -26,6 +28,8 @@ public class RestTimerActivity extends Activity {
             editor.apply();
         }
     };
+
+    public int timerValue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,11 +58,17 @@ public class RestTimerActivity extends Activity {
     private void SetUpTimerValue()
     {
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
-        int timerValue = prefs.getInt("timerValue", 0); // 0 is default
-        EditText timerEditText = findViewById(R.id.valueEditText);
+        timerValue = prefs.getInt("timerValue", 0); // 0 is default
+        EditText secondsEditText = findViewById(R.id.secondsEditText);
+        EditText minutesEditText = findViewById(R.id.minutesEditText);
+        secondsEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        minutesEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
 
-        timerEditText.setText(Integer.toString(timerValue));
-        timerEditText.addTextChangedListener(new TextWatcher() {
+        int minutesValue = timerValue/60;
+        int secondsValue = timerValue - (minutesValue*60);
+
+        secondsEditText.setText(Integer.toString(secondsValue));
+        secondsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -88,7 +98,7 @@ public class RestTimerActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
         Boolean vibrateOn = prefs.getBoolean((String)vibrateCheckbox.getTag(), false);
         Boolean soundOn = prefs.getBoolean((String)soundCheckbox.getTag(), true);
-        Boolean autoOn = prefs.getBoolean((String)autoCheckbox.getTag(), true);
+        Boolean autoOn = prefs.getBoolean((String)autoCheckbox.getTag(), false);
         vibrateCheckbox.setChecked(vibrateOn);
         soundCheckbox.setChecked(soundOn);
         autoCheckbox.setChecked(autoOn);
@@ -123,5 +133,17 @@ public class RestTimerActivity extends Activity {
 
             }
         });
+    }
+
+    public void OnSecondButtonPress(View button)
+    {
+        int amountToChange;
+        if (button.getId() == R.id.positiveButton)
+        {
+            amountToChange = 10;
+        }else
+        {
+            amountToChange = -10;
+        }
     }
 }

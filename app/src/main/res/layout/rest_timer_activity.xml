@@ -22,38 +22,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/valueEditText"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_right_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/secondsEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/valueEditText"
-        app:layout_constraintTop_toTopOf="@+id/valueEditText"
-        android:src="@drawable/arrow_right_icon" />
+        app:layout_constraintStart_toEndOf="@+id/secondsEditText"
+        app:layout_constraintTop_toTopOf="@+id/secondsEditText" />
 
     <ImageButton
         android:id="@+id/negativeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/valueEditText"
-        app:layout_constraintEnd_toStartOf="@+id/valueEditText"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_left_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/secondsEditText"
+        app:layout_constraintEnd_toStartOf="@+id/minutesEditText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/valueEditText"
-        android:src="@drawable/arrow_left_icon" />
+        app:layout_constraintTop_toTopOf="@+id/secondsEditText" />
 
     <EditText
-        android:id="@+id/valueEditText"
+        android:id="@+id/secondsEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
+        android:hint="ss"
         android:inputType="number"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/vibrateCheckBox"
         app:layout_constraintEnd_toStartOf="@+id/positiveButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/negativeButton"
+        app:layout_constraintStart_toEndOf="@+id/minutesEditText"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <CheckBox
@@ -67,7 +71,7 @@
         app:layout_constraintBottom_toTopOf="@+id/soundCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/valueEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/secondsEditText" />
 
     <CheckBox
         android:id="@+id/soundCheckBox"
@@ -119,5 +123,19 @@
         app:layout_constraintEnd_toStartOf="@+id/volumeSeekBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/volumeSeekBar" />
+
+    <EditText
+        android:id="@+id/minutesEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="mm"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/secondsEditText"
+        app:layout_constraintEnd_toStartOf="@+id/secondsEditText"
+        app:layout_constraintStart_toEndOf="@+id/negativeButton"
+        app:layout_constraintTop_toTopOf="@+id/secondsEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
