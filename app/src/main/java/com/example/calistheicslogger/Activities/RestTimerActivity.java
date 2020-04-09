@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
@@ -22,6 +23,7 @@ public class RestTimerActivity extends Activity {
             CheckBox checkBox = (CheckBox)v;
             SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
             editor.putBoolean((String)checkBox.getTag(), checkBox.isChecked());
+            editor.apply();
         }
     };
 
@@ -33,6 +35,7 @@ public class RestTimerActivity extends Activity {
         this.SetUpWindowLayout();
         this.SetUpTimerValue();
         this.SetUpCheckboxes();
+        this.SetUpVolume();
     }
 
     private void SetUpWindowLayout()
@@ -83,20 +86,42 @@ public class RestTimerActivity extends Activity {
         CheckBox soundCheckbox = findViewById(R.id.soundCheckBox);
         CheckBox autoCheckbox = findViewById(R.id.autoCheckBox);
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
-        Boolean vibrateOn = prefs.getBoolean("vibrateOn", false);
-        Boolean soundOn = prefs.getBoolean("vibrateOn", true);
-        Boolean autoOn = prefs.getBoolean("vibrateOn", true);
+        Boolean vibrateOn = prefs.getBoolean((String)vibrateCheckbox.getTag(), false);
+        Boolean soundOn = prefs.getBoolean((String)soundCheckbox.getTag(), true);
+        Boolean autoOn = prefs.getBoolean((String)autoCheckbox.getTag(), true);
         vibrateCheckbox.setChecked(vibrateOn);
         soundCheckbox.setChecked(soundOn);
         autoCheckbox.setChecked(autoOn);
 
-        vibrateCheckbox.setOnClickListener(new View.OnClickListener() {
+        vibrateCheckbox.setOnClickListener(checkBoxListener);
+        soundCheckbox.setOnClickListener(checkBoxListener);
+        autoCheckbox.setOnClickListener(checkBoxListener);
+    }
+
+    private void SetUpVolume()
+    {
+        SeekBar volumeSeekbar = findViewById(R.id.volumeSeekBar);
+        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        int volumeValue = prefs.getInt("volume", 100);
+        volumeSeekbar.setProgress(volumeValue);
+
+        volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("vibrateOn", vibrateCheckbox.isChecked());
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+                editor.putInt("volume", progress);
+                editor.apply();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
-
     }
 }
