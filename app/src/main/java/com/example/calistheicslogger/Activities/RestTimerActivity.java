@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -14,6 +15,15 @@ import androidx.annotation.Nullable;
 import com.example.calistheicslogger.R;
 
 public class RestTimerActivity extends Activity {
+
+    View.OnClickListener checkBoxListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CheckBox checkBox = (CheckBox)v;
+            SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+            editor.putBoolean((String)checkBox.getTag(), checkBox.isChecked());
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +80,23 @@ public class RestTimerActivity extends Activity {
     private void SetUpCheckboxes()
     {
         CheckBox vibrateCheckbox = findViewById(R.id.vibrateCheckBox);
-        CheckBox soundCheckbox
+        CheckBox soundCheckbox = findViewById(R.id.soundCheckBox);
+        CheckBox autoCheckbox = findViewById(R.id.autoCheckBox);
+        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        Boolean vibrateOn = prefs.getBoolean("vibrateOn", false);
+        Boolean soundOn = prefs.getBoolean("vibrateOn", true);
+        Boolean autoOn = prefs.getBoolean("vibrateOn", true);
+        vibrateCheckbox.setChecked(vibrateOn);
+        soundCheckbox.setChecked(soundOn);
+        autoCheckbox.setChecked(autoOn);
+
+        vibrateCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("vibrateOn", vibrateCheckbox.isChecked());
+            }
+        });
+
     }
 }
