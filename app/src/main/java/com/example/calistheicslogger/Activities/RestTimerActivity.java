@@ -157,7 +157,7 @@ public class RestTimerActivity extends Activity {
     {
         CheckBox vibrateCheckbox = findViewById(R.id.vibrateCheckBox);
         CheckBox soundCheckbox = findViewById(R.id.soundCheckBox);
-        CheckBox autoCheckbox = findViewById(R.id.autoCheckBox);
+        CheckBox autoCheckbox = findViewById(R.id.onCheckBox);
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
         Boolean vibrateOn = prefs.getBoolean((String)vibrateCheckbox.getTag(), false);
         Boolean soundOn = prefs.getBoolean((String)soundCheckbox.getTag(), true);

@@ -1,7 +1,9 @@
 package com.example.calistheicslogger.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -55,7 +57,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     DragSortListView dslv;
     DragSortController dragSortController;
     ArrayAdapter<String> bandArrayAdapter;
-   // ArrayAdapter<String> dslvAdapter;
     TextViewPRArrayAdapter dslvAdapter;
     List<TrackedExercise> trackedExercises;
     ArrayList<Integer> personalRecordPositions = new ArrayList<>();
@@ -493,18 +494,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         startActivity(activity);
     }
 
-
-    public void HistoryButtonClick(View view)
-    {
-        startActivity(HistoryActivity.class);
-    }
-
-    public void RecordClick(View view){ startActivity(PersonalRecordsActivity.class);}
-
-    public void ChartsButtonClick(View view){
-        startActivity(ChartActivity.class);
-    }
-
     public void DeleteButtonClick(View view){
         if(this.selectedPosition !=  -1)
         {
@@ -593,6 +582,28 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 databaseCommunicator.getPersonalRecords(currentExercise);
             }
         });
+        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        Boolean timerOn = prefs.getBoolean("timerOn", false);
+        if(timerOn)
+        {
+            startTimer();
+        }
+    }
+
+    private void startTimer(){
+        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        int timerValue = prefs.getInt("timerValue", 0); // 0 is default
+        int timerValueMilli = timerValue * 1000;
+        new CountDownTimer(timerValueMilli, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                mTextField.setText("done!");
+            }
+        }.start();
     }
 
     public void OnButtonClick(View view){

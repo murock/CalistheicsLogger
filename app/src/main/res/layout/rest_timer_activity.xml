@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="ss"
@@ -81,20 +81,20 @@
         android:layout_marginBottom="8dp"
         android:tag='"soundOn"'
         android:text="Sound"
-        app:layout_constraintBottom_toTopOf="@+id/autoCheckBox"
+        app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vibrateCheckBox" />
 
     <CheckBox
-        android:id="@+id/autoCheckBox"
+        android:id="@+id/onCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:tag='"autoOn"'
-        android:text="Auto Start"
+        android:tag="timerOn"
+        android:text="Timer On"
         app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
         android:max="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/volumeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/autoCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/onCheckBox" />
 
     <TextView
         android:id="@+id/volumeTextView"
