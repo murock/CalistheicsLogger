@@ -30,6 +30,8 @@
         <activity android:name=".Activities.CalendarActivity"></activity>
         <activity android:name=".Activities.RestTimerActivity"
             android:theme="@style/AppTheme.PopupTheme"></activity>
+        <activity android:name=".Activities.StopwatchActivity"
+            android:theme="@style/AppTheme.PopupTheme"></activity>
     </application>
 
 </manifest>
