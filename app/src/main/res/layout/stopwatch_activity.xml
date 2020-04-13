@@ -6,65 +6,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/square_border">
 
-    <TextView
-        android:id="@+id/colonTextView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=":"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/minutesTextView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/hoursTextView"
-        app:layout_constraintTop_toTopOf="@+id/minutesTextView" />
-
-    <TextView
-        android:id="@+id/colonTextView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=":"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/secondsTextView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minutesTextView"
-        app:layout_constraintTop_toTopOf="@+id/minutesTextView" />
-
-    <TextView
-        android:id="@+id/hoursTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="00"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/colonTextView1"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/colonTextView1" />
-
-    <TextView
-        android:id="@+id/minutesTextView"
+    <Chronometer
+        android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="32dp"
-        android:text="00"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/playButton"
-        app:layout_constraintEnd_toStartOf="@+id/colonTextView2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/colonTextView1"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
-
-    <TextView
-        android:id="@+id/secondsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="00"
-        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/colonTextView2"
-        app:layout_constraintTop_toTopOf="@+id/colonTextView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -74,7 +26,7 @@
         android:layout_marginBottom="24dp"
         android:text="Stopwatch"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/minutesTextView"
+        app:layout_constraintBottom_toTopOf="@+id/chronometer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -85,17 +37,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="#00FFFFFF"
+        android:onClick="PlayButtonClick"
         android:src="@drawable/play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/stopButton"
-        app:layout_constraintTop_toBottomOf="@+id/minutesTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
 
     <ImageButton
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
+        android:onClick="StopButtonClick"
         android:src="@drawable/stop"
         app:layout_constraintEnd_toStartOf="@+id/playButton"
         app:layout_constraintHorizontal_bias="0.5"
