@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:tag='"vibrateOn"'
+        android:tag="vibrateOn"
         android:text="Vibrate"
         app:layout_constraintBottom_toTopOf="@+id/soundCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,25 +79,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:tag='"soundOn"'
+        android:tag="soundOn"
         android:text="Sound"
         app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vibrateCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/vibrateCheckBox" />
 
     <CheckBox
         android:id="@+id/onCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:tag="timerOn"
         android:text="Timer On"
         app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/soundCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/soundCheckBox" />
 
     <SeekBar

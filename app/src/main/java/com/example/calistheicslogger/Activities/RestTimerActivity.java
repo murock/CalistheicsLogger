@@ -78,20 +78,23 @@ public class RestTimerActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0)
+                int minutes = 0;
+                if(s.length() > 0)
                 {
-                    int minutes = Integer.parseInt(s.toString());
-                    int seconds = Integer.parseInt(secondsEditText.getText().toString());
-                    int totalTimeSeconds = minutes*60 + seconds;
-                    if (totalTimeSeconds == timerValue)
-                    {
-                        return;
-                    }
-
-                    timerValue = totalTimeSeconds;
-
-                    updateSharedPrefsTimerValue(totalTimeSeconds);
+                    minutes = Integer.parseInt(s.toString());
                 }
+
+                int seconds = Integer.parseInt(secondsEditText.getText().toString());
+                int totalTimeSeconds = minutes*60 + seconds;
+                if (totalTimeSeconds == timerValue)
+                {
+                    return;
+                }
+
+                timerValue = totalTimeSeconds;
+
+                updateSharedPrefsTimerValue(totalTimeSeconds);
+
             }
 
             @Override
@@ -109,33 +112,33 @@ public class RestTimerActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    String minutesString = minutesEditText.getText().toString();
-                    int minutes = 0;
-                    if (minutesString.length() > 0)
-                    {
-                        minutes = Integer.parseInt(minutesEditText.getText().toString());
-                    }
-                    int seconds = Integer.parseInt(s.toString());
-                    int totalTimeSeconds = minutes*60 + seconds;
-                    if (totalTimeSeconds == timerValue)
-                    {
-                        return;
-                    }
+               int seconds = 0;
+                if(s.length() > 0){
+                    seconds = Integer.parseInt(s.toString());
+                }
 
-                    timerValue = totalTimeSeconds;
-                    int newMinutesValue = totalTimeSeconds/60;
-                    int newSecondsValue = totalTimeSeconds - (newMinutesValue*60);
+                String minutesString = minutesEditText.getText().toString();
+                int minutes = 0;
+                if (minutesString.length() > 0) {
+                    minutes = Integer.parseInt(minutesEditText.getText().toString());
+                }
 
-                    updateSharedPrefsTimerValue(totalTimeSeconds);
+                int totalTimeSeconds = minutes * 60 + seconds;
+                if (totalTimeSeconds == timerValue) {
+                    return;
+                }
 
-                    if (!minutesEditText.getText().toString().equals(Integer.toString(newMinutesValue)))
-                    {
-                        minutesEditText.setText(Integer.toString(newMinutesValue));
-                    }
-                    if (!secondsEditText.getText().toString().equals(Integer.toString(newSecondsValue))){
-                        secondsEditText.setText(Integer.toString(newSecondsValue));
-                    }
+                timerValue = totalTimeSeconds;
+                int newMinutesValue = totalTimeSeconds / 60;
+                int newSecondsValue = totalTimeSeconds - (newMinutesValue * 60);
+
+                updateSharedPrefsTimerValue(totalTimeSeconds);
+
+                if (!minutesEditText.getText().toString().equals(Integer.toString(newMinutesValue))) {
+                    minutesEditText.setText(Integer.toString(newMinutesValue));
+                }
+                if (!secondsEditText.getText().toString().equals(Integer.toString(newSecondsValue))) {
+                    secondsEditText.setText(Integer.toString(newSecondsValue));
                 }
             }
 

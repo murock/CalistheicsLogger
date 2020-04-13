@@ -1,9 +1,14 @@
 package com.example.calistheicslogger.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -596,18 +601,37 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
         int timerValue = prefs.getInt("timerValue", 0); // 0 is default
         int timerValueMilli = timerValue * 1000;
+
+        int volumeValue = prefs.getInt("volume", 100);
+        float volumeFloatValue = (float)volumeValue/100;
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.stop_rest_beep);
+        boolean soundOn = prefs.getBoolean("soundOn", true);
+        if (!soundOn){
+            // 0 volume is sound set to off
+            volumeFloatValue = 0;
+        }
+        mediaPlayer.setVolume(volumeFloatValue,volumeFloatValue);
+
+        // Vibrate
+        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        boolean vibrateOn = prefs.getBoolean("vibrateOn", true);
+
         MenuItem restItem = menu.findItem(R.id.restButton);
         new CountDownTimer(timerValueMilli, 1000) {
 
             public void onTick(long millisUntilFinished) {
-             //   mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
                 restItem.setIcon(null);
                 restItem.setTitle(Integer.toString((int)millisUntilFinished/1000));
             }
 
             public void onFinish() {
-             //   mTextField.setText("done!");
                 restItem.setIcon(R.drawable.rest_timer_icon);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else if(vibrateOn) {
+                    vibrator.vibrate(500);
+                }
+                mediaPlayer.start();
             }
         }.start();
     }
