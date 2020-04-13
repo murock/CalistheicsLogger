@@ -6,9 +6,9 @@
         android:id="@+id/restButton"
         android:backgroundTint="#00FFFFFF"
         android:icon="@drawable/rest_timer_icon"
-        android:text="Rest"
-        android:title=""
-        app:showAsAction="always" />
+        android:text="51"
+        android:title="59"
+        app:showAsAction="always|withText" />
 
 
     <item

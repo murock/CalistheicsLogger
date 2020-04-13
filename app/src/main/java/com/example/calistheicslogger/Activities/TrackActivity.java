@@ -66,6 +66,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     int selectedPosition = -1;
 
     Boolean bandAssisted, weighted, tempoControlled, toolsRequired;
+    Menu menu;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -106,6 +107,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.tracker_menu, menu);
         super.onCreateOptionsMenu(menu);
@@ -594,14 +596,18 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
         int timerValue = prefs.getInt("timerValue", 0); // 0 is default
         int timerValueMilli = timerValue * 1000;
+        MenuItem restItem = menu.findItem(R.id.restButton);
         new CountDownTimer(timerValueMilli, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+             //   mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                restItem.setIcon(null);
+                restItem.setTitle(Integer.toString((int)millisUntilFinished/1000));
             }
 
             public void onFinish() {
-                mTextField.setText("done!");
+             //   mTextField.setText("done!");
+                restItem.setIcon(R.drawable.rest_timer_icon);
             }
         }.start();
     }
