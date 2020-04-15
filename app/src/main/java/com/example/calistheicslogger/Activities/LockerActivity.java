@@ -48,6 +48,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
     int selectedPosition = -1;
     Button addRemoveButton, colorPickerButton;
+    ArrayList<String> arrayListTools;
+    ArrayList<String> arrayListBands;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -71,13 +73,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 {
                     if (position == selectedPosition)
                     {
+                        newBandEditText.setText("");
                         // Toggle off
                         if (isBandMode)
                         {
-                            newBandEditText.setText("Enter Band Name");
+                            newBandEditText.setHint("Enter Band Name");
                         }else
                         {
-                            newBandEditText.setText("Enter Tool Name");
+                            newBandEditText.setHint("Enter Tool Name");
                         }
                         newBandEditText.setFocusable(true);
                         newBandEditText.setFocusableInTouchMode(true);
@@ -139,7 +142,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     private void UpdateDSLVForBands(){
         final List<Band> bands = databaseCommunicator.bandsList;
         this.numBands = bands.size();
-        ArrayList<String> arrayListBands = new ArrayList<>();
+        arrayListBands = new ArrayList<>();
         for(Band band : bands)
         {
             arrayListBands.add(band.getColour() + " Band");
@@ -190,7 +193,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     private void UpdateDSLVForTools(){
         final List<Tool> tools = databaseCommunicator.toolsList;
         this.numTools = tools.size();
-        ArrayList<String> arrayListTools = new ArrayList<>();
+        arrayListTools = new ArrayList<>();
         for(Tool tool : tools)
         {
             arrayListTools.add(tool.getName());
@@ -284,11 +287,15 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     private void addBandToDatabase(){
+
         String name = newBandEditText.getText().toString();
-        // stops view from displaying e.g 'Green Band Band'
-        name = name.replaceAll(" Band", "");
-        Band newBand = new Band(name,defaultColor,this.numBands);
-        this.databaseCommunicator.addBand(newBand);
+        if (!arrayListBands.contains(name) && name.length() > 0) {
+            // stops view from displaying e.g 'Green Band Band'
+            name = name.replaceAll(" Band", "");
+            Band newBand = new Band(name, defaultColor, this.numBands);
+            this.databaseCommunicator.addBand(newBand);
+        }
+        newBandEditText.setText("");
     }
 
     private void removeBandFromDatabase(){
@@ -297,8 +304,12 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
     private void addToolToDatabase(){
         String name = newBandEditText.getText().toString();
-        Tool newTool = new Tool(name,this.numTools);
-        this.databaseCommunicator.addTool(newTool);
+        if (!arrayListTools.contains(name) && name.length() > 0)
+        {
+            Tool newTool = new Tool(name,this.numTools);
+            this.databaseCommunicator.addTool(newTool);
+        }
+        newBandEditText.setText("");
     }
 
     private void removeToolFromDatabase(){
