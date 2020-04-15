@@ -1,6 +1,7 @@
 package com.example.calistheicslogger.Tools;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,17 +83,29 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
 
                 // perform your search here using the searchConstraint String.
 
-                constraint = constraint.toString().toLowerCase();
+                String constraintString = constraint.toString().toLowerCase();
                 for (int i = 0; i < fullList.size(); i++) {
                     String dataNames = fullList.get(i);
+                    dataNames = dataNames.toLowerCase();
                     String[] words = dataNames.split("\\s+");
                     boolean filterItem = false;
-                    for(String word : words)
-                    {
-                        if (word.toLowerCase().startsWith(constraint.toString()))  {
-                            filterItem = true;
+                    Log.i("Alfie1", "constraint " + constraintString);
+                    Log.i("Alfie1", "dataname " + dataNames);
+                    if(constraintString.contains(" ") && dataNames.contains(constraintString)){
+                        // Check if user have type multiple words e.g "Pike P"
+                        Log.i("Alfie1", "constraint " + constraint.toString());
+                        Log.i("Alfie1", "dataname " + dataNames);
+                        filterItem = true;
+                    }else{
+                        // Check against each word e.g "Up" will filter both "Pull Up" and "Push Up"
+                        for(String word : words)
+                        {
+                            if (word.startsWith(constraintString))  {
+                                filterItem = true;
+                            }
                         }
                     }
+
                     if(filterItem){
                         FilteredArrayNames.add(dataNames);
                     }
