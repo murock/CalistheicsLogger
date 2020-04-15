@@ -207,7 +207,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
                 if (position == selectedPosition)
                 {
-                    int backgroundColor = ColorUtils.blendARGB(Color.WHITE, Color.WHITE, 0.4f);
+                    int backgroundColor = ColorUtils.blendARGB(Color.WHITE, Color.GRAY, 0.4f);
                     newBandEditText.setText(tools.get(position).getName());
                     newBandEditText.setBackgroundColor(Color.WHITE);
                     view.setBackgroundColor(backgroundColor);
@@ -232,7 +232,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         if (view.getId() == R.id.toolToggleButton && isBandMode)
         {
             // Switching to tools
-            newBandEditText.setText("Enter Tool Name");
+            newBandEditText.setText("");
+            newBandEditText.setHint("Enter Tool Name");
             newBandEditText.setBackgroundColor(Color.WHITE);
             colorPickerButton.setEnabled(false);
             bandsButton.setEnabled(true);
@@ -245,7 +246,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             hardTextView.setText("Least\nAssist");
         }else if(view.getId() == R.id.bandToggleButton && !isBandMode){
             // Switching to bands
-            newBandEditText.setText("Enter Band Name");
+            newBandEditText.setText("");
+            newBandEditText.setHint("Enter Band Name");
             newBandEditText.setBackgroundColor(defaultColor);
             colorPickerButton.setEnabled(true);
             toolButton.setEnabled(true);
