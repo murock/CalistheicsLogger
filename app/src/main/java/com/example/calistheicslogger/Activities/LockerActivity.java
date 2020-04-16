@@ -211,6 +211,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     newBandEditText.setText(tools.get(position).getName());
                     newBandEditText.setBackgroundColor(Color.WHITE);
                     view.setBackgroundColor(backgroundColor);
+                }else{
+                    view.setBackgroundColor(Color.WHITE);
                 }
 
                 return  view;
