@@ -72,6 +72,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     Boolean bandAssisted, weighted, tempoControlled, toolsRequired;
     Menu menu;
+    static CountDownTimer restTimer;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -620,7 +621,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         boolean vibrateOn = prefs.getBoolean("vibrateOn", true);
 
         MenuItem restItem = menu.findItem(R.id.restButton);
-        new CountDownTimer(timerValueMilli, 1000) {
+        if(restTimer != null)
+        {
+            restTimer.cancel();
+        }
+        restTimer = new CountDownTimer(timerValueMilli, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 restItem.setIcon(null);
