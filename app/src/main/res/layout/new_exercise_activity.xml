@@ -48,6 +48,7 @@
         android:ems="10"
         android:hint="Name of exercise"
         android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
         app:layout_constraintBottom_toTopOf="@+id/categoryTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -21,11 +21,12 @@ import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NewExerciseActivity extends Activity {
+public class NewExerciseActivity extends Activity implements Serializable {
 
     AppDatabase appDatabase;
     Spinner progressionSpinner, typeSpinner;
@@ -38,6 +39,11 @@ public class NewExerciseActivity extends Activity {
         appDatabase = AppDatabase.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_exercise_activity);
+
+        Intent i = getIntent();
+        final String typedExerciseString = (String)i.getSerializableExtra("TypedExercise");
+        EditText nameEditText = findViewById(R.id.nameEditText);
+        nameEditText.setText(typedExerciseString);
 
         setUpCategorySpinner(R.id.categorySpinner);
         setUpProgressionSpinner(R.id.progressionSpinner);

@@ -230,6 +230,8 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
 
     public void newExerciseClick(View view){
         Intent newExercise = new Intent(this,NewExerciseActivity.class);
+        SearchView exerciseSearchView = findViewById(R.id.exerciseSearchView);
+        newExercise.putExtra("TypedExercise", exerciseSearchView.getQuery().toString());
         startActivity(newExercise);
     }
 
