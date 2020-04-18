@@ -40,7 +40,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     ArrayAdapter<String> dslvAdapter;
     DragSortController dragSortController;
     DatabaseCommunicator databaseCommunicator;
-    boolean isBandMode = true;
     int defaultColor;
     EditText newBandEditText;
     // Indicates the total number of bands
@@ -51,12 +50,20 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     ArrayList<String> arrayListTools;
     ArrayList<String> arrayListBands;
 
+    enum Mode{
+        BAND,
+        TOOL,
+        PROGRESSION
+    }
+
+    Mode mode = Mode.BAND;
+
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-                        if (isBandMode) {
+                        if (mode == Mode.BAND) {
                             databaseCommunicator.swapBands(from, to);
                         }else{
                             databaseCommunicator.swapTools(from, to);
@@ -73,9 +80,9 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 {
                     if (position == selectedPosition)
                     {
+                        Log.i("Alfie", "Clear4");
                         newBandEditText.setText("");
-                        // Toggle off
-                        if (isBandMode)
+                        if (mode == Mode.BAND)
                         {
                             newBandEditText.setHint("Enter Band Name");
                         }else
@@ -227,13 +234,18 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     public void OnToggleClick(View view){
+        this.selectedPosition = -1;
+        newBandEditText.setFocusable(true);
+        newBandEditText.setFocusableInTouchMode(true);
         ImageButton bandsButton = findViewById(R.id.bandToggleButton);
         ImageButton toolButton = findViewById(R.id.toolToggleButton);
         TextView easyTextView = findViewById(R.id.easyTextView);
         TextView hardTextView = findViewById(R.id.hardTextView);
-        if (view.getId() == R.id.toolToggleButton && isBandMode)
+        if (view.getId() == R.id.toolToggleButton && this.mode != Mode.TOOL)
         {
             // Switching to tools
+            this.mode = Mode.TOOL;
+            Log.i("Alfie", "Clear1");
             newBandEditText.setText("");
             newBandEditText.setHint("Enter Tool Name");
             newBandEditText.setBackgroundColor(Color.WHITE);
@@ -242,12 +254,13 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             bandsButton.setImageResource(R.drawable.band_icon);
             toolButton.setEnabled(false);
             toolButton.setImageResource(R.drawable.faded_tools_icon);
-            isBandMode = false;
             databaseCommunicator.getTools();
             easyTextView.setText("Most\nAssist");
             hardTextView.setText("Least\nAssist");
-        }else if(view.getId() == R.id.bandToggleButton && !isBandMode){
+        }else if(view.getId() == R.id.bandToggleButton && this.mode != Mode.BAND){
             // Switching to bands
+            this.mode = Mode.BAND;
+            Log.i("Alfie", "Clear2");
             newBandEditText.setText("");
             newBandEditText.setHint("Enter Band Name");
             newBandEditText.setBackgroundColor(defaultColor);
@@ -256,21 +269,28 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             toolButton.setImageResource(R.drawable.tools_icon);
             bandsButton.setEnabled(false);
             bandsButton.setImageResource(R.drawable.faded_band_icon);
-            isBandMode = true;
             databaseCommunicator.getBands();
             easyTextView.setText("Thick");
             hardTextView.setText("Thin");
+        } else if(this.mode != Mode.PROGRESSION)
+        {
+            // Switching to progressions
+            this.mode = Mode.PROGRESSION;
         }
     }
 
     public void openColorPicker(View view){
         if (selectedPosition != -1)
         {
-            if (isBandMode)
+            if (this.mode == Mode.BAND)
             {
                 removeBandFromDatabase();
-            }else{
+            }else if (this.mode == Mode.TOOL)
+            {
                 removeToolFromDatabase();
+            } else if (this.mode == Mode.PROGRESSION)
+            {
+
             }
 
         }else {
@@ -299,6 +319,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             Band newBand = new Band(name, defaultColor, this.numBands);
             this.databaseCommunicator.addBand(newBand);
         }
+        Log.i("Alfie", "Clear3");
         newBandEditText.setText("");
     }
 
@@ -313,6 +334,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             Tool newTool = new Tool(name,this.numTools);
             this.databaseCommunicator.addTool(newTool);
         }
+        Log.i("Alfie", "Clear6");
         newBandEditText.setText("");
     }
 
@@ -324,18 +346,25 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         Utilities.hideKeyboard(this);
         if (selectedPosition != -1)
         {
-            if (isBandMode)
+            if (this.mode == Mode.BAND)
             {
                 removeBandFromDatabase();
-            }else{
+            }else if (this.mode == Mode.TOOL)
+            {
                 removeToolFromDatabase();
+            } else if (this.mode == Mode.PROGRESSION)
+            {
+
             }
         }else{
-            if (isBandMode)
+            if (this.mode == Mode.BAND)
             {
                 addBandToDatabase();
-            }else {
+            } else if (this.mode == Mode.TOOL){
                 addToolToDatabase();
+            } else if (this.mode == Mode.PROGRESSION)
+            {
+
             }
 
         }
