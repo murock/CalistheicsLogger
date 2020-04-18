@@ -13,10 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
 import com.example.calistheicslogger.R;
@@ -237,45 +235,84 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         this.selectedPosition = -1;
         newBandEditText.setFocusable(true);
         newBandEditText.setFocusableInTouchMode(true);
-        ImageButton bandsButton = findViewById(R.id.bandToggleButton);
-        ImageButton toolButton = findViewById(R.id.toolToggleButton);
+        newBandEditText.setText("");
+
         TextView easyTextView = findViewById(R.id.easyTextView);
         TextView hardTextView = findViewById(R.id.hardTextView);
         if (view.getId() == R.id.toolToggleButton && this.mode != Mode.TOOL)
         {
             // Switching to tools
             this.mode = Mode.TOOL;
-            Log.i("Alfie", "Clear1");
-            newBandEditText.setText("");
+
             newBandEditText.setHint("Enter Tool Name");
             newBandEditText.setBackgroundColor(Color.WHITE);
+
             colorPickerButton.setEnabled(false);
-            bandsButton.setEnabled(true);
-            bandsButton.setImageResource(R.drawable.band_icon);
-            toolButton.setEnabled(false);
-            toolButton.setImageResource(R.drawable.faded_tools_icon);
+
+            this.updateButtons(true,false,false);
+
             databaseCommunicator.getTools();
+
             easyTextView.setText("Most\nAssist");
             hardTextView.setText("Least\nAssist");
         }else if(view.getId() == R.id.bandToggleButton && this.mode != Mode.BAND){
             // Switching to bands
             this.mode = Mode.BAND;
-            Log.i("Alfie", "Clear2");
-            newBandEditText.setText("");
+
             newBandEditText.setHint("Enter Band Name");
             newBandEditText.setBackgroundColor(defaultColor);
+
             colorPickerButton.setEnabled(true);
-            toolButton.setEnabled(true);
-            toolButton.setImageResource(R.drawable.tools_icon);
-            bandsButton.setEnabled(false);
-            bandsButton.setImageResource(R.drawable.faded_band_icon);
+
+            this.updateButtons(false,true,false);
+
             databaseCommunicator.getBands();
+
             easyTextView.setText("Thick");
             hardTextView.setText("Thin");
         } else if(this.mode != Mode.PROGRESSION)
         {
             // Switching to progressions
             this.mode = Mode.PROGRESSION;
+
+            newBandEditText.setHint("Enter Progression Name");
+            newBandEditText.setBackgroundColor(Color.WHITE);
+
+            colorPickerButton.setEnabled(false);
+
+            this.updateButtons(false, false, true);
+
+            //TODO: add db call here
+
+            easyTextView.setText("");
+            hardTextView.setText("");
+        }
+    }
+
+    private void updateButtons(boolean toolsEnabled, boolean bandsEnabled,boolean progsEnabled){
+        ImageButton bandsButton = findViewById(R.id.bandToggleButton);
+        ImageButton toolButton = findViewById(R.id.toolToggleButton);
+        ImageButton progressionButton = findViewById(R.id.progressionsButton);
+        bandsButton.setEnabled(!bandsEnabled);
+        toolButton.setEnabled(!toolsEnabled);
+        progressionButton.setEnabled(!progsEnabled);
+
+        if (toolsEnabled){
+            toolButton.setImageResource(R.drawable.faded_tools_icon);
+        }else{
+            toolButton.setImageResource(R.drawable.tools_icon);
+        }
+
+        if (bandsEnabled){
+            bandsButton.setImageResource(R.drawable.faded_band_icon);
+        }else{
+            bandsButton.setImageResource(R.drawable.band_icon);
+        }
+
+        if (progsEnabled){
+            progressionButton.setImageResource(R.drawable.faded_progressions_icon);
+        }else {
+            progressionButton.setImageResource(R.drawable.progressions_icon);
         }
     }
 

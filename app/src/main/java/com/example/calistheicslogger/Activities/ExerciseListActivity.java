@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +16,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -199,7 +197,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
             databaseCommunicator.getAllProgressions();
         }else{
             prefs.edit().putBoolean("isProgressionView", false).commit();
-            toggleButton.setImageResource(R.drawable.dumbell_sizes_icon);
+            toggleButton.setImageResource(R.drawable.progressions_icon);
             databaseCommunicator.getAllCategories();
         }
     }

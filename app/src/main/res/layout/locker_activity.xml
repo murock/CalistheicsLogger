@@ -51,7 +51,7 @@
         android:onClick="OnToggleClick"
         android:src="@drawable/faded_band_icon"
         android:text="ToggleButton"
-        app:layout_constraintEnd_toStartOf="@+id/toolToggleButton"
+        app:layout_constraintEnd_toStartOf="@+id/progressionsButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolToggleButton" />
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toTopOf="@id/easyTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/bandToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/progressionsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -107,4 +107,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/newBandEditText"
         app:layout_constraintTop_toBottomOf="@+id/lockerDSLV" />
+
+    <ImageButton
+        android:id="@+id/progressionsButton"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OnToggleClick"
+        android:src="@drawable/progressions_icon"
+        app:layout_constraintEnd_toStartOf="@+id/toolToggleButton"
+        app:layout_constraintStart_toEndOf="@id/bandToggleButton"
+        app:layout_constraintTop_toTopOf="@+id/toolToggleButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
