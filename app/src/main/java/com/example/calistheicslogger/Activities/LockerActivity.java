@@ -244,6 +244,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         this.numProgressions = progressions.size();
 
         ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item("All", true));
         for (String progression : progressions){
             items.add(new Item(progression,false));
         }
