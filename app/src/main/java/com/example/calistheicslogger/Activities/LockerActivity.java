@@ -22,6 +22,8 @@ import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
+import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
+import com.example.calistheicslogger.Tools.MultiSelectionButton;
 import com.example.calistheicslogger.Tools.Utilities;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
@@ -240,6 +242,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     private void UpdateDSLVForProgressions(){
         final List<String> progressions = databaseCommunicator.progressions;
         this.numProgressions = progressions.size();
+
+        ArrayList<Item> items = new ArrayList<>();
+        for (String progression : progressions){
+            items.add(new Item(progression,false));
+        }
+        MultiSelectionButton multiSelectionProgressionButton = findViewById(R.id.progressionsMultiButton);
+        multiSelectionProgressionButton.setItems(items);
+
         arrayListProgressions = new ArrayList<>(progressions);
         dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListProgressions) {
             @Override
@@ -418,7 +428,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         String name = newBandEditText.getText().toString();
         if (!arrayListTools.contains(name) && name.length() > 0)
         {
-            Tool newTool = new Tool(name,this.numTools);
+            String progressions = "";
+            Tool newTool = new Tool(name,progressions,this.numTools);
             this.databaseCommunicator.addTool(newTool);
         }
         Log.i("Alfie", "Clear6");

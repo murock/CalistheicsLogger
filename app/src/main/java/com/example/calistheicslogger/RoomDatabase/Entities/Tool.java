@@ -18,16 +18,22 @@ public class Tool
     @ColumnInfo(name = "rank" )
     private int rank;
 
-    public Tool(int id, String name, int rank){
+    @ColumnInfo(name = "progressions")
+    private String progressions;
+
+
+    public Tool(int id, String name, int rank, String progressions){
         this.id = id;
         this.name = name;
         this.rank = rank;
+        this.progressions = progressions;
     }
 
     @Ignore
-    public Tool(String name, int rank){
+    public Tool(String name, String progressions,int rank) {
         this.name = name;
         this.rank = rank;
+        this.progressions = progressions;
     }
 
     public int getId() {
@@ -55,18 +61,28 @@ public class Tool
         this.rank = rank;
     }
 
+    public String getProgressions() {
+        return progressions;
+    }
+
+    public void setProgressions(String progressions) {
+        this.progressions = progressions;
+    }
+
     public static Tool[] populateData(){
         return new Tool[]{
-                new Tool("Rings",9),
-                new Tool("Negative",8),
-                new Tool("Wall",7),
-                new Tool("Box",6),
-                new Tool("Straddle",5),
-                new Tool("Adv",4),
-                new Tool("Tucked",3),
-                new Tool("Parallettes",2),
-                new Tool("Shallow Angle",1),
-                new Tool("Steep Angle",0),
+                new Tool("Rings","",9),
+                new Tool("Negative","",8),
+                new Tool("Wall","",7),
+                new Tool("Box","",6),
+                new Tool("Straddle","",5),
+                new Tool("Adv","",4),
+                new Tool("Tucked","",3),
+                new Tool("Parallettes","",2),
+                new Tool("Shallow Angle","",1),
+                new Tool("Steep Angle","",0),
         };
     }
+
+
 }

@@ -78,7 +78,7 @@
         android:maxLength="15"
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="@+id/colorButton"
-        app:layout_constraintEnd_toStartOf="@+id/colorButton"
+        app:layout_constraintEnd_toStartOf="@+id/progressionsMultiButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/colorButton" />
@@ -91,8 +91,6 @@
         android:text="+"
         app:layout_constraintBottom_toBottomOf="@+id/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/colorButton"
         app:layout_constraintTop_toTopOf="@+id/colorButton" />
 
     <Button
@@ -104,8 +102,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/newBandEditText"
+        app:layout_constraintStart_toEndOf="@+id/progressionsMultiButton"
         app:layout_constraintTop_toBottomOf="@+id/lockerDSLV" />
 
     <ImageButton
@@ -118,4 +115,16 @@
         app:layout_constraintEnd_toStartOf="@+id/toolToggleButton"
         app:layout_constraintStart_toEndOf="@id/bandToggleButton"
         app:layout_constraintTop_toTopOf="@+id/toolToggleButton" />
+
+    <com.example.calistheicslogger.Tools.MultiSelectionButton
+        android:id="@+id/progressionsMultiButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/progressions_icon"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/colorButton"
+        app:layout_constraintStart_toEndOf="@+id/newBandEditText"
+        app:layout_constraintTop_toBottomOf="@+id/lockerDSLV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

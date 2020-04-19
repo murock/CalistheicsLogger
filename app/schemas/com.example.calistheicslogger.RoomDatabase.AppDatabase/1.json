@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "238c3d5c1e5698254722906c801e15c1",
+    "identityHash": "14b13d47f1499aaa87d8d39a7bddffd9",
     "entities": [
       {
         "tableName": "exercises",
@@ -271,7 +271,7 @@
       },
       {
         "tableName": "tools",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `rank` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `rank` INTEGER NOT NULL, `progressions` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -290,6 +290,12 @@
             "columnName": "rank",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "progressions",
+            "columnName": "progressions",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -305,7 +311,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '238c3d5c1e5698254722906c801e15c1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '14b13d47f1499aaa87d8d39a7bddffd9')"
     ]
   }
 }
