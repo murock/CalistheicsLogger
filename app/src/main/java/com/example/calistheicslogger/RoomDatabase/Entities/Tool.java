@@ -55,9 +55,9 @@ public class Tool
         this.rank = rank;
     }
 
-    // TODO Remove this and replace with band selecting/creating dialog
     public static Tool[] populateData(){
         return new Tool[]{
+                new Tool("Rings",9),
                 new Tool("Negative",8),
                 new Tool("Wall",7),
                 new Tool("Box",6),

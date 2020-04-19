@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
+import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
@@ -305,6 +306,44 @@ public class DatabaseCommunicator {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
+                progressions = appDatabase.finalProgressionDao().getAllNames();
+                support.firePropertyChange("progressions",null,null);
+            }
+        });
+    }
+
+    public void addProgression(final FinalProgression progression){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.finalProgressionDao().addFinalProgression(progression);
+                progressions = appDatabase.finalProgressionDao().getAllNames();
+                support.firePropertyChange("progressions",null,null);
+            }
+        });
+    }
+
+    public void removeProgression(final int progPos){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int progRank = progressions.size() - progPos - 1;
+                appDatabase.finalProgressionDao().removeProgressionByRank(progRank);
+                appDatabase.finalProgressionDao().updateRemovedProgression(progRank);
+                progressions = appDatabase.finalProgressionDao().getAllNames();
+                support.firePropertyChange("progressions",null,null);
+            }
+        });
+    }
+
+    public void swapProgressions(final int progPos1, final int progPos2)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int prog1Rank = progressions.size() - progPos1 - 1;
+                int prog2Rank = progressions.size() - progPos2 - 1;
+                appDatabase.finalProgressionDao().swapByRank(prog1Rank,prog2Rank);
                 progressions = appDatabase.finalProgressionDao().getAllNames();
                 support.firePropertyChange("progressions",null,null);
             }

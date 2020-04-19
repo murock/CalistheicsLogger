@@ -20,6 +20,7 @@ import androidx.core.graphics.ColorUtils;
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Band;
+import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
 import com.example.calistheicslogger.Tools.Utilities;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
@@ -41,12 +42,13 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     int defaultColor;
     EditText newBandEditText;
     // Indicates the total number of bands
-    int numBands, numTools;
+    int numBands, numTools, numProgressions;
 
     int selectedPosition = -1;
     Button addRemoveButton, colorPickerButton;
     ArrayList<String> arrayListTools;
     ArrayList<String> arrayListBands;
+    ArrayList<String> arrayListProgressions;
 
     enum Mode{
         BAND,
@@ -63,8 +65,10 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                     if (from != to) {
                         if (mode == Mode.BAND) {
                             databaseCommunicator.swapBands(from, to);
-                        }else{
+                        }else if (mode == Mode.TOOL){
                             databaseCommunicator.swapTools(from, to);
+                        }else if(mode == Mode.PROGRESSION){
+                            databaseCommunicator.swapProgressions(from, to);
                         }
                     }
                 }
@@ -78,14 +82,16 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 {
                     if (position == selectedPosition)
                     {
-                        Log.i("Alfie", "Clear4");
                         newBandEditText.setText("");
                         if (mode == Mode.BAND)
                         {
                             newBandEditText.setHint("Enter Band Name");
-                        }else
+                        }else if(mode == Mode.TOOL)
                         {
                             newBandEditText.setHint("Enter Tool Name");
+                        }else if(mode == Mode.PROGRESSION)
+                        {
+                            newBandEditText.setHint("Enter Progression Name");
                         }
                         newBandEditText.setFocusable(true);
                         newBandEditText.setFocusableInTouchMode(true);
@@ -231,6 +237,37 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         });
     }
 
+    private void UpdateDSLVForProgressions(){
+        final List<String> progressions = databaseCommunicator.progressions;
+        this.numProgressions = progressions.size();
+        arrayListProgressions = new ArrayList<>(progressions);
+        dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListProgressions) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Get the current item from ListView
+                final View view = super.getView(position,convertView,parent);
+
+                if (position == selectedPosition)
+                {
+                    int backgroundColor = ColorUtils.blendARGB(Color.WHITE, Color.GRAY, 0.4f);
+                    newBandEditText.setText(progressions.get(position));
+                    newBandEditText.setBackgroundColor(Color.WHITE);
+                    view.setBackgroundColor(backgroundColor);
+                }else{
+                    view.setBackgroundColor(Color.WHITE);
+                }
+
+                return  view;
+            }
+        };
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dslv.setAdapter(dslvAdapter);
+            }
+        });
+    }
+
     public void OnToggleClick(View view){
         this.selectedPosition = -1;
         newBandEditText.setFocusable(true);
@@ -283,6 +320,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             this.updateButtons(false, false, true);
 
             //TODO: add db call here
+            databaseCommunicator.getAllProgressions();
 
             easyTextView.setText("");
             hardTextView.setText("");
@@ -347,6 +385,19 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         }
     }
 
+    private void addProgressionToDatabase(){
+        String name = newBandEditText.getText().toString();
+        if (!arrayListBands.contains(name) && name.length() > 0) {
+            FinalProgression newProg = new FinalProgression(name, this.numProgressions);
+            this.databaseCommunicator.addProgression(newProg);
+        }
+        newBandEditText.setText("");
+    }
+
+    private void removeProgressionFromDatabase(){
+        this.databaseCommunicator.removeProgression(selectedPosition);
+    }
+
     private void addBandToDatabase(){
 
         String name = newBandEditText.getText().toString();
@@ -356,7 +407,6 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             Band newBand = new Band(name, defaultColor, this.numBands);
             this.databaseCommunicator.addBand(newBand);
         }
-        Log.i("Alfie", "Clear3");
         newBandEditText.setText("");
     }
 
@@ -391,7 +441,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 removeToolFromDatabase();
             } else if (this.mode == Mode.PROGRESSION)
             {
-
+                removeProgressionFromDatabase();
             }
         }else{
             if (this.mode == Mode.BAND)
@@ -401,7 +451,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 addToolToDatabase();
             } else if (this.mode == Mode.PROGRESSION)
             {
-
+                addProgressionToDatabase();
             }
 
         }
@@ -422,6 +472,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 @Override
                 public void run() {
                     UpdateDSLVForTools();
+                }
+            });
+        }
+        if(evt.getPropertyName() == "progressions"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateDSLVForProgressions();
                 }
             });
         }
