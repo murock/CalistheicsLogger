@@ -67,13 +67,25 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void updateTrackedExercise(TrackedExercise updatedExercise,String name, String timestamp, int setNo)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.trackedExerciseDao().deleteTrackedExercise(name,timestamp,setNo);
+                appDatabase.trackedExerciseDao().addTrackedExercise(updatedExercise);
+                support.firePropertyChange("trackedExercisesUpdated", null, null);
+            }
+        });
+    }
+
     public void deleteTrackedExercise(String name, String timestamp, int setNo){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.trackedExerciseDao().deleteTrackedExercise(name,timestamp,setNo);
                 appDatabase.trackedExerciseDao().updateRemovedSet(setNo);
-                support.firePropertyChange("trackedExerciseDeleted", null, null);
+                support.firePropertyChange("trackedExercisesUpdated", null, null);
             }
         });
     }

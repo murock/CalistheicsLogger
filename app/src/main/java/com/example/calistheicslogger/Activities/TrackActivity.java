@@ -3,6 +3,7 @@ package com.example.calistheicslogger.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -93,17 +94,25 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 public void onItemClick(AdapterView<?> adapterView, View v, int position, long arg)
                 {
                     ImageButton deleteButton = findViewById(R.id.deleteButton);
+                    ImageButton saveButton = findViewById(R.id.saveButton);
                     if (position == selectedPosition)
                     {
                         // Toggle off
                         deleteButton.setEnabled(false);
                         deleteButton.setImageResource(R.drawable.faded_remove_icon);
+                        saveButton.setImageResource(R.drawable.add_icon);
                         selectedPosition = -1;
                     }else
                     {
                         // Toggle on
+                        for(TrackedExercise trackedExercise : trackedExercises){
+                            if(trackedExercise.getSetNumber() == position + 1){
+                                populateControlsWithExercise(trackedExercise);
+                            }
+                        }
                         deleteButton.setEnabled(true);
                         deleteButton.setImageResource(R.drawable.remove_icon);
+                        saveButton.setImageResource(R.drawable.update_icon);
                         selectedPosition = position;
                     }
                     dslvAdapter.setSelectedPostion(selectedPosition);
@@ -513,80 +522,98 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     public void SaveButtonClick(View view){
+        if (this.selectedPosition == -1)
+        {
+            this.saveExercise();
+        }else{
+            this.updateExercise();
+        }
+
+    }
+
+    private TrackedExercise createTrackedExercise(int setNumber){
+        EditText repsText = findViewById(R.id.repsEditText);
+        String repString = repsText.getText().toString();
+        Group repGroup = findViewById(R.id.repsGroup);
+        int repValue = -1;
+
+        if (repGroup.getVisibility() == View.VISIBLE && !repString.isEmpty())
+        {
+            repValue = Integer.parseInt((repString.trim()));
+        }
+        if (repGroup.getVisibility() == View.VISIBLE && repString.isEmpty())
+        {
+            repValue = 0;
+        }
+        EditText weightText = findViewById(R.id.weightEditText);
+        // weight
+        String weightString = weightText.getText().toString();//AddPrefixToItem(weightText.getText().toString(),7," ");
+        Group weightGroup = findViewById(R.id.weightGroup);
+        double weightValue = -1;
+        if (weightGroup.getVisibility() == View.VISIBLE && !weightString.isEmpty())
+        {
+            weightValue = Double.parseDouble(weightString.trim());
+        }
+        if (weightGroup.getVisibility() == View.VISIBLE && weightString.isEmpty())
+        {
+            weightValue = 0.0;
+        }
+        // time here
+        EditText hourText = findViewById(R.id.hourEditText);
+        EditText minText = findViewById(R.id.minuteEditText);
+        EditText secondText = findViewById(R.id.secondEditText);
+        String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") +  AddPrefixToItem(minText.getText().toString(), 2, "0")
+                + AddPrefixToItem(secondText.getText().toString(), 2, "0");
+
+        Spinner bandSpinner = findViewById(R.id.bandSpinner);
+        Spinner toolSpinner = findViewById(R.id.toolSpinner);
+        String toolString = "";
+        Group toolGroup = findViewById(R.id.toolGroup);
+        if (toolGroup.getVisibility() == View.VISIBLE){
+            toolString = toolSpinner.getSelectedItem().toString();
+        }
+        EditText distanceText = findViewById(R.id.distanceEditText);
+        int distance = -1;
+        if (distanceText.getText().toString() == ""){
+            distance = Integer.parseInt(distanceText.getText().toString());
+        }
+
+        // Tempo
+        Group tempoGroup = findViewById(R.id.tempoGroup);
+        String tempo = "";
+        if(tempoGroup.getVisibility() == View.VISIBLE)
+        {
+            EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
+            EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
+            EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
+            EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
+            tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() + ":" +
+                    liftEditText.getText().toString() + ":" + pause2EditText.getText().toString();
+        }
+
+        Group bandGroup = findViewById(R.id.bandGroup);
+        String bandValue;
+        if (bandGroup.getVisibility() == View.VISIBLE)
+        {
+            bandValue = bandSpinner.getSelectedItem().toString();
+        }else{
+            bandValue = "No";
+        }
+
+        return new TrackedExercise(currentExercise, currentDate, setNumber,
+                repValue,weightValue,time,bandValue,
+                distance,tempo, toolString);
+    }
+
+    private void updateExercise(){
+        this.databaseCommunicator.updateTrackedExercise(this.createTrackedExercise(this.selectedPosition + 1), this.currentExercise,this.currentDate,this.selectedPosition + 1);
+    }
+
+    private void saveExercise(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                EditText repsText = findViewById(R.id.repsEditText);
-                String repString = repsText.getText().toString();
-                Group repGroup = findViewById(R.id.repsGroup);
-                int repValue = -1;
-
-                if (repGroup.getVisibility() == View.VISIBLE && !repString.isEmpty())
-                {
-                    repValue = Integer.parseInt((repString.trim()));
-                }
-                if (repGroup.getVisibility() == View.VISIBLE && repString.isEmpty())
-                {
-                    repValue = 0;
-                }
-                EditText weightText = findViewById(R.id.weightEditText);
-                // weight
-                String weightString = weightText.getText().toString();//AddPrefixToItem(weightText.getText().toString(),7," ");
-                Group weightGroup = findViewById(R.id.weightGroup);
-                double weightValue = -1;
-                if (weightGroup.getVisibility() == View.VISIBLE && !weightString.isEmpty())
-                {
-                   weightValue = Double.parseDouble(weightString.trim());
-                }
-                if (weightGroup.getVisibility() == View.VISIBLE && weightString.isEmpty())
-                {
-                    weightValue = 0.0;
-                }
-                // time here
-                EditText hourText = findViewById(R.id.hourEditText);
-                EditText minText = findViewById(R.id.minuteEditText);
-                EditText secondText = findViewById(R.id.secondEditText);
-                String time = AddPrefixToItem(hourText.getText().toString(), 2, "0") +  AddPrefixToItem(minText.getText().toString(), 2, "0")
-                        + AddPrefixToItem(secondText.getText().toString(), 2, "0");
-
-                Spinner bandSpinner = findViewById(R.id.bandSpinner);
-                Spinner toolSpinner = findViewById(R.id.toolSpinner);
-                String toolString = "";
-                Group toolGroup = findViewById(R.id.toolGroup);
-                if (toolGroup.getVisibility() == View.VISIBLE){
-                    toolString = toolSpinner.getSelectedItem().toString();
-                }
-                EditText distanceText = findViewById(R.id.distanceEditText);
-                int distance = -1;
-                if (distanceText.getText().toString() == ""){
-                    distance = Integer.parseInt(distanceText.getText().toString());
-                }
-
-                // Tempo
-                Group tempoGroup = findViewById(R.id.tempoGroup);
-                String tempo = "";
-                if(tempoGroup.getVisibility() == View.VISIBLE)
-                {
-                    EditText lowerEditText = findViewById(R.id.tempoEccentricEditText);
-                    EditText pause1EditText = findViewById(R.id.tempoPause1EditText);
-                    EditText liftEditText = findViewById(R.id.tempoConcentricEditText);
-                    EditText pause2EditText = findViewById(R.id.tempoPause2EditText);
-                    tempo = lowerEditText.getText().toString() + ":" + pause1EditText.getText().toString() + ":" +
-                            liftEditText.getText().toString() + ":" + pause2EditText.getText().toString();
-                }
-
-                Group bandGroup = findViewById(R.id.bandGroup);
-                String bandValue;
-                if (bandGroup.getVisibility() == View.VISIBLE)
-                {
-                    bandValue = bandSpinner.getSelectedItem().toString();
-                }else{
-                    bandValue = "No";
-                }
-
-                final TrackedExercise trackedExercise = new TrackedExercise(currentExercise, currentDate, globalSetNumber,
-                        repValue,weightValue,time,bandValue,
-                        distance,tempo, toolString);
+                final TrackedExercise trackedExercise = createTrackedExercise(globalSetNumber);
                 globalSetNumber++;
                 appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
                 updateTrackingList();
@@ -686,11 +713,12 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "trackedExerciseDeleted"){
+        if (evt.getPropertyName() == "trackedExercisesUpdated"){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     updateTrackingList();
+                    databaseCommunicator.getPersonalRecords(currentExercise);
                 }
             });
         } else if(evt.getPropertyName() == "latestExercise"){
