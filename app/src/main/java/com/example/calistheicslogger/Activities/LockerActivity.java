@@ -47,7 +47,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     int numBands, numTools, numProgressions;
 
     int selectedPosition = -1;
-    Button addRemoveButton, colorPickerButton;
+    ImageButton addRemoveButton, colorPickerButton;
     ArrayList<String> arrayListTools;
     ArrayList<String> arrayListBands;
     ArrayList<String> arrayListProgressions;
@@ -98,8 +98,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                         newBandEditText.setFocusable(true);
                         newBandEditText.setFocusableInTouchMode(true);
                         selectedPosition = -1;
-                        addRemoveButton.setText("+");
-                        colorPickerButton.setText("pick color");
+                        addRemoveButton.setImageResource(R.drawable.add_icon);
+                        colorPickerButton.setEnabled(true);
 
                         newBandEditText.setTextColor(Color.BLACK);
                         newBandEditText.setBackgroundColor(defaultColor);
@@ -109,8 +109,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                         newBandEditText.setFocusable(false);
                         newBandEditText.setFocusableInTouchMode(false);
                         selectedPosition = position;
-                        addRemoveButton.setText("-");
-                        colorPickerButton.setText("delete");
+                        addRemoveButton.setImageResource(R.drawable.remove_icon);
+                        colorPickerButton.setEnabled(false);
                     }
 
                     dslvAdapter.notifyDataSetChanged();
@@ -342,20 +342,26 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         ImageButton bandsButton = findViewById(R.id.bandToggleButton);
         ImageButton toolButton = findViewById(R.id.toolToggleButton);
         ImageButton progressionButton = findViewById(R.id.progressionsButton);
+        ImageButton multiProgressionButton = findViewById(R.id.progressionsMultiButton);
+        ImageButton colorPickerButton = findViewById(R.id.colorButton);
         bandsButton.setEnabled(!bandsEnabled);
         toolButton.setEnabled(!toolsEnabled);
         progressionButton.setEnabled(!progsEnabled);
 
         if (toolsEnabled){
             toolButton.setImageResource(R.drawable.faded_tools_icon);
+            multiProgressionButton.setVisibility(View.VISIBLE);
         }else{
             toolButton.setImageResource(R.drawable.tools_icon);
+            multiProgressionButton.setVisibility(View.GONE);
         }
 
         if (bandsEnabled){
             bandsButton.setImageResource(R.drawable.faded_band_icon);
+            colorPickerButton.setVisibility(View.VISIBLE);
         }else{
             bandsButton.setImageResource(R.drawable.band_icon);
+            colorPickerButton.setVisibility(View.GONE);
         }
 
         if (progsEnabled){
