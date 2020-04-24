@@ -27,6 +27,11 @@ public interface ToolDao {
             "end)")
     void swapByRank(int tool1Rank, int tool2Rank);
 
+    @Query("SELECT name FROM tools WHERE progressions LIKE '%,All,%' " +
+            "OR progressions LIKE :selectedProgressions " +
+            "ORDER BY rank desc")
+    List<String> getAllNamesProgMatch(String selectedProgressions);
+
     @Query("DELETE FROM tools WHERE rank == :rank")
     void removeToolByRank(int rank);
 

@@ -303,7 +303,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> tools = appDatabase.toolDao().getAllNames();
+                Log.i("Alfie", exercise.getProgression());
+                List<String> tools = appDatabase.toolDao().getAllNamesProgMatch("%," + exercise.getProgression() + ",%");
                 ArrayList<Item> items = new ArrayList<>();
                 for (String tool : tools){
                     items.add(new Item(tool,false));

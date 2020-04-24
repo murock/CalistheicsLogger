@@ -89,12 +89,8 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
                     dataNames = dataNames.toLowerCase();
                     String[] words = dataNames.split("\\s+");
                     boolean filterItem = false;
-                    Log.i("Alfie1", "constraint " + constraintString);
-                    Log.i("Alfie1", "dataname " + dataNames);
                     if(constraintString.contains(" ") && dataNames.contains(constraintString)){
                         // Check if user have type multiple words e.g "Pike P"
-                        Log.i("Alfie1", "constraint " + constraint.toString());
-                        Log.i("Alfie1", "dataname " + dataNames);
                         filterItem = true;
                     }else{
                         // Check against each word e.g "Up" will filter both "Pull Up" and "Push Up"

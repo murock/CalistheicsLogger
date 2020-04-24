@@ -48,6 +48,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
 
     int selectedPosition = -1;
     ImageButton addRemoveButton, colorPickerButton;
+    MultiSelectionButton multiSelectionProgressionButton;
     ArrayList<String> arrayListTools;
     ArrayList<String> arrayListBands;
     ArrayList<String> arrayListProgressions;
@@ -248,7 +249,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         for (String progression : progressions){
             items.add(new Item(progression,false));
         }
-        MultiSelectionButton multiSelectionProgressionButton = findViewById(R.id.progressionsMultiButton);
+        multiSelectionProgressionButton = findViewById(R.id.progressionsMultiButton);
         multiSelectionProgressionButton.setItems(items);
 
         arrayListProgressions = new ArrayList<>(progressions);
@@ -435,12 +436,17 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         String name = newBandEditText.getText().toString();
         if (!arrayListTools.contains(name) && name.length() > 0)
         {
-            String progressions = "";
+            String progressions = ",";
+            for(Item item : multiSelectionProgressionButton.getSelectedItems()){
+                progressions += item.getName() + ",";
+            }
+            Log.i("Alfie progs", progressions);
             Tool newTool = new Tool(name,progressions,this.numTools);
             this.databaseCommunicator.addTool(newTool);
         }
-        Log.i("Alfie", "Clear6");
         newBandEditText.setText("");
+        // Reset multiSelect item selection
+        multiSelectionProgressionButton.Reset();
     }
 
     private void removeToolFromDatabase(){

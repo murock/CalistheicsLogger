@@ -109,4 +109,30 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
         }
         return true;
     }
+
+    public ArrayList<Item> getSelectedItems() {
+        ArrayList<Item> selectedItems = new ArrayList<>();
+
+        for (int i = 0; i < items.size(); ++i) {
+            if (selection[i]) {
+                selectedItems.add(items.get(i));
+            }
+        }
+
+        return selectedItems;
+    }
+
+    public void Reset(){
+        for (int i = 0; i < this.selection.length; i++) {
+            this.selection[i] = false;
+        }
+        for (int i = 0; i < items.size(); ++i) {
+            items.get(i).setValue(false);
+        }
+        // Set 'All' to true
+        if (items.size() > 0 && selection.length > 0){
+            items.get(0).setValue(true);
+            selection[0] = true;
+        }
+    }
 }
