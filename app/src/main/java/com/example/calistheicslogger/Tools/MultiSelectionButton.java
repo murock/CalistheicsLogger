@@ -75,6 +75,8 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
             public void onClick(DialogInterface arg0, int arg1)
             {
                 // Do nothing
+
+                //TODO: Raise event here to notify ok button click and to send off request for tool to hav eits progressions updated
             }
         });
 
