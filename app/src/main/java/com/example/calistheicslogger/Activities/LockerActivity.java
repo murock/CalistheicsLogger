@@ -114,7 +114,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                         addRemoveButton.setImageResource(R.drawable.remove_icon);
                         colorPickerButton.setEnabled(false);
                         if (mode == Mode.TOOL){
-                            databaseCommunicator.getProgressionsByRank(position + 1);
+                            databaseCommunicator.getProgressionsByRank(position);
                         }
                     }
 
@@ -132,6 +132,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
         databaseCommunicator.getBands();
+        databaseCommunicator.getAllProgressionsForButton();
         defaultColor = Color.WHITE;
         newBandEditText = findViewById(R.id.newBandEditText);
         newBandEditText.setBackgroundColor(defaultColor);
@@ -247,7 +248,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     }
 
     private void UpdateMultiButton(String progressions){
-        if (progressions.length() == 0){
+        if (progressions == null){
             return;
         }
         // remove first and last comma
@@ -257,17 +258,19 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         multiSelectionProgressionButton.setUpSelection(progressionsList);
     }
 
-    private void UpdateDSLVForProgressions(){
-        final List<String> progressions = databaseCommunicator.progressions;
-        this.numProgressions = progressions.size();
-
+    private void PopulateMulitSelectionButton(){
         ArrayList<Item> items = new ArrayList<>();
         items.add(new Item("All", true));
-        for (String progression : progressions){
+        for (String progression : databaseCommunicator.progressions){
             Log.i("Alfie prog is", progression);
             items.add(new Item(progression,false));
         }
         multiSelectionProgressionButton.setItems(items);
+    }
+
+    private void UpdateDSLVForProgressions(){
+        final List<String> progressions = databaseCommunicator.progressions;
+        this.numProgressions = progressions.size();
 
         arrayListProgressions = new ArrayList<>(progressions);
         dslvAdapter = new ArrayAdapter<String>(this,R.layout.center_spinner_text,arrayListProgressions) {
@@ -531,7 +534,7 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    databaseCommunicator.updateToolByRank(selectedPosition + 1, getProgressionStringFromButton());
+                    databaseCommunicator.updateToolByRank(selectedPosition, getProgressionStringFromButton());
                 }
             });
         }
@@ -540,6 +543,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 @Override
                 public void run() {
                     UpdateMultiButton(databaseCommunicator.toolProgressions);
+                }
+            });
+        }
+        if(evt.getPropertyName() == "progressionsForButton"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PopulateMulitSelectionButton();
                 }
             });
         }

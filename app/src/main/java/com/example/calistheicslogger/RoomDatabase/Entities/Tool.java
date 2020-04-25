@@ -71,16 +71,16 @@ public class Tool
 
     public static Tool[] populateData(){
         return new Tool[]{
-                new Tool("Rings","",9),
-                new Tool("Negative","",8),
-                new Tool("Wall","",7),
-                new Tool("Box","",6),
-                new Tool("Straddle","",5),
-                new Tool("Adv","",4),
-                new Tool("Tucked","",3),
-                new Tool("Parallettes","",2),
-                new Tool("Shallow Angle","",1),
-                new Tool("Steep Angle","",0),
+                new Tool("Rings",",All,",9),
+                new Tool("Negative",",All,",8),
+                new Tool("Wall",",All,",7),
+                new Tool("Box",",All,",6),
+                new Tool("Straddle",",All,",5),
+                new Tool("Adv",",All,",4),
+                new Tool("Tucked",",All,",3),
+                new Tool("Parallettes",",All,",2),
+                new Tool("Shallow Angle",",All,",1),
+                new Tool("Steep Angle",",All,",0),
         };
     }
 

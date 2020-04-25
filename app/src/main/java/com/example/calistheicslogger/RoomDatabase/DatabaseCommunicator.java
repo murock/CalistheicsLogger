@@ -1,6 +1,7 @@
 package com.example.calistheicslogger.RoomDatabase;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
@@ -251,6 +252,7 @@ public class DatabaseCommunicator {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
+                Log.i("Alfie","rank is " + rank);
                 toolProgressions = appDatabase.toolDao().getProgressionsByRank(rank);
                 support.firePropertyChange("toolProgressions", null, null);
             }
@@ -330,6 +332,17 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 appDatabase.exerciseDao().delete(appDatabase.exerciseDao().getExerciseFromName(exercise));
+            }
+        });
+    }
+
+    public void getAllProgressionsForButton()
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                progressions = appDatabase.finalProgressionDao().getAllNames();
+                support.firePropertyChange("progressionsForButton",null,null);
             }
         });
     }

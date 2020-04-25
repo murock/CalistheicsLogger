@@ -141,8 +141,12 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
     }
 
     public void setUpSelection(List<String> selectedItems){
+        if(items == null){
+            return;
+        }
         for (int i = 0; i < items.size(); ++i) {
             if (selectedItems.contains(items.get(i).getName())){
+                Log.i("Alfie item is",items.get(i).getName() );
                 items.get(i).setValue(true);
                 this.selection[i] = true;
             }else{
