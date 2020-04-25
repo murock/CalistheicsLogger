@@ -19,6 +19,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatImageButton implements DialogInterface.OnMultiChoiceClickListener {
 
@@ -139,12 +140,23 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
         return selectedItems;
     }
 
-    public void Reset(){
-        for (int i = 0; i < this.selection.length; i++) {
-            this.selection[i] = false;
+    public void setUpSelection(List<String> selectedItems){
+        for (int i = 0; i < items.size(); ++i) {
+            if (selectedItems.contains(items.get(i).getName())){
+                items.get(i).setValue(true);
+                this.selection[i] = true;
+            }else{
+                items.get(i).setValue(false);
+                this.selection[i] = false;
+            }
+;
         }
+    }
+
+    public void Reset(){
         for (int i = 0; i < items.size(); ++i) {
             items.get(i).setValue(false);
+            this.selection[i] = false;
         }
         // Set 'All' to true
         if (items.size() > 0 && selection.length > 0){

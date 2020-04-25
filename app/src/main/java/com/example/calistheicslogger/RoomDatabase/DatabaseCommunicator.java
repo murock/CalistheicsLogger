@@ -1,7 +1,6 @@
 package com.example.calistheicslogger.RoomDatabase;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
@@ -33,6 +32,7 @@ public class DatabaseCommunicator {
     public static  List<String> categories;
 
     public static String exerciseType;
+    public static String toolProgressions;
 
 
     protected DatabaseCommunicator(Context context){
@@ -242,6 +242,17 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 appDatabase.toolDao().updateToolByRank(rank, selectedProgression);
+            }
+        });
+    }
+
+    public void getProgressionsByRank(final int rank)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                toolProgressions = appDatabase.toolDao().getProgressionsByRank(rank);
+                support.firePropertyChange("toolProgressions", null, null);
             }
         });
     }

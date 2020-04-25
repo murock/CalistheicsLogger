@@ -31,6 +31,7 @@ import com.example.calistheicslogger.Tools.dslv.DragSortListView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -112,6 +113,9 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                         selectedPosition = position;
                         addRemoveButton.setImageResource(R.drawable.remove_icon);
                         colorPickerButton.setEnabled(false);
+                        if (mode == Mode.TOOL){
+                            databaseCommunicator.getProgressionsByRank(position + 1);
+                        }
                     }
 
                     dslvAdapter.notifyDataSetChanged();
@@ -240,6 +244,17 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 dslv.setAdapter(dslvAdapter);
             }
         });
+    }
+
+    private void UpdateMultiButton(String progressions){
+        if (progressions.length() == 0){
+            return;
+        }
+        // remove first and last comma
+        progressions = progressions.substring(1,progressions.length() - 1);
+        String[] progressionsArray = progressions.split(",");
+        List<String> progressionsList = Arrays.asList(progressionsArray);
+        multiSelectionProgressionButton.setUpSelection(progressionsList);
     }
 
     private void UpdateDSLVForProgressions(){
@@ -517,6 +532,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 @Override
                 public void run() {
                     databaseCommunicator.updateToolByRank(selectedPosition + 1, getProgressionStringFromButton());
+                }
+            });
+        }
+        if(evt.getPropertyName() == "toolProgressions"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateMultiButton(databaseCommunicator.toolProgressions);
                 }
             });
         }

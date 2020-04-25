@@ -41,6 +41,9 @@ public interface ToolDao {
     @Query("UPDATE tools SET progressions = :selectedProgressions WHERE rank = :rank")
     void updateToolByRank(int rank, String selectedProgressions);
 
+    @Query("SELECT progressions FROM tools WHERE rank = :rank")
+    String getProgressionsByRank(int rank);
+
     @Insert
     void addTool(Tool tool);
 
