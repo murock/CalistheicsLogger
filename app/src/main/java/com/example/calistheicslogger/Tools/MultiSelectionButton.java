@@ -10,8 +10,13 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.calistheicslogger.Activities.LockerActivity;
+import com.example.calistheicslogger.Activities.TrackActivity;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,14 +24,21 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
 
     ArrayList<Item> items = null;
     boolean[] selection = null;
+    private PropertyChangeSupport support;
 
 
     public MultiSelectionButton(Context context) {
         super(context);
+        support = new PropertyChangeSupport(this);
     }
 
     public MultiSelectionButton(Context context, AttributeSet attrs){
         super(context, attrs);
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
     }
 
     @Override
@@ -62,6 +74,9 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
     @Override
     public boolean performClick(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        if (items == null){
+            return false;
+        }
         String[] itemNames = new String[items.size()];
 
         for (int i = 0; i < items.size(); i++) {
@@ -75,8 +90,8 @@ public class MultiSelectionButton extends androidx.appcompat.widget.AppCompatIma
             public void onClick(DialogInterface arg0, int arg1)
             {
                 // Do nothing
-
                 //TODO: Raise event here to notify ok button click and to send off request for tool to hav eits progressions updated
+                support.firePropertyChange("MultiSelectionButtonOKClick", null, null);
             }
         });
 

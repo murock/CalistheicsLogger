@@ -122,6 +122,8 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locker_activity);
+        multiSelectionProgressionButton = findViewById(R.id.progressionsMultiButton);
+        multiSelectionProgressionButton.addPropertyChangeListener(this);
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpDSLV();
@@ -247,9 +249,9 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         ArrayList<Item> items = new ArrayList<>();
         items.add(new Item("All", true));
         for (String progression : progressions){
+            Log.i("Alfie prog is", progression);
             items.add(new Item(progression,false));
         }
-        multiSelectionProgressionButton = findViewById(R.id.progressionsMultiButton);
         multiSelectionProgressionButton.setItems(items);
 
         arrayListProgressions = new ArrayList<>(progressions);
@@ -436,17 +438,20 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
         String name = newBandEditText.getText().toString();
         if (!arrayListTools.contains(name) && name.length() > 0)
         {
-            String progressions = ",";
-            for(Item item : multiSelectionProgressionButton.getSelectedItems()){
-                progressions += item.getName() + ",";
-            }
-            Log.i("Alfie progs", progressions);
-            Tool newTool = new Tool(name,progressions,this.numTools);
+            Tool newTool = new Tool(name,getProgressionStringFromButton(),this.numTools);
             this.databaseCommunicator.addTool(newTool);
         }
         newBandEditText.setText("");
         // Reset multiSelect item selection
         multiSelectionProgressionButton.Reset();
+    }
+
+    private String getProgressionStringFromButton(){
+        String progressions = ",";
+        for(Item item : multiSelectionProgressionButton.getSelectedItems()){
+            progressions += item.getName() + ",";
+        }
+        return progressions;
     }
 
     private void removeToolFromDatabase(){
@@ -504,6 +509,14 @@ public class LockerActivity extends Activity implements PropertyChangeListener {
                 @Override
                 public void run() {
                     UpdateDSLVForProgressions();
+                }
+            });
+        }
+        if(evt.getPropertyName() == "MultiSelectionButtonOKClick"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    databaseCommunicator.updateToolByRank(selectedPosition + 1, getProgressionStringFromButton());
                 }
             });
         }

@@ -236,6 +236,16 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void updateToolByRank(final int rank, final String selectedProgression)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.toolDao().updateToolByRank(rank, selectedProgression);
+            }
+        });
+    }
+
     public void getUniqueTimestamps()
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -372,4 +382,5 @@ public class DatabaseCommunicator {
             }
         });
     }
+
 }
