@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     android:background="@drawable/square_border">
 
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OkButtonClick"
+        android:text="@android:string/ok"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -105,6 +117,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/okButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/volumeTextView"
         app:layout_constraintTop_toBottomOf="@+id/onCheckBox" />

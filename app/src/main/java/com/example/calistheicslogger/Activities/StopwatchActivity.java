@@ -58,4 +58,8 @@ public class StopwatchActivity extends Activity {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
     }
+
+    public void OkButtonClick(View v){
+        this.finish();
+    }
 }

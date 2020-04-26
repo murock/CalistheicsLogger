@@ -232,4 +232,8 @@ public class RestTimerActivity extends Activity {
         updateTimerValues();
 
     }
+
+    public void OkButtonClick(View v){
+        this.finish();
+    }
 }

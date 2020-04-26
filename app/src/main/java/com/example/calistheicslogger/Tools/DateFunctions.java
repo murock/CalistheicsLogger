@@ -1,6 +1,8 @@
 package com.example.calistheicslogger.Tools;
 
+import android.text.format.DateUtils;
 import android.util.Log;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +24,9 @@ public class DateFunctions {
     public static String GetUKDateFormat(String timestamp)
     {
         Date date = DateFunctions.GetDateFromTimestamp(timestamp);
+        if(DateUtils.isToday(date.getTime())){
+            return "Today";
+        }
         return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date);
     }
 }
