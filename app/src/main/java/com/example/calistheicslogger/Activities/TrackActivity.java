@@ -23,11 +23,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.calistheicslogger.R;
 import com.example.calistheicslogger.RoomDatabase.AppDatabase;
@@ -42,6 +45,7 @@ import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpin
 import com.example.calistheicslogger.Tools.TextViewPRArrayAdapter;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -73,6 +77,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     Boolean bandAssisted, weighted, tempoControlled, toolsRequired;
     Menu menu;
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
     static CountDownTimer restTimer;
 
     private DragSortListView.DropListener onDrop =
@@ -150,7 +158,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     // Handle clicks on elipsis menu items
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.i("Alfie", "Button press");
         super.onOptionsItemSelected(item);
+        if (t.onOptionsItemSelected(item)){
+           return true;
+        }
         item.setChecked(!item.isChecked());
         switch(item.getItemId()){
             case R.id.tools:
@@ -181,7 +193,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 startActivity(StopwatchActivity.class);
                 break;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
 
         }
         databaseCommunicator.updateExercise(exercise);
@@ -198,6 +210,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         currentDate = (String)i.getSerializableExtra("Date");
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
+        SetUpNavigationDrawer();
         SetDate();
         SetUpActivity(exerciseString);
         setUpBandSpinner();
@@ -217,6 +230,38 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         controller.setDragInitMode(DragSortController.ON_LONG_PRESS);
         controller.setRemoveMode(DragSortController.FLING_REMOVE);
         return controller;
+    }
+
+    private void SetUpNavigationDrawer()
+    {
+        dl = (DrawerLayout)findViewById(R.id.activity_track);
+        t = new ActionBarDrawerToggle(this, dl,R.string.open,R.string.close );
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = (NavigationView)findViewById(R.id.navigatorDrawer);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.home:
+                        Toast.makeText(TrackActivity.this, "Home",Toast.LENGTH_SHORT).show();break;
+                    case R.id.tools:
+                        Toast.makeText(TrackActivity.this, "Tools",Toast.LENGTH_SHORT).show();break;
+                    default:
+                        return true;
+                }
+
+
+                return true;
+
+            }
+        });
     }
 
     private void SetDate()
