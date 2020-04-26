@@ -10,27 +10,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <activity android:name=".Activities.ExerciseListActivity">
+        <activity android:name=".Activities.ExerciseListActivity" android:screenOrientation="portrait">
     </activity>
-        <activity android:name=".Activities.NewExerciseActivity"  android:noHistory="true">
+        <activity android:name=".Activities.NewExerciseActivity"  android:screenOrientation="portrait" android:noHistory="true">
         </activity>
-        <activity android:name=".Activities.TrackActivity"></activity>
-        <activity android:name=".Activities.HistoryActivity"></activity>
-        <activity android:name=".Activities.PersonalRecordsActivity"></activity>
-        <activity android:name=".Activities.LockerActivity"></activity>
-        <activity android:name=".Activities.ChartActivity"></activity>
-        <activity android:name=".Activities.CalendarActivity"></activity>
-        <activity android:name=".Activities.RestTimerActivity"
+        <activity android:name=".Activities.TrackActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.HistoryActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.PersonalRecordsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.LockerActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.ChartActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.CalendarActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.RestTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
-        <activity android:name=".Activities.StopwatchActivity"
+        <activity android:name=".Activities.StopwatchActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
     </application>
 

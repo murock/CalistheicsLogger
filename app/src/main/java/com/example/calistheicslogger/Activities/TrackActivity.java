@@ -479,15 +479,15 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         repsEditText.setText(Integer.toString(trackedExercise.getReps()));
         weightEditText.setText(Double.toString(trackedExercise.getWeight()));
         String time = trackedExercise.getTime();
-        String[] times = time.split(":");
-        if (times.length == 3) {
-            hourEditText.setText(times[0]);
-            minuteEditText.setText(times[1]);
-            secondEditText.setText(times[2]);
+        if (time.length() == 6){
+            hourEditText.setText(time.substring(0,2));
+            minuteEditText.setText(time.substring(2,4));
+            secondEditText.setText(time.substring(4,6));
         }
+
         distanceEditText.setText(Integer.toString(trackedExercise.getDistance()));
         String tempo = trackedExercise.getTempo();
-        times = tempo.split(":");
+        String[] times = tempo.split(":");
         if (times.length == 4) {
             tempoEccentricEditText.setText(times[0]);
             tempoPause1EditText.setText(times[1]);
