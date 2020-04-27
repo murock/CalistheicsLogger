@@ -214,7 +214,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetDate();
         SetUpActivity(exerciseString);
         setUpBandSpinner();
-        setUpToolsSpinner();
+        // TODO: get class to use database comminicator everywhere and have this be called after exercise is populataed
+       // setUpToolsSpinner();
         SetUpFilters();
         SetUpDSLV();
         databaseCommunicator.getLatestExercise(exerciseString);
@@ -320,6 +321,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             @Override
             public void run() {
                 exercise = appDatabase.exerciseDao().getExerciseFromName(exerciseName);
+                // Needs to wait for exercise to be populated before tool spinner can be set up
+                setUpToolsSpinner();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
