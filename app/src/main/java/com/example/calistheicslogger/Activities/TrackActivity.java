@@ -3,7 +3,6 @@ package com.example.calistheicslogger.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import androidx.constraintlayout.widget.Group;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.calistheicslogger.R;
-import com.example.calistheicslogger.RoomDatabase.AppDatabase;
 import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
@@ -59,7 +57,7 @@ import java.util.Locale;
 
 public class TrackActivity extends AppCompatActivity implements Serializable, PropertyChangeListener {
 
-    AppDatabase appDatabase;
+   // AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
     Exercise exercise;
     String currentExercise;
@@ -202,7 +200,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
-        appDatabase = AppDatabase.getInstance(this);
+       // appDatabase = AppDatabase.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_activity);
         Intent i = getIntent();
@@ -212,8 +210,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         databaseCommunicator.addPropertyChangeListener(this);
         SetUpNavigationDrawer();
         SetDate();
-        SetUpActivity(exerciseString);
-        setUpBandSpinner();
+        databaseCommunicator.getExerciseFromName(exerciseString);
+        //SetUpActivity(exerciseString);
+        databaseCommunicator.getBandColours();
+        //setUpBandSpinner();
         // TODO: get class to use database comminicator everywhere and have this be called after exercise is populataed
        // setUpToolsSpinner();
         SetUpFilters();
@@ -317,12 +317,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void SetUpActivity(final String exerciseName){
         currentExercise = exerciseName;
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                exercise = appDatabase.exerciseDao().getExerciseFromName(exerciseName);
-                // Needs to wait for exercise to be populated before tool spinner can be set up
-                setUpToolsSpinner();
+
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -330,47 +326,29 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                         databaseCommunicator.getPersonalRecords(currentExercise);
                     }
                 });
-            }
-        });
+
     }
 
     private void setUpBandSpinner(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<String> bands = appDatabase.bandDao().getAllBandColours();
+                List<String> bands = databaseCommunicator.bandColours;
                 bands.add(0,"");
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 bandArrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
                 bandSpinner.setAdapter(bandArrayAdapter);
-            }
-        });
     }
 
-    private void setUpToolsSpinner(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<String> tools = appDatabase.toolDao().getAllNamesProgMatch("%," + exercise.getProgression() + ",%");
+    private void setUpToolsSpinner(List<String> tools){
                 ArrayList<Item> items = new ArrayList<>();
                 for (String tool : tools){
                     items.add(new Item(tool,false));
                 }
                 MultiSelectionSpinner toolsSpinner = findViewById(R.id.toolSpinner);
                 toolsSpinner.setItems(items);
-            }
-        });
     }
 
     private void swapTrackedExercises(final int SetNo1, final int SetNo2)
     {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1, SetNo2);
-                updateTrackingList();
-            }
-        });
+        databaseCommunicator.swapTrackedExercisesBySetNumber(SetNo1, SetNo2);
     }
 
     private void updateTrackingList(){
@@ -788,6 +766,36 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 @Override
                 public void run() {
                     checkForPR();
+                }
+            });
+        } else if (evt.getPropertyName() == "exercise"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    exercise = databaseCommunicator.exercise;
+                    SetUpActivity(databaseCommunicator.exercise.getName());
+                    databaseCommunicator.getAllNamesProgMatch(exercise);
+                }
+            });
+        } else if (evt.getPropertyName() == "bandColours"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setUpBandSpinner();
+                }
+            });
+        }  else if (evt.getPropertyName() == "swapComplete"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTrackingList();
+                }
+            });
+        }else if (evt.getPropertyName() == "toolNames"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                   setUpToolsSpinner(databaseCommunicator.toolNames);
                 }
             });
         }

@@ -30,10 +30,13 @@ public class DatabaseCommunicator {
     public static List<String> uniqueTimestamps;
     public static List<String> exerciseNames;
     public static List<String> progressions;
-    public static  List<String> categories;
+    public static List<String> categories;
+    public static List<String> bandColours;
+    public static List<String> toolNames;
 
     public static String exerciseType;
     public static String toolProgressions;
+    public static Exercise exercise;
 
 
     protected DatabaseCommunicator(Context context){
@@ -141,12 +144,32 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void swapTrackedExercisesBySetNumber(final int SetNo1, final int SetNo2){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.trackedExerciseDao().swapBySetNumber(SetNo1,SetNo2);
+                support.firePropertyChange("swapComplete", null, null);
+            }
+        });
+    }
+
     public void getBands(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 bandsList = appDatabase.bandDao().getAll();
                 support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
+
+    public void getBandColours(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                bandColours = appDatabase.bandDao().getAllBandColours();
+                support.firePropertyChange("bandColours", null, null);
             }
         });
     }
@@ -185,6 +208,16 @@ public class DatabaseCommunicator {
                 appDatabase.bandDao().swapByRank(band1Rank,band2Rank);
                 bandsList = appDatabase.bandDao().getAll();
                 support.firePropertyChange("bandsPopulated", null, null);
+            }
+        });
+    }
+
+    public void getAllNamesProgMatch(Exercise exercise){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                toolNames = appDatabase.toolDao().getAllNamesProgMatch("%," + exercise.getProgression() + ",%");
+                support.firePropertyChange("toolNames", null, null);
             }
         });
     }
@@ -266,6 +299,17 @@ public class DatabaseCommunicator {
             public void run() {
                 uniqueTimestamps = appDatabase.trackedExerciseDao().getAllUniqueTimestamps();
                 support.firePropertyChange("uniqueTimestampsPopulated", null,null);
+            }
+        });
+    }
+
+    public void getExerciseFromName(final String exerciseName)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                exercise = appDatabase.exerciseDao().getExerciseFromName(exerciseName);
+                support.firePropertyChange("exercise", null, null);
             }
         });
     }
