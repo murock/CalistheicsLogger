@@ -86,6 +86,9 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     }
 
     public void setSelection(ArrayList<Item> selection) {
+        if (selection == null){
+            return;
+        }
         for (int i = 0; i < this.selection.length; i++) {
             this.selection[i] = false;
         }

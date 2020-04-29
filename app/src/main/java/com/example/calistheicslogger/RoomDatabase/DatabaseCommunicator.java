@@ -20,6 +20,7 @@ public class DatabaseCommunicator {
     private static DatabaseCommunicator instance;
 
     // TODO: send lists over the prop change event?
+    public static List<TrackedExercise> trackedExercises;
     public static List<TrackedExercise> trackedExercisesFromDate;
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
@@ -71,6 +72,16 @@ public class DatabaseCommunicator {
         });
     }
 
+    public void getTrackedExercisesFromNameAndDate(String exercise, String date){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(exercise,date);
+                support.firePropertyChange("trackedExercises", null, null);
+            }
+        });
+    }
+
     public void updateTrackedExercise(TrackedExercise updatedExercise,String name, String timestamp, int setNo)
     {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -79,6 +90,16 @@ public class DatabaseCommunicator {
                 appDatabase.trackedExerciseDao().deleteTrackedExercise(name,timestamp,setNo);
                 appDatabase.trackedExerciseDao().addTrackedExercise(updatedExercise);
                 support.firePropertyChange("trackedExercisesUpdated", null, null);
+            }
+        });
+    }
+
+    public void addTrackedExercise(TrackedExercise exercise){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.trackedExerciseDao().addTrackedExercise(exercise);
+                support.firePropertyChange("trackedExercisesAdded", null, null);
             }
         });
     }

@@ -56,8 +56,6 @@ import java.util.Locale;
 
 
 public class TrackActivity extends AppCompatActivity implements Serializable, PropertyChangeListener {
-
-   // AppDatabase appDatabase;
     DatabaseCommunicator databaseCommunicator;
     Exercise exercise;
     String currentExercise;
@@ -211,15 +209,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpNavigationDrawer();
         SetDate();
         databaseCommunicator.getExerciseFromName(exerciseString);
-        //SetUpActivity(exerciseString);
         databaseCommunicator.getBandColours();
-        //setUpBandSpinner();
-        // TODO: get class to use database comminicator everywhere and have this be called after exercise is populataed
-       // setUpToolsSpinner();
         SetUpFilters();
         SetUpDSLV();
-        databaseCommunicator.getLatestExercise(exerciseString);
-        updateTrackingList();
+        databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
     }
 
@@ -352,18 +345,12 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void updateTrackingList(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                trackedExercises = appDatabase.trackedExerciseDao().getTrackedExercisesFromNameAndDate(currentExercise,currentDate);
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
                     trackedExercisesArrayList.add(MainActivity.getTrackedExerciseString(exercise,true));
                 }
                 UpdateDSLV(trackedExercisesArrayList);
-            }
-        });
     }
 
     private void checkForPR(){
@@ -550,7 +537,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     public void SaveButtonClick(View view){
         if (this.selectedPosition == -1)
         {
-            this.saveExercise();
+            final TrackedExercise trackedExercise = createTrackedExercise(globalSetNumber);
+            globalSetNumber++;
+            databaseCommunicator.addTrackedExercise(trackedExercise);
         }else{
             this.updateExercise();
         }
@@ -636,16 +625,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void saveExercise(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                final TrackedExercise trackedExercise = createTrackedExercise(globalSetNumber);
-                globalSetNumber++;
-                appDatabase.trackedExerciseDao().addTrackedExercise(trackedExercise);
-                updateTrackingList();
-                databaseCommunicator.getPersonalRecords(currentExercise);
-            }
-        });
+        databaseCommunicator.getTrackedExercisesFromNameAndDate(currentExercise, currentDate);
+        databaseCommunicator.getPersonalRecords(currentExercise);
         SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
         Boolean timerOn = prefs.getBoolean("timerOn", false);
         if(timerOn)
@@ -743,7 +724,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    updateTrackingList();
+                    databaseCommunicator.getTrackedExercisesFromNameAndDate(currentExercise, currentDate);
                     databaseCommunicator.getPersonalRecords(currentExercise);
                 }
             });
@@ -788,14 +769,31 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    updateTrackingList();
+                    databaseCommunicator.getTrackedExercisesFromNameAndDate(currentExercise, currentDate);
                 }
             });
-        }else if (evt.getPropertyName() == "toolNames"){
+        } else if (evt.getPropertyName() == "toolNames"){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                    setUpToolsSpinner(databaseCommunicator.toolNames);
+                   // Tool spinner needs to be set up before it can be populated
+                   databaseCommunicator.getLatestExercise(currentExercise);
+                }
+            });
+        } else if (evt.getPropertyName() == "trackedExercises"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    trackedExercises = databaseCommunicator.trackedExercises;
+                    updateTrackingList();
+                }
+            });
+        } else if (evt.getPropertyName() == "trackedExercisesAdded"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    saveExercise();
                 }
             });
         }
