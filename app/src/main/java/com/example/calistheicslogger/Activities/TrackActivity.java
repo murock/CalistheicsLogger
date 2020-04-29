@@ -542,6 +542,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             databaseCommunicator.addTrackedExercise(trackedExercise);
         }else{
             this.updateExercise();
+            this.UnSelectSet();
         }
 
     }
@@ -618,6 +619,19 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         return new TrackedExercise(currentExercise, currentDate, setNumber,
                 repValue,weightValue,time,bandValue,
                 distance,tempo, toolString);
+    }
+
+    private void UnSelectSet(){
+        ImageButton deleteButton = findViewById(R.id.deleteButton);
+        ImageButton saveButton = findViewById(R.id.saveButton);
+        // Toggle off
+        deleteButton.setEnabled(false);
+        deleteButton.setImageResource(R.drawable.faded_remove_icon);
+        saveButton.setImageResource(R.drawable.add_icon);
+        selectedPosition = -1;
+
+        dslvAdapter.setSelectedPostion(selectedPosition);
+        dslvAdapter.notifyDataSetChanged();
     }
 
     private void updateExercise(){
