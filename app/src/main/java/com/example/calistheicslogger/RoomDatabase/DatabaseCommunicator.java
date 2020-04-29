@@ -190,6 +190,7 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 bandColours = appDatabase.bandDao().getAllBandColours();
+                bandColours.add(0,"");
                 support.firePropertyChange("bandColours", null, null);
             }
         });

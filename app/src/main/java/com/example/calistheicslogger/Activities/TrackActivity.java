@@ -324,7 +324,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void setUpBandSpinner(){
                 List<String> bands = databaseCommunicator.bandColours;
-                bands.add(0,"");
+
                 Spinner bandSpinner = findViewById(R.id.bandSpinner);
                 bandArrayAdapter = new ArrayAdapter<String>(TrackActivity.this, R.layout.center_spinner_text, bands);
                 bandSpinner.setAdapter(bandArrayAdapter);
