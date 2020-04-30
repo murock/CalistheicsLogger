@@ -1,6 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/square_border">
 
+    <ImageButton
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="StopButtonClick"
+        android:src="@drawable/stop"
+        app:layout_constraintEnd_toStartOf="@+id/playButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playButton" />
+
+    <ImageButton
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="PlayButtonClick"
+        android:src="@drawable/play"
+        app:layout_constraintBottom_toTopOf="@+id/okButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/stopButton"
+        app:layout_constraintTop_toBottomOf="@+id/volumeSeekBar" />
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OkButtonClick"
+        android:text="@android:string/ok"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playButton" />
+
+    <TextView
+        android:id="@+id/volumeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Volume"
+        app:layout_constraintBottom_toBottomOf="@+id/volumeSeekBar"
+        app:layout_constraintEnd_toStartOf="@+id/volumeSeekBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/volumeSeekBar" />
+
+    <SeekBar
+        android:id="@+id/volumeSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/playButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/volumeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/onCheckBox" />
+
+    <CheckBox
+        android:id="@+id/voiceCountdownCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="voiceCountdownOn"
+        android:text="Voice Countdown"
+        app:layout_constraintBottom_toTopOf="@+id/fiveSecondAnnouncementCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/holdSecondsEditText" />
+
+    <CheckBox
+        android:id="@+id/fiveSecondAnnouncementCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="annouceOn"
+        android:text="5 Second Announcement"
+        app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
+        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/voiceCountdownCheckBox" />
+
+    <CheckBox
+        android:id="@+id/onCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="timerOn"
+        android:text="Timer On"
+        app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
+        app:layout_constraintStart_toStartOf="@+id/fiveSecondAnnouncementCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/fiveSecondAnnouncementCheckBox" />
+
+    <ImageButton
+        android:id="@+id/holdNegativeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_left_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/holdSecondsEditText"
+        app:layout_constraintEnd_toStartOf="@+id/holdMinutesEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/holdSecondsEditText" />
+
+    <ImageButton
+        android:id="@+id/holdPositiveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_right_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/holdSecondsEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/holdSecondsEditText"
+        app:layout_constraintTop_toTopOf="@+id/holdSecondsEditText" />
+
+    <EditText
+        android:id="@+id/holdSecondsEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:hint="ss"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/voiceCountdownCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/holdPositiveButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/holdMinutesEditText"
+        app:layout_constraintTop_toBottomOf="@+id/holdTextView" />
+
+    <EditText
+        android:id="@+id/holdMinutesEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="mm"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/holdSecondsEditText"
+        app:layout_constraintEnd_toStartOf="@+id/holdSecondsEditText"
+        app:layout_constraintStart_toEndOf="@+id/holdNegativeButton"
+        app:layout_constraintTop_toTopOf="@+id/holdSecondsEditText" />
+
+    <TextView
+        android:id="@+id/holdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hold Time"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/holdSecondsEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/positionSecondsEditText" />
+
+    <ImageButton
+        android:id="@+id/positionPositiveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_right_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/positionSecondsEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/positionSecondsEditText"
+        app:layout_constraintTop_toTopOf="@+id/positionSecondsEditText" />
+
+    <ImageButton
+        android:id="@+id/positionNegativeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="OnSecondButtonPress"
+        android:src="@drawable/arrow_left_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/positionSecondsEditText"
+        app:layout_constraintEnd_toStartOf="@+id/positionSecondsEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/positionSecondsEditText" />
+
+    <EditText
+        android:id="@+id/positionSecondsEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="ss"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/holdTextView"
+        app:layout_constraintEnd_toStartOf="@+id/positionPositiveButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/positionNegativeButton"
+        app:layout_constraintTop_toBottomOf="@+id/positionTextView" />
+
+    <TextView
+        android:id="@+id/positionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Time to Position"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/positionSecondsEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

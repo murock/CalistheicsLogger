@@ -33,6 +33,8 @@
         <activity android:name=".Activities.RestTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
         <activity android:name=".Activities.StopwatchActivity" android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.PopupTheme"></activity>
+        <activity android:name=".Activities.IsoTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
     </application>
 

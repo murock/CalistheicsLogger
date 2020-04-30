@@ -729,6 +729,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                    weightText.setText(Double.toString(weightValue));
                }
                break;
+           case R.id.isoTimerButton:
+               startActivity(IsoTimerActivity.class);
+               break;
        }
     }
 

@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
@@ -188,7 +186,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="timeTextView,hourEditText,minuteEditText,secondEditText" />
+        app:constraint_referenced_ids="timeTextView,hourEditText,minuteEditText,secondEditText,isoTimerButton" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/bandGroup"
@@ -492,6 +490,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/saveButton"
         app:layout_constraintTop_toTopOf="@+id/saveButton" />
+
+        <ImageButton
+            android:id="@+id/isoTimerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/iso_timer_icon_smol"
+            app:layout_constraintBottom_toBottomOf="@+id/timeTextView"
+            app:layout_constraintStart_toEndOf="@+id/timeTextView"
+            app:layout_constraintTop_toTopOf="@+id/timeTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
