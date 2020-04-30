@@ -730,6 +730,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                }
                break;
            case R.id.isoTimerButton:
+               MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.ten);
+             //  mediaPlayer.setVolume(1,1);
+               mediaPlayer.start();
                startActivity(IsoTimerActivity.class);
                break;
        }
