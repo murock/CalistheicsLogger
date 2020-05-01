@@ -1,15 +1,21 @@
 package com.example.calistheicslogger.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.browse.MediaBrowser;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -26,6 +32,9 @@ public class IsoTimerActivity extends Activity {
     private int positionTimerValue;
     private boolean isPlaying = false;
     private int volumeValue = 100;
+    private boolean vibrateOn = true;
+
+    private CountDownTimer positionTimer;
 
     View.OnClickListener checkBoxListener = new View.OnClickListener() {
         @Override
@@ -111,11 +120,37 @@ public class IsoTimerActivity extends Activity {
 
     private void startPositionTimer(){
         // Time in ms
+        int cacheTimerValue = positionTimerValue;
         int timerValue = positionTimerValue * 1000;
         float volume = (float)volumeValue/100;
 
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.stop_rest_beep);
         mediaPlayer.setVolume(volume,volume);
+
+        //Vibrate
+        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+
+        EditText positionEditText = findViewById(R.id.positionSecondsEditText);
+        positionEditText.setFocusable(false);
+
+        positionTimer = new CountDownTimer(timerValue, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                positionEditText.setText(Integer.toString((int)millisUntilFinished/1000));
+            }
+
+            @Override
+            public void onFinish() {
+                positionEditText.setText(Integer.toString(cacheTimerValue));
+                positionEditText.setFocusableInTouchMode(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else if(vibrateOn) {
+                    vibrator.vibrate(500);
+                }
+                mediaPlayer.start();
+            }
+        }.start();
     }
 
     private void SetUpHoldTimer()
@@ -238,11 +273,11 @@ public class IsoTimerActivity extends Activity {
     public void OnPositionSecondButtonPress(View button){
         if (button.getId() == R.id.positionPositiveButton)
         {
-            positionTimerValue += 10;
+            positionTimerValue += 1;
         }else
         {
-            if (positionTimerValue > 10){
-                positionTimerValue -= 10;
+            if (positionTimerValue > 1){
+                positionTimerValue -= 1;
             }else
             {
                 positionTimerValue = 0;
@@ -280,6 +315,7 @@ public class IsoTimerActivity extends Activity {
             playButton.setImageResource(R.drawable.play);
         } else{
             playButton.setImageResource(R.drawable.pause);
+            startPositionTimer();
         }
         isPlaying = !isPlaying;
     }

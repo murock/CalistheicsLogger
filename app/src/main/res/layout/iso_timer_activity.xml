@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:tag="vibrateOn"
         android:text="Vibrate On"
-        app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
-        app:layout_constraintStart_toStartOf="@+id/fiveSecondAnnouncementCheckBox"
+        app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
+        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/fiveSecondAnnouncementCheckBox" />
 
     <ImageButton
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:tag="annouceOn"
         android:text="5 Second Announcement"
-        app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
+        app:layout_constraintBottom_toTopOf="@+id/vibrateCheckBox"
         app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/voiceCountdownCheckBox" />
 
@@ -106,8 +106,8 @@
         android:tag="timerOn"
         android:text="Timer On"
         app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
-        app:layout_constraintStart_toStartOf="@+id/fiveSecondAnnouncementCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/fiveSecondAnnouncementCheckBox" />
+        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/vibrateCheckBox" />
 
     <ImageButton
         android:id="@+id/holdNegativeButton"
