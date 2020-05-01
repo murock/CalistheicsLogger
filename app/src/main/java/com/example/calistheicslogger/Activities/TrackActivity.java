@@ -32,7 +32,6 @@ import androidx.constraintlayout.widget.Group;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.calistheicslogger.R;
-import com.example.calistheicslogger.RoomDatabase.AppExecutors;
 import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.TrackedExercise;
@@ -641,16 +640,16 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     private void saveExercise(){
         databaseCommunicator.getTrackedExercisesFromNameAndDate(currentExercise, currentDate);
         databaseCommunicator.getPersonalRecords(currentExercise);
-        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         Boolean timerOn = prefs.getBoolean("timerOn", false);
         if(timerOn)
         {
-            startTimer();
+            startRestTimer();
         }
     }
 
-    private void startTimer(){
-        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+    private void startRestTimer(){
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         int timerValue = prefs.getInt("timerValue", 0); // 0 is default
         int timerValueMilli = timerValue * 1000;
 

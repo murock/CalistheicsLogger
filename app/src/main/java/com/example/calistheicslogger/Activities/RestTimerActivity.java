@@ -23,7 +23,7 @@ public class RestTimerActivity extends Activity {
         @Override
         public void onClick(View v) {
             CheckBox checkBox = (CheckBox)v;
-            SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE).edit();
             editor.putBoolean((String)checkBox.getTag(), checkBox.isChecked());
             editor.apply();
         }
@@ -59,7 +59,7 @@ public class RestTimerActivity extends Activity {
 
     private void SetUpTimerValue()
     {
-        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         timerValue = prefs.getInt("timerValue", 0); // 0 is default
         EditText secondsEditText = findViewById(R.id.secondsEditText);
         EditText minutesEditText = findViewById(R.id.minutesEditText);
@@ -69,7 +69,10 @@ public class RestTimerActivity extends Activity {
         int minutesValue = timerValue/60;
         int secondsValue = timerValue - (minutesValue*60);
 
-        minutesEditText.setText(Integer.toString(minutesValue));
+        if (minutesValue > 0){
+            minutesEditText.setText(Integer.toString(minutesValue));
+        }
+
         minutesEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -84,7 +87,10 @@ public class RestTimerActivity extends Activity {
                     minutes = Integer.parseInt(s.toString());
                 }
 
-                int seconds = Integer.parseInt(secondsEditText.getText().toString());
+                int seconds = 0;
+                if (!secondsEditText.getText().toString().equals("")){
+                    seconds = Integer.parseInt(secondsEditText.getText().toString());
+                }
                 int totalTimeSeconds = minutes*60 + seconds;
                 if (totalTimeSeconds == timerValue)
                 {
@@ -103,7 +109,10 @@ public class RestTimerActivity extends Activity {
             }
         });
 
-        secondsEditText.setText(Integer.toString(secondsValue));
+        if (secondsValue > 0){
+            secondsEditText.setText(Integer.toString(secondsValue));
+        }
+
         secondsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -151,7 +160,7 @@ public class RestTimerActivity extends Activity {
 
     private void updateSharedPrefsTimerValue(int newValue)
     {
-        SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE).edit();
         editor.putInt("timerValue", newValue);
         editor.apply();
     }
@@ -161,7 +170,7 @@ public class RestTimerActivity extends Activity {
         CheckBox vibrateCheckbox = findViewById(R.id.vibrateCheckBox);
         CheckBox soundCheckbox = findViewById(R.id.soundCheckBox);
         CheckBox autoCheckbox = findViewById(R.id.onCheckBox);
-        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         Boolean vibrateOn = prefs.getBoolean((String)vibrateCheckbox.getTag(), false);
         Boolean soundOn = prefs.getBoolean((String)soundCheckbox.getTag(), true);
         Boolean autoOn = prefs.getBoolean((String)autoCheckbox.getTag(), false);
@@ -177,14 +186,14 @@ public class RestTimerActivity extends Activity {
     private void SetUpVolume()
     {
         SeekBar volumeSeekbar = findViewById(R.id.volumeSeekBar);
-        SharedPreferences prefs = getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         int volumeValue = prefs.getInt("volume", 100);
         volumeSeekbar.setProgress(volumeValue);
 
         volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE).edit();
                 editor.putInt("volume", progress);
                 editor.apply();
             }
