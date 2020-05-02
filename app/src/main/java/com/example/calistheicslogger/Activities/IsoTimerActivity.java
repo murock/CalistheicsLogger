@@ -36,6 +36,12 @@ public class IsoTimerActivity extends Activity {
 
     private CountDownTimer positionTimer;
 
+    EditText positionEditText;
+    ImageButton positionPosButton;
+    ImageButton positionNegButton;
+    ImageButton holdPosButton;
+    ImageButton holdNegButton;
+
     View.OnClickListener checkBoxListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -51,6 +57,11 @@ public class IsoTimerActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.iso_timer_activity);
+        positionEditText = findViewById(R.id.positionSecondsEditText);
+        positionPosButton = findViewById(R.id.positionPositiveButton);
+        positionNegButton = findViewById(R.id.positionNegativeButton);
+        holdPosButton = findViewById(R.id.holdPositiveButton);
+        holdNegButton = findViewById(R.id.holdNegativeButton);
         SetUpWindowLayout();
         SetUpHoldTimer();
         SetUpPositionTimer();
@@ -73,7 +84,6 @@ public class IsoTimerActivity extends Activity {
     {
         SharedPreferences prefs = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE);
         positionTimerValue = prefs.getInt("positionTimerValue", 0);
-        EditText positionEditText = findViewById(R.id.positionSecondsEditText);
         positionEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0,99)});
 
         if(positionTimerValue > 0){
@@ -114,8 +124,7 @@ public class IsoTimerActivity extends Activity {
     }
 
     private void updatePositionTimerValue(){
-        EditText secondsEditText = findViewById(R.id.positionSecondsEditText);
-        secondsEditText.setText(Integer.toString(positionTimerValue));
+        positionEditText.setText(Integer.toString(positionTimerValue));
     }
 
     private void startPositionTimer(){
@@ -130,8 +139,10 @@ public class IsoTimerActivity extends Activity {
         //Vibrate
         Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
-        EditText positionEditText = findViewById(R.id.positionSecondsEditText);
+
         positionEditText.setFocusable(false);
+        positionNegButton.setVisibility(View.INVISIBLE);
+        positionPosButton.setVisibility(View.INVISIBLE);
 
         positionTimer = new CountDownTimer(timerValue, 1000) {
             @Override
@@ -142,6 +153,7 @@ public class IsoTimerActivity extends Activity {
             @Override
             public void onFinish() {
                 positionEditText.setText(Integer.toString(cacheTimerValue));
+                // TODO: Move reactivate to onFinish of hold timer
                 positionEditText.setFocusableInTouchMode(true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
                     vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
