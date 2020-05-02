@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,7 +30,9 @@ public class IsoTimerActivity extends Activity {
     private int positionTimerValue;
     private boolean isPlaying = false;
     private int volumeValue = 100;
-    private boolean vibrateOn = true;
+
+    int cachedPositionValue = 0;
+    int cachedHoldValue = 0;
 
     private CountDownTimer timer;
 
@@ -130,7 +133,7 @@ public class IsoTimerActivity extends Activity {
 
     private void startPositionTimer(){
         // Time in ms
-        int cacheTimerValue = positionTimerValue;
+        cachedPositionValue = positionTimerValue;
         int timerValue = positionTimerValue * 1000;
         float volume = (float)volumeValue/100;
 
@@ -148,6 +151,7 @@ public class IsoTimerActivity extends Activity {
         holdNegButton.setVisibility(View.INVISIBLE);
         holdPosButton.setVisibility(View.INVISIBLE);
 
+        cancelTimer();
         timer = new CountDownTimer(timerValue, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -158,10 +162,10 @@ public class IsoTimerActivity extends Activity {
 
             @Override
             public void onFinish() {
-                positionEditText.setText(Integer.toString(cacheTimerValue));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
+                positionEditText.setText(Integer.toString(cachedPositionValue));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else if(vibrateOn) {
+                } else {
                     vibrator.vibrate(500);
                 }
                 mediaPlayer.start();
@@ -216,18 +220,16 @@ public class IsoTimerActivity extends Activity {
     {
         SharedPreferences prefs = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE);
         holdTimerValue = prefs.getInt("holdTimerValue", 0); // 0 is default
-        EditText secondsEditText = findViewById(R.id.holdSecondsEditText);
-        EditText minutesEditText = findViewById(R.id.holdMinutesEditText);
-        secondsEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 999)});
-        minutesEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        holdSecondsEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 999)});
+        holdMinEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
 
         int minutesValue = holdTimerValue /60;
         int secondsValue = holdTimerValue - (minutesValue*60);
 
         if (minutesValue > 0){
-            minutesEditText.setText(Integer.toString(minutesValue));
+            holdMinEditText.setText(Integer.toString(minutesValue));
         }
-        minutesEditText.addTextChangedListener(new TextWatcher() {
+        holdMinEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -242,8 +244,8 @@ public class IsoTimerActivity extends Activity {
                 }
 
                 int seconds = 0;
-                if (!secondsEditText.getText().toString().equals("")){
-                    seconds = Integer.parseInt(secondsEditText.getText().toString());
+                if (!holdSecondsEditText.getText().toString().equals("")){
+                    seconds = Integer.parseInt(holdSecondsEditText.getText().toString());
                 }
 
                 int totalTimeSeconds = minutes*60 + seconds;
@@ -265,9 +267,10 @@ public class IsoTimerActivity extends Activity {
         });
 
         if(secondsValue > 0){
-            secondsEditText.setText(Integer.toString(secondsValue));
+            Log.i("Alfie", "1");
+            holdSecondsEditText.setText(Integer.toString(secondsValue));
         }
-        secondsEditText.addTextChangedListener(new TextWatcher() {
+        holdSecondsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -280,10 +283,10 @@ public class IsoTimerActivity extends Activity {
                     seconds = Integer.parseInt(s.toString());
                 }
 
-                String minutesString = minutesEditText.getText().toString();
+                String minutesString = holdMinEditText.getText().toString();
                 int minutes = 0;
                 if (minutesString.length() > 0) {
-                    minutes = Integer.parseInt(minutesEditText.getText().toString());
+                    minutes = Integer.parseInt(holdMinEditText.getText().toString());
                 }
 
                 int totalTimeSeconds = minutes * 60 + seconds;
@@ -297,11 +300,12 @@ public class IsoTimerActivity extends Activity {
 
                 updateSharedPrefsHoldTimerValue(totalTimeSeconds);
 
-                if (!minutesEditText.getText().toString().equals(Integer.toString(newMinutesValue))) {
-                    minutesEditText.setText(Integer.toString(newMinutesValue));
+                if (!holdMinEditText.getText().toString().equals(Integer.toString(newMinutesValue))) {
+                    holdMinEditText.setText(Integer.toString(newMinutesValue));
                 }
-                if (!secondsEditText.getText().toString().equals(Integer.toString(newSecondsValue))) {
-                    secondsEditText.setText(Integer.toString(newSecondsValue));
+                if (!holdSecondsEditText.getText().toString().equals(Integer.toString(newSecondsValue))) {
+                    Log.i("Alfie", "2");
+                    holdSecondsEditText.setText(Integer.toString(newSecondsValue));
                 }
             }
 
@@ -331,7 +335,7 @@ public class IsoTimerActivity extends Activity {
 
     private void startHoldTimer(){
         // Time in ms
-        int cacheTimerValue = holdTimerValue;
+        cachedHoldValue = holdTimerValue;
         int timerValue = holdTimerValue * 1000;
         float volume = (float)volumeValue/100;
 
@@ -348,14 +352,16 @@ public class IsoTimerActivity extends Activity {
                 int minutesValue = secondsToFinish/60;
                 int secondsValue = secondsToFinish - (minutesValue*60);
                 holdMinEditText.setText(Integer.toString(minutesValue));
+                Log.i("Alfie", "3");
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
             }
 
             @Override
             public void onFinish() {
-                int minutesValue = cacheTimerValue/60;
-                int secondsValue = cacheTimerValue - (minutesValue*60);
+                int minutesValue = cachedHoldValue/60;
+                int secondsValue = cachedHoldValue - (minutesValue*60);
                 holdMinEditText.setText(Integer.toString(minutesValue));
+                Log.i("Alfie", "4");
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
                 // TODO: Move reactivate to onFinish of hold timer
                 positionEditText.setFocusableInTouchMode(true);
@@ -365,14 +371,30 @@ public class IsoTimerActivity extends Activity {
                 holdPosButton.setVisibility(View.VISIBLE);
                 togglePlaying();
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else if(vibrateOn) {
+                } else {
                     vibrator.vibrate(500);
                 }
                 mediaPlayer.start();
             }
         }.start();
+    }
+
+    private void cancelTimer(){
+        if (timer != null){
+            timer.cancel();
+            positionEditText.setText(Integer.toString(cachedPositionValue));
+
+            if (cachedHoldValue != 0){
+                int minutesValue = cachedHoldValue/60;
+                int secondsValue = cachedHoldValue - (minutesValue*60);
+                holdMinEditText.setText(Integer.toString(minutesValue));
+                Log.i("Alfie", "5");
+
+                holdSecondsEditText.setText(Integer.toString(secondsValue));
+            }
+        }
     }
 
     public void OnPositionSecondButtonPress(View button){
@@ -416,17 +438,24 @@ public class IsoTimerActivity extends Activity {
     private void togglePlaying(){
         ImageButton playButton = findViewById(R.id.playButton);
         if (isPlaying){
+            if(timer != null){
+                timer.cancel();
+                positionEditText.setText(Integer.toString(cachedPositionValue));
+            }
             playButton.setImageResource(R.drawable.play);
         } else{
-            playButton.setImageResource(R.drawable.pause);
+            playButton.setImageResource(R.drawable.);
+            startPositionTimer();
         }
         isPlaying = !isPlaying;
     }
 
     public void PlayButtonClick(View button)
     {
-        togglePlaying();
-        startPositionTimer();
+        if (holdTimerValue > 0 ){
+            togglePlaying();
+
+        }
     }
 
     public void OkButtonClick(View v){
