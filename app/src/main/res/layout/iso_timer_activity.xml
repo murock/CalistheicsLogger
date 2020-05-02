@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:tag="vibrateOn"
         android:text="Vibrate On"
-        app:layout_constraintBottom_toTopOf="@+id/onCheckBox"
-        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/fiveSecondAnnouncementCheckBox" />
+        app:layout_constraintBottom_toBottomOf="@+id/voiceCountdownCheckBox"
+        app:layout_constraintStart_toStartOf="@+id/onCheckBox"
+        app:layout_constraintTop_toTopOf="@+id/voiceCountdownCheckBox" />
 
     <ImageButton
         android:id="@+id/stopButton"
@@ -71,32 +71,34 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:max="100"
         app:layout_constraintBottom_toTopOf="@+id/playButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/volumeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/onCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/fiveSecondAnnouncementCheckBox" />
 
     <CheckBox
         android:id="@+id/voiceCountdownCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:tag="voiceCountdownOn"
-        android:text="Voice Countdown"
+        android:text="Countdown"
         app:layout_constraintBottom_toTopOf="@+id/fiveSecondAnnouncementCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fiveSecondAnnouncementCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/holdSecondsEditText" />
 
     <CheckBox
         android:id="@+id/fiveSecondAnnouncementCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:tag="annouceOn"
-        android:text="5 Second Announcement"
-        app:layout_constraintBottom_toTopOf="@+id/vibrateCheckBox"
-        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
+        android:text="5 Second Alerts"
+        app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
+        app:layout_constraintEnd_toStartOf="@+id/onCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/voiceCountdownCheckBox" />
 
     <CheckBox
@@ -105,9 +107,10 @@
         android:layout_height="wrap_content"
         android:tag="timerOn"
         android:text="Timer On"
-        app:layout_constraintBottom_toTopOf="@+id/volumeSeekBar"
-        app:layout_constraintStart_toStartOf="@+id/voiceCountdownCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/vibrateCheckBox" />
+        app:layout_constraintBottom_toBottomOf="@+id/fiveSecondAnnouncementCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fiveSecondAnnouncementCheckBox"
+        app:layout_constraintTop_toTopOf="@id/fiveSecondAnnouncementCheckBox" />
 
     <ImageButton
         android:id="@+id/holdNegativeButton"

@@ -3,9 +3,7 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.media.MediaPlayer;
-import android.media.browse.MediaBrowser;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -15,7 +13,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -34,9 +31,11 @@ public class IsoTimerActivity extends Activity {
     private int volumeValue = 100;
     private boolean vibrateOn = true;
 
-    private CountDownTimer positionTimer;
+    private CountDownTimer timer;
 
     EditText positionEditText;
+    EditText holdSecondsEditText;
+    EditText holdMinEditText;
     ImageButton positionPosButton;
     ImageButton positionNegButton;
     ImageButton holdPosButton;
@@ -58,6 +57,8 @@ public class IsoTimerActivity extends Activity {
 
         setContentView(R.layout.iso_timer_activity);
         positionEditText = findViewById(R.id.positionSecondsEditText);
+        holdSecondsEditText = findViewById(R.id.holdSecondsEditText);
+        holdMinEditText = findViewById(R.id.holdMinutesEditText);
         positionPosButton = findViewById(R.id.positionPositiveButton);
         positionNegButton = findViewById(R.id.positionNegativeButton);
         holdPosButton = findViewById(R.id.holdPositiveButton);
@@ -75,7 +76,7 @@ public class IsoTimerActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         double widthRatio = 0.8;
-        double heightRatio = 0.6;
+        double heightRatio = 0.7;
 
         getWindow().setLayout((int)(width*widthRatio),(int)(height*heightRatio));
     }
@@ -133,36 +134,82 @@ public class IsoTimerActivity extends Activity {
         int timerValue = positionTimerValue * 1000;
         float volume = (float)volumeValue/100;
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.stop_rest_beep);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.hold);
         mediaPlayer.setVolume(volume,volume);
 
         //Vibrate
         Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
-
         positionEditText.setFocusable(false);
+        holdMinEditText.setFocusable(false);
+        holdSecondsEditText.setFocusable(false);
         positionNegButton.setVisibility(View.INVISIBLE);
         positionPosButton.setVisibility(View.INVISIBLE);
+        holdNegButton.setVisibility(View.INVISIBLE);
+        holdPosButton.setVisibility(View.INVISIBLE);
 
-        positionTimer = new CountDownTimer(timerValue, 1000) {
+        timer = new CountDownTimer(timerValue, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                positionEditText.setText(Integer.toString((int)millisUntilFinished/1000));
+                int seconds = (int)millisUntilFinished/1000;
+                positionEditText.setText(Integer.toString(seconds));
+                playNumberSound(seconds, volume);
             }
 
             @Override
             public void onFinish() {
                 positionEditText.setText(Integer.toString(cacheTimerValue));
-                // TODO: Move reactivate to onFinish of hold timer
-                positionEditText.setFocusableInTouchMode(true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
                     vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                 } else if(vibrateOn) {
                     vibrator.vibrate(500);
                 }
                 mediaPlayer.start();
+                startHoldTimer();
             }
         }.start();
+    }
+
+    private void playNumberSound(int number, float volume){
+
+        int fileToPlay = 0;
+        switch  (number){
+            case 10:
+                fileToPlay = R.raw.ten;
+                break;
+            case 9:
+                fileToPlay = R.raw.nine;
+                break;
+            case 8:
+                fileToPlay = R.raw.eight;
+                break;
+            case 7:
+                fileToPlay = R.raw.seven;
+                break;
+            case 6:
+                fileToPlay = R.raw.six;
+                break;
+            case 5:
+                fileToPlay = R.raw.five;
+                break;
+            case 4:
+                fileToPlay = R.raw.four;
+                break;
+            case 3:
+                fileToPlay = R.raw.three;
+                break;
+            case 2:
+                fileToPlay = R.raw.two;
+                break;
+            case 1:
+                fileToPlay = R.raw.one;
+                break;
+        }
+        if (fileToPlay != 0){
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, fileToPlay);
+            mediaPlayer.setVolume(volume,volume);
+            mediaPlayer.start();
+        }
     }
 
     private void SetUpHoldTimer()
@@ -282,6 +329,52 @@ public class IsoTimerActivity extends Activity {
         secondsEditText.setText(Integer.toString(secondsValue));
     }
 
+    private void startHoldTimer(){
+        // Time in ms
+        int cacheTimerValue = holdTimerValue;
+        int timerValue = holdTimerValue * 1000;
+        float volume = (float)volumeValue/100;
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.stop_rest_beep);
+        mediaPlayer.setVolume(volume,volume);
+
+        //Vibrate
+        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+
+        timer = new CountDownTimer(timerValue, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int secondsToFinish = (int)millisUntilFinished/1000;
+                int minutesValue = secondsToFinish/60;
+                int secondsValue = secondsToFinish - (minutesValue*60);
+                holdMinEditText.setText(Integer.toString(minutesValue));
+                holdSecondsEditText.setText(Integer.toString(secondsValue));
+            }
+
+            @Override
+            public void onFinish() {
+                int minutesValue = cacheTimerValue/60;
+                int secondsValue = cacheTimerValue - (minutesValue*60);
+                holdMinEditText.setText(Integer.toString(minutesValue));
+                holdSecondsEditText.setText(Integer.toString(secondsValue));
+                // TODO: Move reactivate to onFinish of hold timer
+                positionEditText.setFocusableInTouchMode(true);
+                positionNegButton.setVisibility(View.VISIBLE);
+                positionPosButton.setVisibility(View.VISIBLE);
+                holdNegButton.setVisibility(View.VISIBLE);
+                holdPosButton.setVisibility(View.VISIBLE);
+                togglePlaying();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else if(vibrateOn) {
+                    vibrator.vibrate(500);
+                }
+                mediaPlayer.start();
+            }
+        }.start();
+    }
+
     public void OnPositionSecondButtonPress(View button){
         if (button.getId() == R.id.positionPositiveButton)
         {
@@ -320,16 +413,20 @@ public class IsoTimerActivity extends Activity {
 
     }
 
-    public void PlayButtonClick(View button)
-    {
+    private void togglePlaying(){
         ImageButton playButton = findViewById(R.id.playButton);
         if (isPlaying){
             playButton.setImageResource(R.drawable.play);
         } else{
             playButton.setImageResource(R.drawable.pause);
-            startPositionTimer();
         }
         isPlaying = !isPlaying;
+    }
+
+    public void PlayButtonClick(View button)
+    {
+        togglePlaying();
+        startPositionTimer();
     }
 
     public void OkButtonClick(View v){
