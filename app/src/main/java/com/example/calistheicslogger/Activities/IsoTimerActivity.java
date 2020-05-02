@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
@@ -28,7 +29,7 @@ public class IsoTimerActivity extends Activity {
 
     private int holdTimerValue;
     private int positionTimerValue;
-    private boolean isPlaying = false;
+    private boolean isPlaying = false, countDown = true;
     private int volumeValue = 100;
 
     int cachedPositionValue = 0;
@@ -51,6 +52,8 @@ public class IsoTimerActivity extends Activity {
             SharedPreferences.Editor editor = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE).edit();
             editor.putBoolean((String)checkBox.getTag(), checkBox.isChecked());
             editor.apply();
+            countDown = checkBox.isChecked();
+
         }
     };
 
@@ -69,6 +72,8 @@ public class IsoTimerActivity extends Activity {
         SetUpWindowLayout();
         SetUpHoldTimer();
         SetUpPositionTimer();
+        SetUpVolume();
+        SetUpCheckboxValues();
     }
 
     private void SetUpWindowLayout()
@@ -118,7 +123,39 @@ public class IsoTimerActivity extends Activity {
     }
 
     private void SetUpCheckboxValues(){
-        // TODO: Set checkboxes and set booleans as field values
+        CheckBox countDownCheckbox = findViewById(R.id.voiceCountdownCheckBox);
+        SharedPreferences prefs = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE);
+        countDown = prefs.getBoolean((String)countDownCheckbox.getTag(), true);
+        countDownCheckbox.setChecked(countDown);
+        countDownCheckbox.setOnClickListener(checkBoxListener);
+    }
+
+    private void SetUpVolume()
+    {
+        SeekBar volumeSeekbar = findViewById(R.id.volumeSeekBar);
+        SharedPreferences prefs = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE);
+        volumeValue = prefs.getInt("volume", 100);
+        volumeSeekbar.setProgress(volumeValue);
+
+        volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                SharedPreferences.Editor editor = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE).edit();
+                editor.putInt("volume", progress);
+                editor.apply();
+                volumeValue = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void updateSharedPrefsPositionTimerValue(int newValue){
@@ -157,7 +194,9 @@ public class IsoTimerActivity extends Activity {
             public void onTick(long millisUntilFinished) {
                 int seconds = (int)millisUntilFinished/1000;
                 positionEditText.setText(Integer.toString(seconds));
-                playNumberSound(seconds, volume);
+                if (countDown){
+                    playNumberSound(seconds, volume);
+                }
             }
 
             @Override
@@ -363,12 +402,8 @@ public class IsoTimerActivity extends Activity {
                 holdMinEditText.setText(Integer.toString(minutesValue));
                 Log.i("Alfie", "4");
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
-                // TODO: Move reactivate to onFinish of hold timer
-                positionEditText.setFocusableInTouchMode(true);
-                positionNegButton.setVisibility(View.VISIBLE);
-                positionPosButton.setVisibility(View.VISIBLE);
-                holdNegButton.setVisibility(View.VISIBLE);
-                holdPosButton.setVisibility(View.VISIBLE);
+
+                reactivateControls();
                 togglePlaying();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -395,6 +430,17 @@ public class IsoTimerActivity extends Activity {
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
             }
         }
+    }
+
+    private void reactivateControls()
+    {
+        positionEditText.setFocusableInTouchMode(true);
+        holdMinEditText.setFocusableInTouchMode(true);
+        holdSecondsEditText.setFocusableInTouchMode(true);
+        positionNegButton.setVisibility(View.VISIBLE);
+        positionPosButton.setVisibility(View.VISIBLE);
+        holdNegButton.setVisibility(View.VISIBLE);
+        holdPosButton.setVisibility(View.VISIBLE);
     }
 
     public void OnPositionSecondButtonPress(View button){
@@ -438,13 +484,9 @@ public class IsoTimerActivity extends Activity {
     private void togglePlaying(){
         ImageButton playButton = findViewById(R.id.playButton);
         if (isPlaying){
-            if(timer != null){
-                timer.cancel();
-                positionEditText.setText(Integer.toString(cachedPositionValue));
-            }
             playButton.setImageResource(R.drawable.play);
         } else{
-            playButton.setImageResource(R.drawable.);
+            playButton.setImageResource(R.drawable.faded_play_icon);
             startPositionTimer();
         }
         isPlaying = !isPlaying;
@@ -452,9 +494,18 @@ public class IsoTimerActivity extends Activity {
 
     public void PlayButtonClick(View button)
     {
-        if (holdTimerValue > 0 ){
+        if (holdTimerValue > 0 && !isPlaying){
             togglePlaying();
+        }
+    }
 
+    public void StopButtonClick(View button) {
+        if (isPlaying){
+            cancelTimer();
+            ImageButton playButton = findViewById(R.id.playButton);
+            playButton.setImageResource(R.drawable.play);
+            isPlaying = false;
+            reactivateControls();
         }
     }
 
