@@ -465,11 +465,11 @@ public class IsoTimerActivity extends Activity {
     {
         if (button.getId() == R.id.holdPositiveButton)
         {
-            holdTimerValue += 10;
+            holdTimerValue += 1;
         }else
         {
-            if (holdTimerValue > 10){
-                holdTimerValue -= 10;
+            if (holdTimerValue > 1){
+                holdTimerValue -= 1;
             }else
             {
                 holdTimerValue = 0;
