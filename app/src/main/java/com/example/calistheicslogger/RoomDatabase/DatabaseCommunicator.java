@@ -142,7 +142,7 @@ public class DatabaseCommunicator {
             @Override
             public void run() {
                 exerciseType = appDatabase.exerciseDao().getTypeFromName(exerciseName);
-                if (exerciseType.equals("Isometric"))
+                if (exerciseType != null && exerciseType.equals("Isometric"))
                 {
                     personalRecordsList = appDatabase.trackedExerciseDao().getPersonalIsometricRecords(exerciseName);
                 }else{

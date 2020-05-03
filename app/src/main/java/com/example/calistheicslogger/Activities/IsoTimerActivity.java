@@ -3,6 +3,7 @@ package com.example.calistheicslogger.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,9 @@ public class IsoTimerActivity extends Activity {
     ImageButton holdPosButton;
     ImageButton holdNegButton;
 
+    AudioManager audioManager;
+    boolean focusTaken = false;
+
     View.OnClickListener checkBoxListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -69,6 +73,7 @@ public class IsoTimerActivity extends Activity {
         positionNegButton = findViewById(R.id.positionNegativeButton);
         holdPosButton = findViewById(R.id.holdPositiveButton);
         holdNegButton = findViewById(R.id.holdNegativeButton);
+        audioManager = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
         SetUpWindowLayout();
         SetUpHoldTimer();
         SetUpPositionTimer();
@@ -189,12 +194,18 @@ public class IsoTimerActivity extends Activity {
         holdPosButton.setVisibility(View.INVISIBLE);
 
         cancelTimer();
+
+
         timer = new CountDownTimer(timerValue, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int)millisUntilFinished/1000;
                 positionEditText.setText(Integer.toString(seconds));
-                if (countDown){
+                if (countDown && seconds < 11){
+                    if (!focusTaken){
+                        focusTaken = true;
+                        audioManager.requestAudioFocus(null,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+                    }
                     playNumberSound(seconds, volume);
                 }
             }
@@ -412,6 +423,9 @@ public class IsoTimerActivity extends Activity {
                     vibrator.vibrate(500);
                 }
                 mediaPlayer.start();
+                audioManager.abandonAudioFocus(null);
+                focusTaken = false;
+
             }
         }.start();
     }
@@ -420,6 +434,8 @@ public class IsoTimerActivity extends Activity {
         if (timer != null){
             timer.cancel();
             positionEditText.setText(Integer.toString(cachedPositionValue));
+            audioManager.abandonAudioFocus(null);
+            focusTaken = false;
 
             if (cachedHoldValue != 0){
                 int minutesValue = cachedHoldValue/60;
