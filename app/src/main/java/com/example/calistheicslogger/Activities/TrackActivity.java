@@ -243,9 +243,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 switch(id)
                 {
                     case R.id.home:
-                        Toast.makeText(TrackActivity.this, "Home",Toast.LENGTH_SHORT).show();break;
+                        startActivity(MainActivity.class);
+                        break;
                     case R.id.tools:
-                        Toast.makeText(TrackActivity.this, "Tools",Toast.LENGTH_SHORT).show();break;
+                        startActivity(LockerActivity.class);
+                        break;
                     default:
                         return true;
                 }
