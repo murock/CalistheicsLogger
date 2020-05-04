@@ -103,7 +103,7 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
                     }
 
                     if(filterItem){
-                        FilteredArrayNames.add(dataNames);
+                        FilteredArrayNames.add(fullList.get(i));
                     }
                 }
 

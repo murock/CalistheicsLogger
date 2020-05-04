@@ -11,7 +11,6 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -153,7 +151,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     // Handle clicks on elipsis menu items
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.i("Alfie", "Button press");
         super.onOptionsItemSelected(item);
         if (t.onOptionsItemSelected(item)){
            return true;
@@ -251,10 +248,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                     default:
                         return true;
                 }
-
-
                 return true;
-
             }
         });
     }
