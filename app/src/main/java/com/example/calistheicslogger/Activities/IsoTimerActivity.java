@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,13 +23,14 @@ import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 
 import com.example.calistheicslogger.R;
+import com.example.calistheicslogger.RoomDatabase.DatabaseCommunicator;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
 
 public class IsoTimerActivity extends Activity {
 
     private int holdTimerValue;
     private int positionTimerValue;
-    private boolean isPlaying = false, countDown = true;
+    private boolean isPlaying = false, countDown = true, autoSave  = false;
     private int volumeValue = 100;
 
     int cachedPositionValue = 0;
@@ -49,6 +49,8 @@ public class IsoTimerActivity extends Activity {
     AudioManager audioManager;
     boolean focusTaken = false;
 
+    DatabaseCommunicator databaseCommunicator;
+
     View.OnClickListener checkBoxListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -56,7 +58,14 @@ public class IsoTimerActivity extends Activity {
             SharedPreferences.Editor editor = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE).edit();
             editor.putBoolean((String)checkBox.getTag(), checkBox.isChecked());
             editor.apply();
-            countDown = checkBox.isChecked();
+            if (v.getId() == R.id.voiceCountdownCheckBox)
+            {
+                countDown = checkBox.isChecked();
+            }
+            else if (v.getId() == R.id.autoSaveCheckBox)
+            {
+                autoSave = checkBox.isChecked();
+            }
 
         }
     };
@@ -64,8 +73,8 @@ public class IsoTimerActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.iso_timer_activity);
+        databaseCommunicator = DatabaseCommunicator.getInstance(this);
         positionEditText = findViewById(R.id.positionSecondsEditText);
         holdSecondsEditText = findViewById(R.id.holdSecondsEditText);
         holdMinEditText = findViewById(R.id.holdMinutesEditText);
@@ -128,11 +137,18 @@ public class IsoTimerActivity extends Activity {
     }
 
     private void SetUpCheckboxValues(){
+        // Countdown
         CheckBox countDownCheckbox = findViewById(R.id.voiceCountdownCheckBox);
         SharedPreferences prefs = getSharedPreferences("IsoSharedPreferences", MODE_PRIVATE);
         countDown = prefs.getBoolean((String)countDownCheckbox.getTag(), true);
         countDownCheckbox.setChecked(countDown);
         countDownCheckbox.setOnClickListener(checkBoxListener);
+
+        // Auto save
+        CheckBox autoSaveCheckbox = findViewById(R.id.autoSaveCheckBox);
+        autoSave = prefs.getBoolean((String)autoSaveCheckbox.getTag(), false);
+        autoSaveCheckbox.setChecked(autoSave);
+        autoSaveCheckbox.setOnClickListener(checkBoxListener);
     }
 
     private void SetUpVolume()
@@ -317,7 +333,6 @@ public class IsoTimerActivity extends Activity {
         });
 
         if(secondsValue > 0){
-            Log.i("Alfie", "1");
             holdSecondsEditText.setText(Integer.toString(secondsValue));
         }
         holdSecondsEditText.addTextChangedListener(new TextWatcher() {
@@ -354,7 +369,6 @@ public class IsoTimerActivity extends Activity {
                     holdMinEditText.setText(Integer.toString(newMinutesValue));
                 }
                 if (!holdSecondsEditText.getText().toString().equals(Integer.toString(newSecondsValue))) {
-                    Log.i("Alfie", "2");
                     holdSecondsEditText.setText(Integer.toString(newSecondsValue));
                 }
             }
@@ -402,7 +416,6 @@ public class IsoTimerActivity extends Activity {
                 int minutesValue = secondsToFinish/60;
                 int secondsValue = secondsToFinish - (minutesValue*60);
                 holdMinEditText.setText(Integer.toString(minutesValue));
-                Log.i("Alfie", "3");
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
             }
 
@@ -411,7 +424,6 @@ public class IsoTimerActivity extends Activity {
                 int minutesValue = cachedHoldValue/60;
                 int secondsValue = cachedHoldValue - (minutesValue*60);
                 holdMinEditText.setText(Integer.toString(minutesValue));
-                Log.i("Alfie", "4");
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
 
                 reactivateControls();
@@ -425,7 +437,9 @@ public class IsoTimerActivity extends Activity {
                 mediaPlayer.start();
                 audioManager.abandonAudioFocus(null);
                 focusTaken = false;
-
+                if (autoSave){
+                    databaseCommunicator.savePendingIsoExercise();
+                }
             }
         }.start();
     }
@@ -441,8 +455,6 @@ public class IsoTimerActivity extends Activity {
                 int minutesValue = cachedHoldValue/60;
                 int secondsValue = cachedHoldValue - (minutesValue*60);
                 holdMinEditText.setText(Integer.toString(minutesValue));
-                Log.i("Alfie", "5");
-
                 holdSecondsEditText.setText(Integer.toString(secondsValue));
             }
         }

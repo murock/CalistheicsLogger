@@ -19,6 +19,8 @@ public class DatabaseCommunicator {
     private AppDatabase appDatabase;
     private static DatabaseCommunicator instance;
 
+    private TrackedExercise pendingIsoExercise;
+
     // TODO: send lists over the prop change event?
     public static List<TrackedExercise> trackedExercises;
     public static List<TrackedExercise> trackedExercisesFromDate;
@@ -38,6 +40,7 @@ public class DatabaseCommunicator {
     public static String exerciseType;
     public static String toolProgressions;
     public static Exercise exercise;
+
 
 
     protected DatabaseCommunicator(Context context){
@@ -173,6 +176,17 @@ public class DatabaseCommunicator {
                 support.firePropertyChange("swapComplete", null, null);
             }
         });
+    }
+
+    public void setPendingIsoExercise(TrackedExercise pendingIsoExercise, int setNo){
+        this.pendingIsoExercise = pendingIsoExercise;
+        this.pendingIsoExercise.setSetNumber(setNo - 1);
+    }
+
+    public void savePendingIsoExercise(){
+        int currentSetNo = this.pendingIsoExercise.getSetNumber();
+        this.pendingIsoExercise.setSetNumber(currentSetNo + 1);
+        this.addTrackedExercise(this.pendingIsoExercise);
     }
 
     public void getBands(){

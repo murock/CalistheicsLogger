@@ -11,6 +11,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,6 +76,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     private NavigationView nv;
 
     static CountDownTimer restTimer;
+
+    String exerciseString;
 
     private DragSortListView.DropListener onDrop =
             new DragSortListView.DropListener() {
@@ -198,7 +201,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_activity);
         Intent i = getIntent();
-        final String exerciseString = (String)i.getSerializableExtra("Exercise");
+        exerciseString = (String)i.getSerializableExtra("Exercise");
         currentDate = (String)i.getSerializableExtra("Date");
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
         databaseCommunicator.addPropertyChangeListener(this);
@@ -210,6 +213,19 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpDSLV();
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
+    }
+
+    @Override
+    protected  void onResume()
+    {
+        super.onResume();
+        // Reloads the tool list among other things
+        databaseCommunicator.getExerciseFromName(exerciseString);
+        // Reloads the trackedExercise list, can be updated by iso timer
+        if (currentExercise != null && currentDate != null &&
+                currentExercise.length() > 0 && currentDate.length() > 0){
+            databaseCommunicator.getTrackedExercisesFromNameAndDate(currentExercise, currentDate);
+        }
     }
 
     public DragSortController buildController(DragSortListView dslv) {
@@ -305,8 +321,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void SetUpActivity(final String exerciseName){
         currentExercise = exerciseName;
-
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -527,6 +541,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         {
             databaseCommunicator.deleteTrackedExercise(this.currentExercise,this.currentDate,this.selectedPosition + 1);
         }
+        this.UnSelectSet();
     }
 
     public void SaveButtonClick(View view){
@@ -725,6 +740,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                }
                break;
            case R.id.isoTimerButton:
+               databaseCommunicator.setPendingIsoExercise(createTrackedExercise(globalSetNumber), globalSetNumber);
                startActivity(IsoTimerActivity.class);
                break;
        }
