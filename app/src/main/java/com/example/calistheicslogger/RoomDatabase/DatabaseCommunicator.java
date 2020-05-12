@@ -3,6 +3,7 @@ package com.example.calistheicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.calistheicslogger.Activities.TrackActivity;
 import com.example.calistheicslogger.RoomDatabase.Entities.Exercise;
 import com.example.calistheicslogger.RoomDatabase.Entities.FinalProgression;
 import com.example.calistheicslogger.RoomDatabase.Entities.Tool;
@@ -183,9 +184,12 @@ public class DatabaseCommunicator {
         this.pendingIsoExercise.setSetNumber(setNo - 1);
     }
 
-    public void savePendingIsoExercise(){
+    public void savePendingIsoExercise(String mins, String seconds){
         int currentSetNo = this.pendingIsoExercise.getSetNumber();
         this.pendingIsoExercise.setSetNumber(currentSetNo + 1);
+        String time = TrackActivity.AddPrefixToItem("", 2, "0") +  TrackActivity.AddPrefixToItem(mins, 2, "0")
+                + TrackActivity.AddPrefixToItem(seconds, 2, "0");
+        this.pendingIsoExercise.setTime(time);
         this.addTrackedExercise(this.pendingIsoExercise);
     }
 

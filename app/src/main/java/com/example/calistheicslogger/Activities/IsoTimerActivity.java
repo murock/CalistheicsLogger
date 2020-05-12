@@ -438,7 +438,7 @@ public class IsoTimerActivity extends Activity {
                 audioManager.abandonAudioFocus(null);
                 focusTaken = false;
                 if (autoSave){
-                    databaseCommunicator.savePendingIsoExercise();
+                    databaseCommunicator.savePendingIsoExercise(Integer.toString(minutesValue), Integer.toString(secondsValue));
                 }
             }
         }.start();

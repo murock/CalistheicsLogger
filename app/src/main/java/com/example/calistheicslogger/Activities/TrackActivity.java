@@ -413,7 +413,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         return result;
     }
 
-    private String AddPrefixToItem(String item, int desiredLength, String preFix)
+    public static String AddPrefixToItem(String item, int desiredLength, String preFix)
     {
         while (item.length() < desiredLength)
         {
