@@ -11,7 +11,6 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -626,9 +625,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             bandValue = "No";
         }
 
+        int rest = getRestTime();
+
+        String cluster = "";
+
         return new TrackedExercise(currentExercise, currentDate, setNumber,
                 repValue,weightValue,time,bandValue,
-                distance,tempo, toolString);
+                distance,tempo, toolString, rest, cluster);
     }
 
     private void UnSelectSet(){
@@ -657,6 +660,18 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         {
             startRestTimer();
         }
+    }
+
+    // Returns the rest time, returns -1 if no rest set
+    private int getRestTime(){
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
+        int timerValue = prefs.getInt("timerValue", 0); // 0 is default
+        Boolean timerOn = prefs.getBoolean("timerOn", false);
+        if (timerOn && timerValue > 0)
+        {
+            return timerValue;
+        }
+        return -1;
     }
 
     private void startRestTimer(){

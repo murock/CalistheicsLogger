@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "14b13d47f1499aaa87d8d39a7bddffd9",
+    "identityHash": "b52c9761d450527a34bf8173be6ca23d",
     "entities": [
       {
         "tableName": "exercises",
@@ -185,7 +185,7 @@
       },
       {
         "tableName": "tracked_exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` INTEGER NOT NULL, `weight` REAL NOT NULL, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `tool` TEXT, `free_text` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `timestamp` TEXT, `set_number` INTEGER NOT NULL, `reps` INTEGER NOT NULL, `weight` REAL NOT NULL, `time` TEXT, `band` TEXT, `distance` INTEGER NOT NULL, `tempo` TEXT, `tool` TEXT, `free_text` TEXT, `rest` INTEGER NOT NULL, `cluster` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -258,6 +258,18 @@
             "columnName": "free_text",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "rest",
+            "columnName": "rest",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "cluster",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -311,7 +323,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '14b13d47f1499aaa87d8d39a7bddffd9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b52c9761d450527a34bf8173be6ca23d')"
     ]
   }
 }

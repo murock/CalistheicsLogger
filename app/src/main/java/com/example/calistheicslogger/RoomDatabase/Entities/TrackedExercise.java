@@ -45,7 +45,13 @@ public class TrackedExercise
     @ColumnInfo(name = "free_text")
     private String freeText;
 
-    public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool){
+    @ColumnInfo(name = "rest")
+    private int rest;
+
+    @ColumnInfo(name = "cluster")
+    private String cluster;
+
+    public TrackedExercise(int id, String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool, int rest, String cluster){
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
@@ -57,10 +63,12 @@ public class TrackedExercise
         this.distance = distance;
         this.tempo = tempo;
         this.tool = tool;
+        this.rest = rest;
+        this.cluster = cluster;
     }
 
     @Ignore
-    public TrackedExercise(String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool){
+    public TrackedExercise(String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool, int rest, String cluster){
         this.name = name;
         this.timestamp = timestamp;
         this.setNumber = setNumber;
@@ -71,6 +79,8 @@ public class TrackedExercise
         this.distance = distance;
         this.tempo = tempo;
         this.tool = tool;
+        this.rest = rest;
+        this.cluster = cluster;
     }
 
     public int getId() {
@@ -167,5 +177,21 @@ public class TrackedExercise
 
     public void setFreeText(String freeText) {
         this.freeText = freeText;
+    }
+
+    public int getRest() {
+        return rest;
+    }
+
+    public void setRest(int rest) {
+        this.rest = rest;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(String cluster) {
+        this.cluster = cluster;
     }
 }
