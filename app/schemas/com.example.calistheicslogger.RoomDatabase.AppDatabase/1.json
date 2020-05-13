@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b52c9761d450527a34bf8173be6ca23d",
+    "identityHash": "7ebfa787f27574c67c87532cc9a8f79f",
     "entities": [
       {
         "tableName": "exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `tool` INTEGER, `progression_name` TEXT, `weight_increment` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exercise_name` TEXT, `categories` TEXT, `type` TEXT, `band_assisted` INTEGER, `weight_loadable` INTEGER, `tempo_controlled` INTEGER, `tool` INTEGER, `cluster` INTEGER, `progression_name` TEXT, `weight_increment` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -53,6 +53,12 @@
           {
             "fieldPath": "tool",
             "columnName": "tool",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "cluster",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -323,7 +329,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b52c9761d450527a34bf8173be6ca23d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ebfa787f27574c67c87532cc9a8f79f')"
     ]
   }
 }

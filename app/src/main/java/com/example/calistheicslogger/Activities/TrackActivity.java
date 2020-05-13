@@ -68,7 +68,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     int selectedPosition = -1;
 
-    Boolean bandAssisted, weighted, tempoControlled, toolsRequired, isCluster;
+    Boolean bandAssisted, weighted, tempoControlled, toolsRequired, isCluster = false;
     Menu menu;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
@@ -174,6 +174,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 break;
             case R.id.weighted:
                 exercise.setWeightLoadable(item.isChecked());
+                break;
+            case R.id.cluster:
+                exercise.setCluster(item.isChecked());
                 break;
             case R.id.historyButton:
                 startActivity(HistoryActivity.class);
@@ -465,6 +468,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         weighted = exercise.getWeightLoadable();
         tempoControlled = exercise.getTempoControlled();
         toolsRequired = exercise.getTool();
+        isCluster = exercise.getCluster();
         if (bandAssisted)
         {
             group = findViewById(R.id.bandGroup);
@@ -480,6 +484,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         }
         if (toolsRequired){
             group = findViewById(R.id.toolGroup);
+            group.setVisibility(View.VISIBLE);
+        }
+        if(isCluster){
+            group = findViewById(R.id.clusterGroup);
             group.setVisibility(View.VISIBLE);
         }
 

@@ -35,13 +35,16 @@ public class Exercise
     @ColumnInfo(name = "tool")
     private Boolean tool;
 
+    @ColumnInfo(name = "cluster")
+    private Boolean cluster;
+
     @ColumnInfo(name = "progression_name")
     private String progression;
 
     @ColumnInfo(name = "weight_increment")
     private double weightIncrement;
 
-    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, double weightIncrement){
+    public Exercise(int id, String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, Boolean cluster, double weightIncrement){
         this.id = id;
         this.name = name;
         this.categories = categories;
@@ -51,11 +54,12 @@ public class Exercise
         this.progression = progression;
         this.tempoControlled = tempoControlled;
         this.tool = tool;
+        this.cluster = cluster;
         this.weightIncrement = weightIncrement;
     }
 
     @Ignore
-    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, double weightIncrement){
+    public Exercise(String name, String categories, String type, Boolean bandAssisted, Boolean weightLoadable, String progression, Boolean tempoControlled, Boolean tool, Boolean cluster, double weightIncrement){
         this.name = name;
         this.categories = categories;
         this.type = type;
@@ -64,6 +68,7 @@ public class Exercise
         this.progression = progression;
         this.tempoControlled = tempoControlled;
         this.tool = tool;
+        this.cluster = cluster;
         this.weightIncrement = weightIncrement;
     }
 
@@ -145,16 +150,26 @@ public class Exercise
         this.weightIncrement = weightIncrement;
     }
 
+    public Boolean getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(Boolean cluster) {
+        this.cluster = cluster;
+    }
+
     public static Exercise[] populateData(){
         return new Exercise[]{
-                new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false, 1.25),
-                new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, 1.25),
-                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false, 1.25),
-                new Exercise("Front Lever", "Back", "Isometric", true, false,"Front Lever", false, true, 1.25),
-                new Exercise("Push Up", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, 1.25),
-                new Exercise("Dip", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, 1.25),
-                new Exercise("Handstand", "Triceps, Shoulders", "Isometric", false, false,"Handstand", false, true, 1.25),
-                new Exercise("Pike Push up", "Triceps, Shoulders", "Reps", false, false,"Handstand", false, true, 1.25),
+                new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false,false, 1.25),
+                new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, false, 1.25),
+                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false,false, 1.25),
+                new Exercise("Front Lever", "Back", "Isometric", true, false,"Front Lever", false, true,false, 1.25),
+                new Exercise("Push Up", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
+                new Exercise("Dip", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
+                new Exercise("Handstand", "Triceps, Shoulders", "Isometric", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Pike Push up", "Triceps, Shoulders", "Reps", false, false,"Handstand", false, true, false, 1.25),
         };
     }
+
+
 }

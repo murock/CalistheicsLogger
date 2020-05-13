@@ -130,7 +130,7 @@ public class NewExerciseActivity extends Activity implements Serializable {
                             categories += item.getName();
                         }
                         Exercise exercise = new Exercise(exerciseName, categories, typeSpinner.getSelectedItem().toString(),
-                                bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, toolChecked, 1.25);
+                                bandChecked, weightLoadableChecked, progressionSpinner.getSelectedItem().toString(), tempoChecked, toolChecked, false, 1.25);
                         appDatabase.exerciseDao().addExercise(exercise);
                         newTrackAcitivity(exerciseNameEditText.getText().toString());
                     }
