@@ -59,4 +59,9 @@
     android:id="@+id/tempo"
     android:checkable="true"
     android:title="Tempo"></item>
+
+    <item
+        android:id="@+id/cluster"
+        android:checkable="true"
+        android:title="Cluster"></item>
 </menu>

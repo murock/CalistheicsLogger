@@ -8,488 +8,535 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_height="match_parent">
 
-    <com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
-        android:id="@+id/toolSpinner"
-        android:layout_width="204dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolTextView" />
+        <ImageButton
+            android:id="@+id/clusterRemoveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/remove_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/clusterEditText"
+            app:layout_constraintTop_toTopOf="@+id/clusterEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/clusterMinusButton"
+            tools:layout_editor_absoluteX="5dp" />
 
-    <TextView
-        android:id="@+id/toolTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:text="Tool"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/toolSpinner"
-        app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
-        app:layout_constraintStart_toStartOf="@+id/bandSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
+        <ImageButton
+            android:id="@+id/clusterPlusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_right_icon"
+            android:text="+"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/clusterEditText"
+            app:layout_constraintEnd_toStartOf="@+id/clusterAddButton"
+            app:layout_constraintStart_toEndOf="@+id/clusterEditText"
+            app:layout_constraintTop_toBottomOf="@+id/clusterTextView" />
 
-    <TextView
-        android:id="@+id/distanceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginRight="150dp"
-        android:text="Distance"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolSpinner" />
+        <ImageButton
+            android:id="@+id/clusterMinusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_left_icon"
+            android:text="-"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/clusterEditText"
+            app:layout_constraintTop_toBottomOf="@+id/clusterTextView"
+            app:layout_constraintStart_toEndOf="@+id/clusterRemoveButton"
+            app:layout_constraintEnd_toStartOf="@id/clusterEditText"/>
 
-    <TextView
-        android:id="@+id/tempoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:text="Tempo"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tempoPause1EditText"
-        app:layout_constraintEnd_toEndOf="@+id/tempoConcentricEditText"
-        app:layout_constraintStart_toStartOf="@+id/tempoPause1EditText"
-        app:layout_constraintTop_toBottomOf="@+id/distanceEditText" />
+        <com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
+            android:id="@+id/toolSpinner"
+            android:layout_width="204dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="74dp"
+            android:layout_marginEnd="54dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolTextView" />
 
-    <TextView
-        android:id="@+id/bandTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:text="Band"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/bandSpinner"
-        app:layout_constraintEnd_toEndOf="@+id/minuteEditText"
-        app:layout_constraintStart_toStartOf="@+id/minuteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/minuteEditText" />
+        <TextView
+            android:id="@+id/toolTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Tool"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/toolSpinner"
+            app:layout_constraintEnd_toEndOf="@+id/bandSpinner"
+            app:layout_constraintStart_toStartOf="@+id/bandSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/bandSpinner" />
 
-    <EditText
-        android:id="@+id/secondEditText"
-        android:layout_width="75dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="ss"
-        android:inputType="time"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minuteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
+        <TextView
+            android:id="@+id/distanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
+            android:text="Distance"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/distanceEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolSpinner" />
 
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:text="Time"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/minuteEditText"
-        app:layout_constraintEnd_toEndOf="@+id/minuteEditText"
-        app:layout_constraintStart_toStartOf="@+id/minuteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/weightEditText" />
+        <TextView
+            android:id="@+id/tempoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Tempo"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/tempoPause1EditText"
+            app:layout_constraintEnd_toEndOf="@+id/tempoConcentricEditText"
+            app:layout_constraintStart_toStartOf="@+id/tempoPause1EditText"
+            app:layout_constraintTop_toBottomOf="@+id/distanceEditText" />
 
-    <EditText
-        android:id="@+id/weightEditText"
-        android:layout_width="120dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:gravity="center_horizontal"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toTopOf="@+id/timeTextView"
-        app:layout_constraintEnd_toStartOf="@+id/weightPlusButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/weightMinusButton"
-        app:layout_constraintTop_toBottomOf="@+id/weightTextView" />
+        <TextView
+            android:id="@+id/bandTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Band"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/bandSpinner"
+            app:layout_constraintEnd_toEndOf="@+id/minuteEditText"
+            app:layout_constraintStart_toStartOf="@+id/minuteEditText"
+            app:layout_constraintTop_toBottomOf="@+id/minuteEditText" />
 
-    <ImageButton
-        android:id="@+id/weightPlusButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="OnButtonClick"
-        android:src="@drawable/arrow_right_icon"
-        android:text="+"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/weightEditText"
-        app:layout_constraintTop_toTopOf="@+id/weightEditText" />
+        <EditText
+            android:id="@+id/secondEditText"
+            android:layout_width="75dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="ss"
+            android:inputType="time"
+            app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/minuteEditText"
+            app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
 
-    <ImageButton
-        android:id="@+id/weightMinusButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="OnButtonClick"
-        android:src="@drawable/arrow_left_icon"
-        android:text="-"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
-        app:layout_constraintEnd_toStartOf="@+id/weightEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/weightEditText" />
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Time"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/minuteEditText"
+            app:layout_constraintEnd_toEndOf="@+id/minuteEditText"
+            app:layout_constraintStart_toStartOf="@+id/minuteEditText"
+            app:layout_constraintTop_toBottomOf="@+id/weightEditText" />
 
-    <TextView
-        android:id="@+id/weightTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Weight (kgs)"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/weightEditText"
-        app:layout_constraintEnd_toEndOf="@+id/weightEditText"
-        app:layout_constraintStart_toStartOf="@+id/weightEditText"
-        app:layout_constraintTop_toBottomOf="@+id/repsEditText" />
+        <EditText
+            android:id="@+id/weightEditText"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/timeTextView"
+            app:layout_constraintEnd_toStartOf="@+id/weightPlusButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/weightMinusButton"
+            app:layout_constraintTop_toBottomOf="@+id/weightTextView" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/repsGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="repsTextView,repsMinusButton,repsEditText,repsPlusButton" />
+        <ImageButton
+            android:id="@+id/weightPlusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_right_icon"
+            android:text="+"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/weightEditText"
+            app:layout_constraintTop_toTopOf="@+id/weightEditText" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/weightGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="weightTextView,weightMinusButton,weightEditText,weightPlusButton" />
+        <ImageButton
+            android:id="@+id/weightMinusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_left_icon"
+            android:text="-"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/weightEditText"
+            app:layout_constraintEnd_toStartOf="@+id/weightEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/weightEditText" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/timeGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="timeTextView,hourEditText,minuteEditText,secondEditText,isoTimerButton" />
+        <TextView
+            android:id="@+id/weightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Weight (kgs)"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/weightEditText"
+            app:layout_constraintEnd_toEndOf="@+id/weightEditText"
+            app:layout_constraintStart_toStartOf="@+id/weightEditText"
+            app:layout_constraintTop_toBottomOf="@+id/clusterEditText" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/bandGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="bandTextView,bandSpinner" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/repsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="repsTextView,repsMinusButton,repsEditText,repsPlusButton" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/distanceGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="distanceEditText,distanceSpinner,distanceTextView" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/clusterGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="clusterTextView,clusterEditText,clusterRemoveButton,clusterMinusButton,clusterPlusButton,clusterAddButton" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/tempoGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="tempoTextView,tempoEccentricEditText,tempoPause1EditText,tempoConcentricEditText,tempoPause2EditText" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/weightGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="weightTextView,weightMinusButton,weightEditText,weightPlusButton" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/toolGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="toolTextView,toolSpinner" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/timeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="timeTextView,hourEditText,minuteEditText,secondEditText,isoTimerButton" />
 
-    <TextView
-        android:id="@+id/repsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Reps"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/repsEditText"
-        app:layout_constraintEnd_toEndOf="@+id/repsEditText"
-        app:layout_constraintStart_toStartOf="@+id/repsEditText"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/bandGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="bandTextView,bandSpinner" />
 
-    <ImageButton
-        android:id="@+id/repsPlusButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="OnButtonClick"
-        android:src="@drawable/arrow_right_icon"
-        android:text="+"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/repsEditText"
-        app:layout_constraintTop_toTopOf="@+id/repsEditText" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/distanceGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="distanceEditText,distanceSpinner,distanceTextView" />
 
-    <ImageButton
-        android:id="@+id/repsMinusButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="OnButtonClick"
-        android:src="@drawable/arrow_left_icon"
-        android:text="-"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
-        app:layout_constraintEnd_toStartOf="@+id/repsEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/repsEditText" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/tempoGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tempoTextView,tempoEccentricEditText,tempoPause1EditText,tempoConcentricEditText,tempoPause2EditText" />
 
-    <EditText
-        android:id="@+id/repsEditText"
-        android:layout_width="120dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:gravity="center_horizontal"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/weightTextView"
-        app:layout_constraintEnd_toStartOf="@+id/repsPlusButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/repsMinusButton"
-        app:layout_constraintTop_toBottomOf="@+id/repsTextView" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/toolGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="toolTextView,toolSpinner" />
 
-    <EditText
-        android:id="@+id/minuteEditText"
-        android:layout_width="75dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="mm"
-        android:inputType="time"
-        app:layout_constraintBottom_toTopOf="@+id/bandTextView"
-        app:layout_constraintEnd_toStartOf="@+id/secondEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/hourEditText"
-        app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
+        <TextView
+            android:id="@+id/repsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Reps"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/repsEditText"
+            app:layout_constraintEnd_toEndOf="@+id/repsEditText"
+            app:layout_constraintStart_toStartOf="@+id/repsEditText"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <EditText
-        android:id="@+id/hourEditText"
-        android:layout_width="75dp"
-        android:layout_height="42dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="hh"
-        android:inputType="time"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
-        app:layout_constraintEnd_toStartOf="@+id/minuteEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/minuteEditText" />
+        <ImageButton
+            android:id="@+id/repsPlusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_right_icon"
+            android:text="+"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/repsEditText"
+            app:layout_constraintTop_toTopOf="@+id/repsEditText" />
 
-    <Spinner
-        android:id="@+id/bandSpinner"
-        android:layout_width="204dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginLeft="74dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginRight="54dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/toolTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bandTextView" />
+        <ImageButton
+            android:id="@+id/repsMinusButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="OnButtonClick"
+            android:src="@drawable/arrow_left_icon"
+            android:text="-"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/repsEditText"
+            app:layout_constraintEnd_toStartOf="@+id/repsEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/repsEditText" />
 
-    <Spinner
-        android:id="@+id/distanceSpinner"
-        android:layout_width="70dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
-        app:layout_constraintBottom_toBottomOf="@+id/distanceEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/distanceEditText"
-        app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
+        <EditText
+            android:id="@+id/repsEditText"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@+id/clusterTextView"
+            app:layout_constraintEnd_toStartOf="@+id/repsPlusButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/repsMinusButton"
+            app:layout_constraintTop_toBottomOf="@+id/repsTextView" />
 
-    <EditText
-        android:id="@+id/distanceEditText"
-        android:layout_width="198dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toTopOf="@+id/tempoTextView"
-        app:layout_constraintEnd_toStartOf="@+id/distanceSpinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
+        <EditText
+            android:id="@+id/minuteEditText"
+            android:layout_width="75dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="mm"
+            android:inputType="time"
+            app:layout_constraintBottom_toTopOf="@+id/bandTextView"
+            app:layout_constraintEnd_toStartOf="@+id/secondEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/hourEditText"
+            app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
 
-    <EditText
-        android:id="@+id/tempoEccentricEditText"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="lower"
-        android:inputType="number"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tempoConcentricEditText"
-        app:layout_constraintEnd_toStartOf="@+id/tempoPause1EditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+        <EditText
+            android:id="@+id/hourEditText"
+            android:layout_width="75dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="hh"
+            android:inputType="time"
+            app:layout_constraintBottom_toBottomOf="@+id/minuteEditText"
+            app:layout_constraintEnd_toStartOf="@+id/minuteEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/minuteEditText" />
 
-    <EditText
-        android:id="@+id/tempoPause1EditText"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="pause"
-        android:inputType="number"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toStartOf="@+id/tempoConcentricEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tempoEccentricEditText"
-        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+        <Spinner
+            android:id="@+id/bandSpinner"
+            android:layout_width="204dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="74dp"
+            android:layout_marginLeft="74dp"
+            android:layout_marginEnd="54dp"
+            android:layout_marginRight="54dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/toolTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bandTextView" />
 
-    <EditText
-        android:id="@+id/tempoPause2EditText"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:hint="pause"
-        android:inputType="number"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tempoPause1EditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tempoConcentricEditText"
-        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+        <Spinner
+            android:id="@+id/distanceSpinner"
+            android:layout_width="70dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            app:layout_constraintBottom_toBottomOf="@+id/distanceEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/distanceEditText"
+            app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
 
-    <EditText
-        android:id="@+id/tempoConcentricEditText"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="lift"
-        android:inputType="number"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tempoPause1EditText"
-        app:layout_constraintEnd_toStartOf="@+id/tempoPause2EditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tempoPause1EditText"
-        app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+        <EditText
+            android:id="@+id/distanceEditText"
+            android:layout_width="198dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/tempoTextView"
+            app:layout_constraintEnd_toStartOf="@+id/distanceSpinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/distanceTextView" />
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginLeft="152dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="152dp"
-        android:layout_marginRight="152dp"
-        android:layout_marginBottom="8dp"
-        android:text="Title Error"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/repsTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/tempoEccentricEditText"
+            android:layout_width="60dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="lower"
+            android:inputType="number"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tempoConcentricEditText"
+            app:layout_constraintEnd_toStartOf="@+id/tempoPause1EditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
 
-    <com.example.calistheicslogger.Tools.dslv.DragSortListView
-        android:id="@+id/trackedExerciseDSLV"
-        android:layout_width="409dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:textFilterEnabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+        <EditText
+            android:id="@+id/tempoPause1EditText"
+            android:layout_width="60dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="pause"
+            android:inputType="number"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toStartOf="@+id/tempoConcentricEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tempoEccentricEditText"
+            app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
 
-    <ImageButton
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="SaveButtonClick"
-        android:src="@drawable/add_icon"
-        android:text="Save"
-        app:layout_constraintBottom_toTopOf="@+id/trackedExerciseDSLV"
-        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempoPause1EditText" />
+        <EditText
+            android:id="@+id/tempoPause2EditText"
+            android:layout_width="60dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:ems="10"
+            android:hint="pause"
+            android:inputType="number"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tempoPause1EditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tempoConcentricEditText"
+            app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
 
-    <ImageButton
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:enabled="false"
-        android:onClick="DeleteButtonClick"
-        android:src="@drawable/faded_remove_icon"
-        android:text="Delete"
-        app:layout_constraintBottom_toBottomOf="@+id/saveButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveButton"
-        app:layout_constraintTop_toTopOf="@+id/saveButton" />
+        <EditText
+            android:id="@+id/tempoConcentricEditText"
+            android:layout_width="60dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="lift"
+            android:inputType="number"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tempoPause1EditText"
+            app:layout_constraintEnd_toStartOf="@+id/tempoPause2EditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tempoPause1EditText"
+            app:layout_constraintTop_toBottomOf="@+id/tempoTextView" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="152dp"
+            android:layout_marginLeft="152dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="152dp"
+            android:layout_marginRight="152dp"
+            android:layout_marginBottom="8dp"
+            android:text="Title Error"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/repsTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.example.calistheicslogger.Tools.dslv.DragSortListView
+            android:id="@+id/trackedExerciseDSLV"
+            android:layout_width="409dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textFilterEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+
+        <ImageButton
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="SaveButtonClick"
+            android:src="@drawable/add_icon"
+            android:text="Save"
+            app:layout_constraintBottom_toTopOf="@+id/trackedExerciseDSLV"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempoPause1EditText" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:enabled="false"
+            android:onClick="DeleteButtonClick"
+            android:src="@drawable/faded_remove_icon"
+            android:text="Delete"
+            app:layout_constraintBottom_toBottomOf="@+id/saveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/saveButton"
+            app:layout_constraintTop_toTopOf="@+id/saveButton" />
 
         <ImageButton
             android:id="@+id/isoTimerButton"
@@ -501,6 +548,39 @@
             app:layout_constraintBottom_toBottomOf="@+id/timeTextView"
             app:layout_constraintStart_toEndOf="@+id/timeTextView"
             app:layout_constraintTop_toTopOf="@+id/timeTextView" />
+
+        <TextView
+            android:id="@+id/clusterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cluster"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/clusterEditText"
+            app:layout_constraintEnd_toEndOf="@+id/clusterEditText"
+            app:layout_constraintStart_toStartOf="@+id/clusterEditText"
+            app:layout_constraintTop_toBottomOf="@+id/repsEditText" />
+
+        <EditText
+            android:id="@+id/clusterEditText"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@+id/weightTextView"
+            app:layout_constraintEnd_toStartOf="@+id/clusterPlusButton"
+            app:layout_constraintStart_toEndOf="@+id/clusterMinusButton"
+            app:layout_constraintTop_toBottomOf="@+id/clusterTextView" />
+
+        <ImageButton
+            android:id="@+id/clusterAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/add_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/clusterEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clusterPlusButton"
+            app:layout_constraintTop_toTopOf="@+id/clusterEditText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

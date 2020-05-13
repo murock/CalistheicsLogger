@@ -68,7 +68,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     int selectedPosition = -1;
 
-    Boolean bandAssisted, weighted, tempoControlled, toolsRequired;
+    Boolean bandAssisted, weighted, tempoControlled, toolsRequired, isCluster;
     Menu menu;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
@@ -145,6 +145,10 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         }
         if (toolsRequired){
             menuItem = menu.findItem(R.id.tools);
+            menuItem.setChecked(true);
+        }
+        if (isCluster){
+            menuItem = menu.findItem(R.id.cluster);
             menuItem.setChecked(true);
         }
         return true;
@@ -438,6 +442,8 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         group = findViewById(R.id.toolGroup);
         group.setVisibility(View.GONE);
         group = findViewById(R.id.weightGroup);
+        group.setVisibility(View.GONE);
+        group = findViewById(R.id.clusterGroup);
         group.setVisibility(View.GONE);
         switch(type){
             case "Weight and Reps":
