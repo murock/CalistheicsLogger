@@ -160,14 +160,30 @@ public class Exercise
 
     public static Exercise[] populateData(){
         return new Exercise[]{
+                new Exercise("Barbell Squat", "Legs", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
+                new Exercise("Barbell Deadlift", "Back Legs", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
+                new Exercise("Barbell Bench Press", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
+                new Exercise("Squat", "Legs", "Reps", false, false,"Standalone", false, false, false, 1.25),
+                new Exercise("Pistol Squat", "legs", "Reps", false, false,"Standalone", false, false, false, 1.25),
                 new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false,false, 1.25),
                 new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, false, 1.25),
-                new Exercise("Muscle up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false,false, 1.25),
+                new Exercise("Muscle up", "Biceps Back", "Reps", true, false,"Muscle up", false, false,false, 1.25),
+                new Exercise("Pull up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false,false, 1.25),
+                new Exercise("Chin up", "Biceps Back", "Weight and Reps", true, true,"Muscle up", false, false,false, 1.25),
+                new Exercise("Horizontal Row", "Biceps Back", "Weight and Reps", true, true,"Front Lever", false, false,false, 1.25),
                 new Exercise("Front Lever", "Back", "Isometric", true, false,"Front Lever", false, true,false, 1.25),
-                new Exercise("Push Up", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
-                new Exercise("Dip", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
-                new Exercise("Handstand", "Triceps, Shoulders", "Isometric", false, false,"Handstand", false, true, false, 1.25),
-                new Exercise("Pike Push up", "Triceps, Shoulders", "Reps", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Push Up", "Triceps Chest", "Weight and Reps", false, true,"Planche", false, false, false, 1.25),
+                new Exercise("Pseudo Planche Push Up", "Triceps Chest", "Reps", false, false,"Planche", false, false, false, 1.25),
+                new Exercise("Planche", "Triceps Chest", "Isometric", false, true,"Planche", false, false, false, 1.25),
+                new Exercise("Dips", "Triceps Chest", "Weight and Reps", false, true,"Planche", false, false, false, 1.25),
+                new Exercise("Handstand", "Triceps Shoulders", "Isometric", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Handstand Push up", "Triceps Shoulders", "Reps", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Frog to HS Hold", "Triceps Shoulders", "Isometric", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Frogstand", "Triceps Shoulders", "Isometric", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("Pike Push up", "Triceps Shoulders", "Reps", false, false,"Handstand", false, true, false, 1.25),
+                new Exercise("L-Sit", "Abs", "Isometric", false, false,"L-Sit", false, true, false, 1.25),
+                new Exercise("L-Sit Compression Hold", "Abs", "Isometric", false, false,"L-Sit", false, true, false, 1.25),
+                new Exercise("L-Sit Compression", "Abs", "Reps", false, false,"L-Sit", false, true, false, 1.25),
         };
     }
 
