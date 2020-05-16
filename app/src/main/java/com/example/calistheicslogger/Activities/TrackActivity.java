@@ -11,6 +11,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -771,6 +772,21 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
            case R.id.isoTimerButton:
                databaseCommunicator.setPendingIsoExercise(createTrackedExercise(globalSetNumber), globalSetNumber);
                startActivity(IsoTimerActivity.class);
+               break;
+           case R.id.clusterAddButton:
+               Log.i("Alfie", "cluster add");
+               ImageButton repsPositiveButton = findViewById(R.id.repsPlusButton);
+               ImageButton repsNegButton = findViewById(R.id.repsMinusButton);
+               repsPositiveButton.setVisibility(View.GONE);
+               repsNegButton.setVisibility(View.GONE);
+               Log.i("Alfie", "still here");
+               break;
+           case R.id.clusterRemoveButton:
+               Log.i("Alfie", "cluster remove");
+               repsPositiveButton = findViewById(R.id.repsPlusButton);
+               repsNegButton = findViewById(R.id.repsMinusButton);
+               repsPositiveButton.setVisibility(View.VISIBLE);
+               repsNegButton.setVisibility(View.VISIBLE);
                break;
        }
     }
