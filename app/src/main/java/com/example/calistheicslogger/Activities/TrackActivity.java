@@ -431,6 +431,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void SetUpControls(Exercise exercise)
     {
+        Log.i("Alfie", "setting visibilty");
         TextView title = findViewById(R.id.titleTextView);
 
         title.setText(exercise.getName() + " - " +  DateFunctions.GetUKDateFormat(currentDate));
@@ -454,14 +455,12 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             case "Reps":
                 group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.GONE);
-                group = findViewById(R.id.repsGroup);
-                group.setVisibility(View.VISIBLE);
+                this.repsGroupSetVisibility(View.VISIBLE);
                 break;
             case "Isometric":
                 group = findViewById(R.id.timeGroup);
                 group.setVisibility(View.VISIBLE);
-                group = findViewById(R.id.repsGroup);
-                group.setVisibility(View.GONE);
+                this.repsGroupSetVisibility(View.GONE);
                 break;
                 default:
         }
@@ -571,17 +570,29 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     }
 
+    private void repsGroupSetVisibility(int visibility){
+        EditText repsText = findViewById(R.id.repsEditText);
+        ImageButton repsMinusButton = findViewById(R.id.repsMinusButton);
+        ImageButton repsPositiveButton = findViewById(R.id.repsPlusButton);
+        TextView repsTitle = findViewById(R.id.repsTextView);
+        TextView repsClusterText = findViewById(R.id.repsClusterTextView);
+        repsClusterText.setVisibility(visibility);
+        repsText.setVisibility(visibility);
+        repsMinusButton.setVisibility(visibility);
+        repsPositiveButton.setVisibility(visibility);
+        repsTitle.setVisibility(visibility);
+    }
+
     private TrackedExercise createTrackedExercise(int setNumber){
         EditText repsText = findViewById(R.id.repsEditText);
         String repString = repsText.getText().toString();
-        Group repGroup = findViewById(R.id.repsGroup);
         int repValue = -1;
 
-        if (repGroup.getVisibility() == View.VISIBLE && !repString.isEmpty())
+        if (repsText.getVisibility() == View.VISIBLE && !repString.isEmpty())
         {
             repValue = Integer.parseInt((repString.trim()));
         }
-        if (repGroup.getVisibility() == View.VISIBLE && repString.isEmpty())
+        if (repsText.getVisibility() == View.VISIBLE && repString.isEmpty())
         {
             repValue = 0;
         }
@@ -774,17 +785,18 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                startActivity(IsoTimerActivity.class);
                break;
            case R.id.clusterAddButton:
-               Log.i("Alfie", "cluster add");
                ImageButton repsPositiveButton = findViewById(R.id.repsPlusButton);
                ImageButton repsNegButton = findViewById(R.id.repsMinusButton);
+               TextView repsClusterText = findViewById(R.id.repsClusterTextView);
+               repsClusterText.setText("+1 +3");
                repsPositiveButton.setVisibility(View.GONE);
                repsNegButton.setVisibility(View.GONE);
-               Log.i("Alfie", "still here");
                break;
            case R.id.clusterRemoveButton:
-               Log.i("Alfie", "cluster remove");
                repsPositiveButton = findViewById(R.id.repsPlusButton);
                repsNegButton = findViewById(R.id.repsMinusButton);
+               repsClusterText = findViewById(R.id.repsClusterTextView);
+               repsClusterText.setText("");
                repsPositiveButton.setVisibility(View.VISIBLE);
                repsNegButton.setVisibility(View.VISIBLE);
                break;
@@ -793,6 +805,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        Log.i("Alfie", "here");
         if (evt.getPropertyName() == "trackedExercisesUpdated"){
             runOnUiThread(new Runnable() {
                 @Override
