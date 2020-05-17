@@ -64,6 +64,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     TextViewPRArrayAdapter dslvAdapter;
     List<TrackedExercise> trackedExercises;
     ArrayList<Integer> personalRecordPositions = new ArrayList<>();
+    ArrayList<Integer> clusterRepsList = new ArrayList<>();
     // TODO: re-order set numbers when dragged
     int globalSetNumber = 1;
 
@@ -787,20 +788,41 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
            case R.id.clusterAddButton:
                ImageButton repsPositiveButton = findViewById(R.id.repsPlusButton);
                ImageButton repsNegButton = findViewById(R.id.repsMinusButton);
+               EditText clusterEditText = findViewById(R.id.clusterEditText);
                TextView repsClusterText = findViewById(R.id.repsClusterTextView);
-               repsClusterText.setText("+1 +3");
-               repsPositiveButton.setVisibility(View.GONE);
-               repsNegButton.setVisibility(View.GONE);
+               String clusterReps = clusterEditText.getText().toString();
+               if (clusterReps.length() > 0){
+                   this.clusterRepsList.add(Integer.parseInt(clusterReps));
+                   this.setClusterText();
+                   repsPositiveButton.setVisibility(View.GONE);
+                   repsNegButton.setVisibility(View.GONE);
+               }
+
                break;
            case R.id.clusterRemoveButton:
                repsPositiveButton = findViewById(R.id.repsPlusButton);
                repsNegButton = findViewById(R.id.repsMinusButton);
                repsClusterText = findViewById(R.id.repsClusterTextView);
-               repsClusterText.setText("");
-               repsPositiveButton.setVisibility(View.VISIBLE);
-               repsNegButton.setVisibility(View.VISIBLE);
+               if (this.clusterRepsList.size() > 0){
+                   this.clusterRepsList.remove(this.clusterRepsList.size() - 1);
+                   setClusterText();
+               }
+               if(this.clusterRepsList.size() == 0){
+                   repsClusterText.setText("");
+                   repsPositiveButton.setVisibility(View.VISIBLE);
+                   repsNegButton.setVisibility(View.VISIBLE);
+               }
                break;
        }
+    }
+
+    private void setClusterText(){
+        TextView repsClusterText = findViewById(R.id.repsClusterTextView);
+        String clusterText = "";
+        for(int reps : this.clusterRepsList){
+            clusterText += "+" + reps + " ";
+        }
+        repsClusterText.setText(clusterText);
     }
 
     @Override
