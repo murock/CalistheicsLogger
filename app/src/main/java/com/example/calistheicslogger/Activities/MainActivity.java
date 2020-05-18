@@ -180,6 +180,16 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             //  result += "    " + exercise.getReps() + " reps";
             trackedComponents.add(exercise.getReps() + " reps");
         }
+
+        if (exercise.getCluster().length() > 0 && exercise.getCluster() != "0"){
+            String[] clusterArray = exercise.getCluster().split(" ");
+            String clusterString = "";
+            for(String clusterRep : clusterArray){
+                clusterString += " +" + clusterRep;
+            }
+            trackedComponents.add(clusterString);
+        }
+
         if (!(exercise.getWeight() == -1))
         {
             trackedComponents.add(exercise.getWeight() + " kgs");

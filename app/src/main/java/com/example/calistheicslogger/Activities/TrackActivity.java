@@ -655,6 +655,16 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         int rest = getRestTime();
 
         String cluster = "";
+        boolean isFirst = true;
+        for(int clusterReps : this.clusterRepsList){
+            if (isFirst){
+
+            }else{
+                
+            }
+            cluster += " " + clusterReps;
+        }
+
 
         return new TrackedExercise(currentExercise, currentDate, setNumber,
                 repValue,weightValue,time,bandValue,
@@ -750,11 +760,15 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         double weightIncrement = 1.25;
         EditText repsText = findViewById(R.id.repsEditText);
         EditText weightText = findViewById(R.id.weightEditText);
+        EditText clusterEditText = findViewById(R.id.clusterEditText);
         if (TextUtils.isEmpty(repsText.getText().toString())) {
             repsText.setText("0");
         }
         if (TextUtils.isEmpty(weightText.getText().toString())){
             weightText.setText("0");
+        }
+        if (TextUtils.isEmpty(clusterEditText.getText().toString())){
+            clusterEditText.setText("0");
         }
        switch(view.getId()) {
            case R.id.repsPlusButton:
@@ -788,8 +802,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
            case R.id.clusterAddButton:
                ImageButton repsPositiveButton = findViewById(R.id.repsPlusButton);
                ImageButton repsNegButton = findViewById(R.id.repsMinusButton);
-               EditText clusterEditText = findViewById(R.id.clusterEditText);
-               TextView repsClusterText = findViewById(R.id.repsClusterTextView);
                String clusterReps = clusterEditText.getText().toString();
                if (clusterReps.length() > 0){
                    this.clusterRepsList.add(Integer.parseInt(clusterReps));
@@ -802,7 +814,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
            case R.id.clusterRemoveButton:
                repsPositiveButton = findViewById(R.id.repsPlusButton);
                repsNegButton = findViewById(R.id.repsMinusButton);
-               repsClusterText = findViewById(R.id.repsClusterTextView);
+               TextView repsClusterText = findViewById(R.id.repsClusterTextView);
                if (this.clusterRepsList.size() > 0){
                    this.clusterRepsList.remove(this.clusterRepsList.size() - 1);
                    setClusterText();
@@ -812,6 +824,18 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                    repsPositiveButton.setVisibility(View.VISIBLE);
                    repsNegButton.setVisibility(View.VISIBLE);
                }
+               break;
+           case R.id.clusterMinusButton:
+               value = Integer.parseInt(clusterEditText.getText().toString().trim());
+               value -= repIncrement;
+               if (value >= 0) {
+                   clusterEditText.setText(Integer.toString(value));
+               }
+               break;
+           case R.id.clusterPlusButton:
+               value = Integer.parseInt(clusterEditText.getText().toString().trim());
+               value += repIncrement;
+               clusterEditText.setText(Integer.toString(value));
                break;
        }
     }
