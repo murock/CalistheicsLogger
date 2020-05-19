@@ -658,11 +658,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         boolean isFirst = true;
         for(int clusterReps : this.clusterRepsList){
             if (isFirst){
-
+                cluster += Integer.toString(clusterReps);
+                isFirst = false;
             }else{
-                
+                cluster += " " + clusterReps;
             }
-            cluster += " " + clusterReps;
         }
 
 
