@@ -282,21 +282,40 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         });
     }
 
+    private void restartActivityDifferentExercise(String exerciseString){
+        Intent trackActivity = new Intent(this, TrackActivity.class);
+        trackActivity.putExtra("Exercise", exerciseString);
+        trackActivity.putExtra("Date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        finish();
+        startActivity(trackActivity);
+    }
+
     private void PopulateExercisesNavigationDrawer(){
         Menu drawerMenu = nv.getMenu();
         // TODO: avoid hardcoded index
         MenuItem exercisesItem = drawerMenu.getItem(2);
         Menu exercisesSubMenu = exercisesItem.getSubMenu();
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+
+        MenuItem item = exercisesSubMenu.add("Human Flag (2 sets)");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                    restartActivityDifferentExercise("Human Flag");
+                return  true;
+            }
+        });
+
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+
 //        LinearLayout linearLayout = drawerMenu.findItem(findViewById(R.id.listViewBox));
 //        ScrollView scrollView = drawerMenu.findViewById(R.id.scrollView);
 //        Log.i("Alfie scroll", scrollView + "");
