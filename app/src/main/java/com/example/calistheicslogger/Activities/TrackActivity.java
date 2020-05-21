@@ -20,8 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +41,7 @@ import com.example.calistheicslogger.Tools.DateFunctions;
 import com.example.calistheicslogger.Tools.InputFilterMinMax;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.Item;
 import com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
+import com.example.calistheicslogger.Tools.PropertyTextView;
 import com.example.calistheicslogger.Tools.TextViewPRArrayAdapter;
 import com.example.calistheicslogger.Tools.dslv.DragSortController;
 import com.example.calistheicslogger.Tools.dslv.DragSortListView;
@@ -221,6 +225,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpDSLV();
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
+        PopulateExercisesNavigationDrawer();
     }
 
     @Override
@@ -276,6 +281,23 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             }
         });
     }
+
+    private void PopulateExercisesNavigationDrawer(){
+        Menu drawerMenu = nv.getMenu();
+        LinearLayout linearLayout = drawerMenu.findViewById(R.id.listViewBox);
+        ScrollView scrollView = drawerMenu.findViewById(R.id.scrollView);
+        Log.i("Alfie scroll", scrollView + "");
+        Log.i("Alfie", linearLayout + "");
+       // MainActivity.populateDaysExercises(linearLayout, handleExerciseClick, TrackActivity.this);
+    }
+
+    private View.OnClickListener handleExerciseClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PropertyTextView textView = (PropertyTextView)v;
+            Toast.makeText(TrackActivity.this, "You pressed: " + textView.exerciseName ,Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private void SetDate()
     {
@@ -851,7 +873,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Log.i("Alfie", "here");
         if (evt.getPropertyName() == "trackedExercisesUpdated"){
             runOnUiThread(new Runnable() {
                 @Override
