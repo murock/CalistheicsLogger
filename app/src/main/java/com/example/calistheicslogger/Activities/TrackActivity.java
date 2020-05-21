@@ -284,10 +284,23 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
 
     private void PopulateExercisesNavigationDrawer(){
         Menu drawerMenu = nv.getMenu();
-        LinearLayout linearLayout = drawerMenu.findViewById(R.id.listViewBox);
-        ScrollView scrollView = drawerMenu.findViewById(R.id.scrollView);
-        Log.i("Alfie scroll", scrollView + "");
-        Log.i("Alfie", linearLayout + "");
+        // TODO: avoid hardcoded index
+        MenuItem exercisesItem = drawerMenu.getItem(2);
+        Menu exercisesSubMenu = exercisesItem.getSubMenu();
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
+        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
+//        LinearLayout linearLayout = drawerMenu.findItem(findViewById(R.id.listViewBox));
+//        ScrollView scrollView = drawerMenu.findViewById(R.id.scrollView);
+//        Log.i("Alfie scroll", scrollView + "");
+//        Log.i("Alfie", linearLayout + "");
        // MainActivity.populateDaysExercises(linearLayout, handleExerciseClick, TrackActivity.this);
     }
 

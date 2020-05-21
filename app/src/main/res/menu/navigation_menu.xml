@@ -8,16 +8,8 @@
         android:icon="@drawable/tools_icon"
         android:title="Tools"/>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp">
-
-        <LinearLayout
-            android:id="@+id/listViewBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-    </ScrollView>
-
+    <item android:title="Exercises">
+        <menu>
+        </menu>
+    </item>
 </menu>
