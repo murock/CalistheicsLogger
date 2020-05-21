@@ -225,7 +225,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpDSLV();
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
-        PopulateExercisesNavigationDrawer();
+        databaseCommunicator.getExercisesFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
     }
 
     @Override
@@ -291,6 +291,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void PopulateExercisesNavigationDrawer(){
+        List<TrackedExercise> trackedExercisesFromDate = databaseCommunicator.trackedExercisesFromDate;
         Menu drawerMenu = nv.getMenu();
         // TODO: avoid hardcoded index
         MenuItem exercisesItem = drawerMenu.getItem(2);
@@ -979,6 +980,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 @Override
                 public void run() {
                     saveExercise();
+                }
+            });
+        }else if (evt.getPropertyName() == "exerciseFromDatePopulated"){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PopulateExercisesNavigationDrawer();
                 }
             });
         }
