@@ -297,6 +297,15 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         MenuItem exercisesItem = drawerMenu.getItem(2);
         Menu exercisesSubMenu = exercisesItem.getSubMenu();
 
+        Boolean isNewExercise = true;
+        int largest
+        for(int i = 0 ; i < trackedExercisesFromDate.size() ; i++){
+            if (){
+
+            }
+            String itemString = exercise.getName() + " (" + exercise
+        }
+
         MenuItem item = exercisesSubMenu.add("Human Flag (2 sets)");
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
