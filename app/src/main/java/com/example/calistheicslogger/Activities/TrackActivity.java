@@ -20,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -226,6 +224,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
         databaseCommunicator.getTrackedExercisesMaxSetFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        this.restartTimer();
     }
 
     @Override
@@ -737,7 +736,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         Boolean timerOn = prefs.getBoolean("timerOn", false);
         if(timerOn)
         {
-            startRestTimer();
+            initialiseRestTimer();
         }
     }
 
@@ -753,11 +752,29 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         return -1;
     }
 
-    private void startRestTimer(){
+    private void restartTimer(){
         SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
         int timerValue = prefs.getInt("timerValue", 0); // 0 is default
-        int timerValueMilli = timerValue * 1000;
+        int currentValue = prefs.getInt("currentValue", 0); // 0 is default
+        if (timerValue == 0 || currentValue == 0){
+            // If either currentValue or timerValue not set stop here
+            return;
+        }
 
+        startRestTimer(currentValue);
+    }
+
+    private void initialiseRestTimer(){
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
+        int timerValue = prefs.getInt("timerValue", 0); // 0 is default
+
+        startRestTimer(timerValue);
+    }
+
+    private void startRestTimer(int timerValue){
+        SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
+
+        int timerValueMilli = timerValue * 1000;
         int volumeValue = prefs.getInt("volume", 100);
         float volumeFloatValue = (float)volumeValue/100;
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.stop_rest_beep);
@@ -772,7 +789,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         boolean vibrateOn = prefs.getBoolean("vibrateOn", true);
 
-        MenuItem restItem = menu.findItem(R.id.restButton);
+        MenuItem restButton = menu.findItem(R.id.restButton);
         if(restTimer != null)
         {
             restTimer.cancel();
@@ -780,12 +797,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         restTimer = new CountDownTimer(timerValueMilli, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                restItem.setIcon(null);
-                restItem.setTitle(Integer.toString((int)millisUntilFinished/1000));
+                restButton.setIcon(null);
+                restButton.setTitle(Integer.toString((int)millisUntilFinished/1000));
+                updateSharedPrefsCurrentValue((int)millisUntilFinished/1000);
             }
 
             public void onFinish() {
-                restItem.setIcon(R.drawable.rest_timer_icon);
+                restButton.setIcon(R.drawable.rest_timer_icon);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrateOn) {
                     vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                 } else if(vibrateOn) {
@@ -794,6 +812,13 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 mediaPlayer.start();
             }
         }.start();
+    }
+
+    private void updateSharedPrefsCurrentValue(int newValue)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE).edit();
+        editor.putInt("currentValue", newValue);
+        editor.apply();
     }
 
     public void OnButtonClick(View view){
