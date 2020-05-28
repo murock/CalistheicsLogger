@@ -25,6 +25,7 @@ public class DatabaseCommunicator {
     // TODO: send lists over the prop change event?
     public static List<TrackedExercise> trackedExercises;
     public static List<TrackedExercise> trackedExercisesFromDate;
+    public static List<TrackedExercise> trackedExercisesMaxSet;
     public static List<TrackedExercise> exerciseHistoryList;
     public static List<TrackedExercise> personalRecordsList;
     public static List<TrackedExercise> chartRepsData;
@@ -127,6 +128,17 @@ public class DatabaseCommunicator {
                 trackedExercisesFromDate = appDatabase.trackedExerciseDao().getTrackedExercisesFromDate(date);
                 // Fire event
                 support.firePropertyChange("exerciseFromDatePopulated", null, null);
+            }
+        });
+    }
+
+    public void getTrackedExercisesMaxSetFromDate(final String date)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                trackedExercisesMaxSet = appDatabase.trackedExerciseDao().getTrackedExercisesMaxSetFromDate(date);
+                support.firePropertyChange("trackedExercisesMaxSet", null, null);
             }
         });
     }

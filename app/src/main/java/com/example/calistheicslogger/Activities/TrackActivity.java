@@ -225,7 +225,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         SetUpDSLV();
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
-        databaseCommunicator.getExercisesFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        databaseCommunicator.getTrackedExercisesMaxSetFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
     }
 
     @Override
@@ -291,46 +291,24 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
     }
 
     private void PopulateExercisesNavigationDrawer(){
-        List<TrackedExercise> trackedExercisesFromDate = databaseCommunicator.trackedExercisesFromDate;
+        List<TrackedExercise> trackedExercisesMaxSet = databaseCommunicator.trackedExercisesMaxSet;
         Menu drawerMenu = nv.getMenu();
         // TODO: avoid hardcoded index
         MenuItem exercisesItem = drawerMenu.getItem(2);
         Menu exercisesSubMenu = exercisesItem.getSubMenu();
+        exercisesSubMenu.clear();
 
-        Boolean isNewExercise = true;
-        int largest
-        for(int i = 0 ; i < trackedExercisesFromDate.size() ; i++){
-            if (){
-
-            }
-            String itemString = exercise.getName() + " (" + exercise
+        for(TrackedExercise exercise : trackedExercisesMaxSet)
+        {
+            MenuItem item = exercisesSubMenu.add(exercise.getName() + " (" + exercise.getSetNumber() + " sets)");
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    restartActivityDifferentExercise(exercise.getName());
+                    return false;
+                }
+            });
         }
-
-        MenuItem item = exercisesSubMenu.add("Human Flag (2 sets)");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                    restartActivityDifferentExercise("Human Flag");
-                return  true;
-            }
-        });
-
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Human Flag (2 sets)");
-//        exercisesSubMenu.add(Menu.NONE, 1, Menu.NONE, "Really really really long Human Flag (2 sets)");
-
-//        LinearLayout linearLayout = drawerMenu.findItem(findViewById(R.id.listViewBox));
-//        ScrollView scrollView = drawerMenu.findViewById(R.id.scrollView);
-//        Log.i("Alfie scroll", scrollView + "");
-//        Log.i("Alfie", linearLayout + "");
-       // MainActivity.populateDaysExercises(linearLayout, handleExerciseClick, TrackActivity.this);
     }
 
     private View.OnClickListener handleExerciseClick = new View.OnClickListener() {
@@ -989,9 +967,11 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 @Override
                 public void run() {
                     saveExercise();
+                    // This will populate the navigation menu
+                    databaseCommunicator.getTrackedExercisesMaxSetFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
                 }
             });
-        }else if (evt.getPropertyName() == "exerciseFromDatePopulated"){
+        }else if (evt.getPropertyName() == "trackedExercisesMaxSet"){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
