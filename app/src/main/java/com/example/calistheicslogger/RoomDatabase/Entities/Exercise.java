@@ -165,6 +165,7 @@ public class Exercise
                 new Exercise("Barbell Bench Press", "Triceps, Chest", "Weight and Reps", false, true,"Standalone", false, false, false, 1.25),
                 new Exercise("Squat", "Legs", "Reps", false, false,"Standalone", false, false, false, 1.25),
                 new Exercise("Pistol Squat", "legs", "Reps", false, false,"Standalone", false, false, false, 1.25),
+                new Exercise("Plank", "Abs", "Isometric", false, false,"Standalone", false, true, false, 1.25),
                 new Exercise("Human Flag", "Back", "Isometric", false, false, "Human Flag", false, false,false, 1.25),
                 new Exercise("Back Lever","Chest Abs Biceps Back", "Isometric", false, false, "Back Lever", false, true, false, 1.25),
                 new Exercise("Muscle up", "Biceps Back", "Reps", true, false,"Muscle up", false, false,false, 1.25),

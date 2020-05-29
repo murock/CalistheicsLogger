@@ -155,6 +155,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
             menuItem = menu.findItem(R.id.cluster);
             menuItem.setChecked(true);
         }
+        this.restartTimer();
         return true;
     }
 
@@ -224,7 +225,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         databaseCommunicator.getTrackedExercisesFromNameAndDate(exerciseString, currentDate);
         databaseCommunicator.getPersonalRecords(exerciseString);
         databaseCommunicator.getTrackedExercisesMaxSetFromDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
-        this.restartTimer();
     }
 
     @Override
