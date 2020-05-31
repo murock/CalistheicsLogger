@@ -30,6 +30,7 @@
         <activity android:name=".Activities.LockerActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".Activities.ChartActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".Activities.CalendarActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.AboutActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".Activities.RestTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
         <activity android:name=".Activities.StopwatchActivity" android:screenOrientation="portrait"

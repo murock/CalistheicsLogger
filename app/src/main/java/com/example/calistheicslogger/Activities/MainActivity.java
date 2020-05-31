@@ -55,9 +55,11 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         super.onOptionsItemSelected(item);
 
         switch(item.getItemId()){
-            case R.id.tools:
+            case R.id.about:
+                Intent about = new Intent(this, AboutActivity.class);
+                startActivity(about);
                 return true;
-            case R.id.bandAssisted:
+            case R.id.locker:
                 Intent locker = new Intent(this,LockerActivity.class);
                 startActivity(locker);
                 return true;
