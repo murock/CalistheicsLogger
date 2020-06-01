@@ -208,7 +208,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
     private void SetUpBandChart()
     {
         // Band Set-up
-        List<Band> bands = databaseCommunicator.bandsList;
+        List<Band> bands = new ArrayList<>(databaseCommunicator.bandsList);
         bands.add(new Band("No",bands.size(),Color.BLUE));
         Map<String, Integer> bandsMap = new HashMap<>();
         List<String> bandNameList = new ArrayList<>();
@@ -250,6 +250,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
                 lastDate = date;
             }
             String band = exercise.getBand();
+            if (band.isEmpty()){
+                band = "No";
+            }
             int yAxisDataPoint;
             if (this.exerciseType.equals("Isometric"))
             {
