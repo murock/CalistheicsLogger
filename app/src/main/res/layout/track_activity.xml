@@ -50,7 +50,7 @@
             app:layout_constraintStart_toEndOf="@+id/clusterRemoveButton"
             app:layout_constraintEnd_toStartOf="@id/clusterEditText"/>
 
-        <com.example.calistheicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
+        <com.calisthenicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner
             android:id="@+id/toolSpinner"
             android:layout_width="204dp"
             android:layout_height="29dp"
@@ -484,7 +484,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.calistheicslogger.Tools.dslv.DragSortListView
+        <com.calisthenicslogger.Tools.dslv.DragSortListView
             android:id="@+id/trackedExerciseDSLV"
             android:layout_width="409dp"
             android:layout_height="0dp"
