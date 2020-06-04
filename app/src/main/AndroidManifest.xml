@@ -24,7 +24,7 @@
     </activity>
         <activity android:name="com.calisthenicslogger.Activities.NewExerciseActivity"  android:screenOrientation="portrait" android:noHistory="true">
         </activity>
-        <activity android:name="com.calisthenicslogger.Activities.TrackActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.Activities.TrackActivity" android:launchMode="singleTop" android:screenOrientation="portrait"></activity>
         <activity android:name="com.calisthenicslogger.Activities.HistoryActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="com.calisthenicslogger.Activities.PersonalRecordsActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="com.calisthenicslogger.Activities.LockerActivity" android:screenOrientation="portrait"></activity>
