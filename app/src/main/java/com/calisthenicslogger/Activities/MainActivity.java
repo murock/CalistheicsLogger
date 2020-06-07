@@ -1,4 +1,4 @@
-package com.calisthenicslogger.Activities;
+package com.calisthenicslogger.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }
         LinearLayout linearLayout = findViewById(R.id.listviewBox);
         linearLayout.removeAllViews();
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(selectedDate);
+        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(selectedDate);
         date = addHoursToJavaUtilDate(date, hours);
         selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
         databaseCommunicator.getExercisesFromDate(selectedDate);

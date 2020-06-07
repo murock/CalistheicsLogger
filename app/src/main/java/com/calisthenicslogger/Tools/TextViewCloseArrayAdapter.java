@@ -50,7 +50,7 @@ public class TextViewCloseArrayAdapter extends BaseAdapter implements ListAdapte
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.textview_close_button, null);
+            view = inflater.inflate(R.layout.textview_close_button, parent, false);
         }
 
         //Handle TextView and display string from your list

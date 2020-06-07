@@ -1,4 +1,4 @@
-package com.calisthenicslogger.Activities;
+package com.calisthenicslogger.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -192,11 +192,11 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
         ImageButton toggleButton = findViewById(R.id.toggleSearchButton);
         if (this.isProgressionView)
         {
-            prefs.edit().putBoolean("isProgressionView", true).commit();
+            prefs.edit().putBoolean("isProgressionView", true).apply();
             toggleButton.setImageResource(R.drawable.biceps_icon);
             databaseCommunicator.getAllProgressions();
         }else{
-            prefs.edit().putBoolean("isProgressionView", false).commit();
+            prefs.edit().putBoolean("isProgressionView", false).apply();
             toggleButton.setImageResource(R.drawable.progressions_icon);
             databaseCommunicator.getAllCategories();
         }
@@ -242,7 +242,7 @@ public class ExerciseListActivity extends Activity implements PropertyChangeList
 
     public void ToggleSearchClick(View view){
         this.isProgressionView = !this.isProgressionView;
-        this.prefs.edit().putBoolean("isProgressionView", this.isProgressionView).commit();
+        this.prefs.edit().putBoolean("isProgressionView", this.isProgressionView).apply();
         this.isInitialView = true;
         setUpInitialView();
     }

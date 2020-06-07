@@ -1,12 +1,14 @@
 package com.calisthenicslogger.Tools;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+@SuppressLint("AppCompatCustomView")
 public class PropertyTextView extends TextView {
 
     public String exerciseName;

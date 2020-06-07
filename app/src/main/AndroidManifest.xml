@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.calisthenicslogger.Activities.MainActivity"
+        <activity android:name="com.calisthenicslogger.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,22 +20,22 @@
 
         </activity>
 
-        <activity android:name="com.calisthenicslogger.Activities.ExerciseListActivity" android:screenOrientation="portrait">
+        <activity android:name="com.calisthenicslogger.activities.ExerciseListActivity" android:screenOrientation="portrait">
     </activity>
-        <activity android:name="com.calisthenicslogger.Activities.NewExerciseActivity"  android:screenOrientation="portrait" android:noHistory="true">
+        <activity android:name="com.calisthenicslogger.activities.NewExerciseActivity"  android:screenOrientation="portrait" android:noHistory="true">
         </activity>
-        <activity android:name="com.calisthenicslogger.Activities.TrackActivity" android:launchMode="singleTop" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.HistoryActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.PersonalRecordsActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.LockerActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.ChartActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.CalendarActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.AboutActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.RestTimerActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.TrackActivity" android:launchMode="singleTop" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.HistoryActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.PersonalRecordsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.LockerActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.ChartActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.CalendarActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.AboutActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.calisthenicslogger.activities.RestTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.StopwatchActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.StopwatchActivity" android:screenOrientation="portrait"
         android:theme="@style/AppTheme.PopupTheme"></activity>
-        <activity android:name="com.calisthenicslogger.Activities.IsoTimerActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.IsoTimerActivity" android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopupTheme"></activity>
     </application>
 

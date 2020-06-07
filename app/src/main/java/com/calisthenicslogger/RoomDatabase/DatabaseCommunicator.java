@@ -3,7 +3,7 @@ package com.calisthenicslogger.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import com.calisthenicslogger.Activities.TrackActivity;
+import com.calisthenicslogger.activities.TrackActivity;
 import com.calisthenicslogger.RoomDatabase.Entities.Exercise;
 import com.calisthenicslogger.RoomDatabase.Entities.FinalProgression;
 import com.calisthenicslogger.RoomDatabase.Entities.Tool;

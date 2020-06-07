@@ -1,4 +1,4 @@
-package com.calisthenicslogger.Activities;
+package com.calisthenicslogger.activities;
 
 import android.content.Context;
 import android.content.Intent;
