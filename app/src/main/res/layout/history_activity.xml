@@ -7,13 +7,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
+    <ImageButton
         android:id="@+id/bandsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="TrackButtonClick"
+        android:src="@drawable/arrow_left_icon"
         android:text="Track"
         app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
