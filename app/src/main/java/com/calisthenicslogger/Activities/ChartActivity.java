@@ -139,6 +139,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         {
             String timestamp = exercise.getTimestamp();
             Date date = DateFunctions.GetDateFromTimestamp(timestamp);
+            if(date == null){
+                date = new Date();
+            }
             if (firstDate == null)
             {
                 firstDate = date;
@@ -231,6 +234,9 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         {
             String timestamp = exercise.getTimestamp();
             Date date = DateFunctions.GetDateFromTimestamp(timestamp);
+            if(date == null){
+                date = new Date();
+            }
             if (firstDate == null)
             {
                 firstDate = date;

@@ -31,11 +31,11 @@
         <activity android:name="com.calisthenicslogger.activities.ChartActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="com.calisthenicslogger.activities.CalendarActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="com.calisthenicslogger.activities.AboutActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.calisthenicslogger.activities.RestTimerActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.RestTimerActivity"
             android:theme="@style/AppTheme.PopupTheme"></activity>
-        <activity android:name="com.calisthenicslogger.activities.StopwatchActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.StopwatchActivity"
         android:theme="@style/AppTheme.PopupTheme"></activity>
-        <activity android:name="com.calisthenicslogger.activities.IsoTimerActivity" android:screenOrientation="portrait"
+        <activity android:name="com.calisthenicslogger.activities.IsoTimerActivity"
             android:theme="@style/AppTheme.PopupTheme"></activity>
     </application>
 
