@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/square_border">
+    android:background="@drawable/square_border"
+    android:contentDescription="layout">
 
     <Chronometer
         android:id="@+id/chronometer"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
+        android:contentDescription="timer"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/playButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="title"
         android:text="Stopwatch"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/chronometer"
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="play button"
         android:onClick="PlayButtonClick"
         android:src="@drawable/play"
         app:layout_constraintBottom_toTopOf="@+id/okButton"
@@ -49,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="stop button"
         android:onClick="StopButtonClick"
         android:src="@drawable/stop"
         app:layout_constraintEnd_toStartOf="@+id/playButton"
@@ -62,6 +67,7 @@
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="ok button"
         android:onClick="OkButtonClick"
         android:text="@android:string/ok"
         android:textColor="#FF0000"

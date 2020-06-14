@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability = "blocksDescendants">
+    android:contentDescription="layout"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/list_item_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="list"
         android:paddingLeft="8dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
     <Button
         android:id="@+id/delete_btn"
@@ -21,6 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="delete button"
         android:text="x" />
 
 

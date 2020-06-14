@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
+        android:contentDescription="Toggle search mode button"
         android:onClick="ToggleSearchClick"
         android:src="@drawable/biceps_icon"
         app:layout_constraintBottom_toBottomOf="@+id/newExerciseButton"
@@ -23,15 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
+        android:contentDescription="exercise list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
     </ListView>
 
@@ -42,6 +42,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
+        android:queryHint="Exercise Name"
         app:layout_constraintBottom_toTopOf="@+id/exercisesListView"
         app:layout_constraintEnd_toStartOf="@+id/newExerciseButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +55,7 @@
         android:layout_marginTop="45dp"
         android:layout_marginBottom="35dp"
         android:backgroundTint="#00FAFAFA"
+        android:contentDescription="Add exercise button"
         android:onClick="newExerciseClick"
         android:src="@drawable/add_icon"
         android:text="+"
