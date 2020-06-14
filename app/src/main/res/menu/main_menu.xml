@@ -2,7 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Locker" android:id="@+id/locker"></item>
-    <item android:title="About" android:id="@+id/about"></item>
+    <item
+        android:id="@+id/locker"
+        android:contentDescription="locker menu option"
+        android:title="Locker"></item>
+    <item
+        android:id="@+id/about"
+        android:contentDescription="about menu option"
+        android:title="About"></item>
 </menu>
 

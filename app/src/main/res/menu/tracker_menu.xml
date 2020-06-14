@@ -5,6 +5,7 @@
     <item
         android:id="@+id/restButton"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="rest timer button"
         android:icon="@drawable/rest_timer_icon"
         android:text="51"
         android:title="59"
@@ -50,22 +51,27 @@
     <item
         android:id="@+id/tools"
         android:checkable="true"
+        android:contentDescription="tools menu option"
         android:title="Tools"></item>
     <item
         android:id="@+id/bandAssisted"
         android:checkable="true"
+        android:contentDescription="reesistance band menu option"
         android:title="Band assisted"></item>
     <item
         android:id="@+id/weighted"
         android:checkable="true"
+        android:contentDescription="weighted menu option"
         android:title="Weighted"></item>
     <item
-    android:id="@+id/tempo"
-    android:checkable="true"
-    android:title="Tempo"></item>
+        android:id="@+id/tempo"
+        android:checkable="true"
+        android:contentDescription="tempo menu option"
+        android:title="Tempo"></item>
 
     <item
         android:id="@+id/cluster"
         android:checkable="true"
+        android:contentDescription="cluster menu option"
         android:title="Cluster"></item>
 </menu>
