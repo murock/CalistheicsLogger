@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
         android:id="@+id/restButton"
@@ -9,7 +10,7 @@
         android:icon="@drawable/rest_timer_icon"
         android:text="51"
         android:title="59"
-        app:showAsAction="always|withText" />
+        app:showAsAction="always" />
 
 
     <item
@@ -18,7 +19,7 @@
         android:contentDescription="Exercise history menu button"
         android:icon="@drawable/history_icon"
         android:text="History"
-        android:title=""
+        android:title="History"
         app:showAsAction="always" />
 
     <item
@@ -27,7 +28,7 @@
         android:contentDescription="Chart menu button"
         android:icon="@drawable/chart_icon"
         android:text="Chart"
-        android:title=""
+        android:title="Graph"
         app:showAsAction="always" />
 
     <item
@@ -36,7 +37,7 @@
         android:contentDescription="Personal records menu button"
         android:icon="@drawable/records_icon"
         android:text="Records"
-        android:title=""
+        android:title="Personal Records"
         app:showAsAction="always" />
 
     <item
@@ -45,7 +46,7 @@
         android:contentDescription="Stopwatch"
         android:icon="@drawable/stopwatch"
         android:text="Stopwatch"
-        android:title=""
+        android:title="Stopwatch"
         app:showAsAction="always" />
 
     <item

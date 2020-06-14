@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
@@ -212,6 +213,9 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_activity);
         Intent i = getIntent();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
         exerciseString = (String)i.getSerializableExtra("Exercise");
         currentDate = (String)i.getSerializableExtra("Date");
         databaseCommunicator = DatabaseCommunicator.getInstance(this);
