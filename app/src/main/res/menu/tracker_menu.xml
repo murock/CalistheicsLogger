@@ -38,7 +38,7 @@
         android:icon="@drawable/records_icon"
         android:text="Records"
         android:title="Personal Records"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/stopWatchButton"
