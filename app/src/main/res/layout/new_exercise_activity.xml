@@ -183,7 +183,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="save button"
+        android:contentDescription="save"
         android:onClick="onSaveButtonClicked"
         android:src="@drawable/save_icon"
         android:text="Save"

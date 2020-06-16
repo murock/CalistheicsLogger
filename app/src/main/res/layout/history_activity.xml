@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="Back button"
+        android:contentDescription="Back"
         android:onClick="TrackButtonClick"
         android:src="@drawable/arrow_left_icon"
         android:text="Track"

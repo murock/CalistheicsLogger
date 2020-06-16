@@ -98,6 +98,7 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         }
 
         // TODO: Can the below two functions be merged to reduce repeating code?
+        this.initialiseDate();
         if(!isBandMode){
             SetUpToolChart();
         } else{
@@ -123,6 +124,15 @@ public class ChartActivity extends Activity  implements Serializable, PropertyCh
         // as we use dates as labels, the human rounding to nice readable numbers
         // is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
+    }
+
+    private void initialiseDate(){
+        Date date = new Date();
+        if (firstDate == null)
+        {
+            firstDate = date;
+            lastDate = date;
+        }
     }
 
     private void SetUpToolChart()

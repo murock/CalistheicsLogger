@@ -65,6 +65,7 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             TrackedExercise exercise = exerciseHistory.get(i);
             PropertyTextView textView = new PropertyTextView(HistoryActivity.this);
             textView.exerciseName = exercise.getName();
+            textView.setContentDescription(exercise.getName());
             if (isNewDate){
                 PropertyTextView title = new PropertyTextView(HistoryActivity.this);
                 title.exerciseName = exercise.getName();

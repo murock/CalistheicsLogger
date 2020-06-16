@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="delete button"
+        android:contentDescription="delete"
         android:text="x" />
 
 
