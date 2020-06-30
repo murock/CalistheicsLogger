@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         dateTextView.setText(DateFunctions.GetUKDateFormat(selectedDate));
     }
 
+    // TODO: Move to viewmodel/utlities class
     public static LinearLayout populateDaysExercises(LinearLayout linearLayout, View.OnClickListener clickListener, Context context){
         linearLayout.removeAllViews();
         List<TrackedExercise> trackedExercises = databaseCommunicator.trackedExercisesFromDate;

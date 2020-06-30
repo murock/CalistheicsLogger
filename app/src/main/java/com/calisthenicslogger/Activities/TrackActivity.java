@@ -415,6 +415,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 UpdateDSLV(trackedExercisesArrayList);
     }
 
+    // TODO: Move to viewmodel
     private void checkForPR(){
         if(trackedExercises == null)
         {
@@ -433,6 +434,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         dslvAdapter.notifyDataSetChanged();
     }
 
+    // TODO: Move to viewmodel
     public static String ListToRow(ArrayList<String> list)
     {
         String result = new String();
@@ -466,6 +468,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         return result;
     }
 
+    // TODO: Move to viewmodel
     public static String AddPrefixToItem(String item, int desiredLength, String preFix)
     {
         while (item.length() < desiredLength)
@@ -629,6 +632,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         repsTitle.setVisibility(visibility);
     }
 
+    // TODO: Move to viewmodel
     private TrackedExercise createTrackedExercise(int setNumber){
         EditText repsText = findViewById(R.id.repsEditText);
         String repString = repsText.getText().toString();
@@ -744,6 +748,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         }
     }
 
+    // TODO: Move to viewmodel
     // Returns the rest time, returns -1 if no rest set
     private int getRestTime(){
         SharedPreferences prefs = getSharedPreferences("RestSharedPreferences", MODE_PRIVATE);
