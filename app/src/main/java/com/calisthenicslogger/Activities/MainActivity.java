@@ -3,6 +3,7 @@ package com.calisthenicslogger.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.calisthenicslogger.Tools.DateFunctions;
 import com.calisthenicslogger.Tools.PropertyTextView;
+import com.calisthenicslogger.ViewModels.MainActivityViewModel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     AppDatabase appDatabase;
     static DatabaseCommunicator databaseCommunicator;
     String selectedDate;
+    MainActivityViewModel viewModel;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
         setContentView(R.layout.activity_main);
+
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
     }

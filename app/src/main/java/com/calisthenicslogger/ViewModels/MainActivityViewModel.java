@@ -1,4 +1,7 @@
 package com.calisthenicslogger.ViewModels;
 
-public class MainActivityViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class MainActivityViewModel extends ViewModel {
+
 }
