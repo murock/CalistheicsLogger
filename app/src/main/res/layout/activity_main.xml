@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="days exercises"
-        app:layout_constraintBottom_toTopOf="@+id/addExerciseButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nextButton">
-
-        <LinearLayout
-            android:id="@+id/listviewBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="days exercises"
-            android:orientation="vertical" />
-    </ScrollView>
-
     <ImageButton
         android:id="@+id/addExerciseButton"
         android:layout_width="wrap_content"
@@ -39,7 +20,7 @@
         app:layout_constraintEnd_toStartOf="@+id/toolsButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     <ImageButton
         android:id="@+id/calendarButton"
@@ -55,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/toolsButton"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     <ImageButton
         android:id="@+id/nextButton"
@@ -68,7 +49,7 @@
         android:onClick="navigationButtonClick"
         android:src="@drawable/navigate_right_icon"
         android:text="Next"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +64,7 @@
         android:onClick="navigationButtonClick"
         android:src="@drawable/navigate_left_icon"
         android:text="Previous"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,7 +94,7 @@
         app:layout_constraintEnd_toStartOf="@+id/calendarButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/addExerciseButton"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         app:srcCompat="@drawable/tools_icon" />
 
     <ImageButton
@@ -129,6 +110,15 @@
         app:layout_constraintStart_toEndOf="@+id/prevButton"
         app:layout_constraintTop_toTopOf="@+id/prevButton"
         app:srcCompat="@drawable/home_icon_small" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="563dp"
+        app:layout_constraintBottom_toTopOf="@+id/addExerciseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nextButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

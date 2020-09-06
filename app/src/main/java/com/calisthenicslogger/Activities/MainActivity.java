@@ -3,6 +3,7 @@ package com.calisthenicslogger.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     static DatabaseCommunicator databaseCommunicator;
     String selectedDate;
     MainActivityViewModel viewModel;
+    RecyclerAdapter recyclerAdapter;
 
 
     @Override
@@ -87,7 +89,12 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        viewModel.getDaysExercises().observe(this, new Observer<List<TrackedExercise>>() {
+            @Override
+            public void onChanged(List<TrackedExercise> trackedExercises) {
 
+            }
+        });
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
     }
