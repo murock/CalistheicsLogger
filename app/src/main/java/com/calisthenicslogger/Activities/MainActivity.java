@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.calisthenicslogger.Adapters.RecyclerAdapter;
 import com.calisthenicslogger.R;
 import com.calisthenicslogger.RoomDatabase.AppDatabase;
 import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     String selectedDate;
     MainActivityViewModel viewModel;
     RecyclerAdapter recyclerAdapter;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -80,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
+
+        recyclerView = findViewById(R.id.recyclerView);
+
         selectedDate= (String)i.getSerializableExtra("Timestamp");
         if (selectedDate == null || selectedDate.isEmpty())
         {
@@ -89,14 +96,16 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        viewModel.init();
         viewModel.getDaysExercises().observe(this, new Observer<List<TrackedExercise>>() {
             @Override
             public void onChanged(List<TrackedExercise> trackedExercises) {
-
+                recyclerAdapter.notifyDataSetChanged();
             }
         });
         databaseCommunicator.getExercisesFromDate(selectedDate);
         populateDateTitle();
+        initRecyclerView();
     }
 
     @Override
@@ -107,6 +116,12 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         databaseCommunicator.getExercisesFromDate(selectedDate);
     }
 
+    private void initRecyclerView(){
+        recyclerAdapter = new RecyclerAdapter(this, viewModel.getDaysExercises().getValue());
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
 
     public void navigationButtonClick(View view) throws ParseException {
         int hours;
@@ -115,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         }else{
             hours = -24;
         }
-        LinearLayout linearLayout = findViewById(R.id.listviewBox);
-        linearLayout.removeAllViews();
+        //LinearLayout linearLayout = findViewById(R.id.listviewBox);
+       // linearLayout.removeAllViews();
         Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(selectedDate);
         date = addHoursToJavaUtilDate(date, hours);
         selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
@@ -249,8 +264,8 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    LinearLayout linearLayout = findViewById(R.id.listviewBox);
-                    populateDaysExercises(linearLayout, handleExerciseClick, MainActivity.this);
+                  //  LinearLayout linearLayout = findViewById(R.id.listviewBox);
+                  //  populateDaysExercises(linearLayout, handleExerciseClick, MainActivity.this);
                 }
             });
         }
