@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toStartOf="@+id/toolsButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
     <ImageButton
         android:id="@+id/calendarButton"
@@ -36,22 +36,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/toolsButton"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
     <ImageButton
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#00FFFFFF"
         android:contentDescription="forward day"
         android:onClick="navigationButtonClick"
         android:src="@drawable/navigate_right_icon"
         android:text="Next"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/prevButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/prevButton" />
 
     <ImageButton
         android:id="@+id/prevButton"
@@ -64,7 +63,7 @@
         android:onClick="navigationButtonClick"
         android:src="@drawable/navigate_left_icon"
         android:text="Previous"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,7 +93,7 @@
         app:layout_constraintEnd_toStartOf="@+id/calendarButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/addExerciseButton"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView"
         app:srcCompat="@drawable/tools_icon" />
 
     <ImageButton
@@ -111,14 +110,21 @@
         app:layout_constraintTop_toTopOf="@+id/prevButton"
         app:srcCompat="@drawable/home_icon_small" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
-        android:layout_height="563dp"
-        app:layout_constraintBottom_toTopOf="@+id/addExerciseButton"
+        android:layout_height="0dp"
+        android:contentDescription="days exercises"
+        app:layout_constraintBottom_toTopOf="@id/toolsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nextButton" />
+        app:layout_constraintTop_toBottomOf="@+id/prevButton">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

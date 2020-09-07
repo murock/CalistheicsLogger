@@ -3,6 +3,7 @@ package com.calisthenicslogger.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -84,16 +85,15 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         databaseCommunicator.addPropertyChangeListener(this);
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-
-        recyclerView = findViewById(R.id.recyclerView);
-
-        selectedDate= (String)i.getSerializableExtra("Timestamp");
+                selectedDate= (String)i.getSerializableExtra("Timestamp");
         if (selectedDate == null || selectedDate.isEmpty())
         {
             // Default to todays date
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
         setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.recyclerView);
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         viewModel.init();
