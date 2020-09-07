@@ -42,6 +42,7 @@ import com.calisthenicslogger.Tools.MultiSelectSpinner.Item;
 import com.calisthenicslogger.Tools.MultiSelectSpinner.MultiSelectionSpinner;
 import com.calisthenicslogger.Tools.PropertyTextView;
 import com.calisthenicslogger.Tools.TextViewPRArrayAdapter;
+import com.calisthenicslogger.Tools.Utilities;
 import com.calisthenicslogger.Tools.dslv.DragSortController;
 import com.calisthenicslogger.Tools.dslv.DragSortListView;
 import com.google.android.material.navigation.NavigationView;
@@ -410,7 +411,7 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
                 globalSetNumber = trackedExercises.size() + 1;
                 ArrayList<String> trackedExercisesArrayList = new ArrayList<>();
                 for(TrackedExercise exercise : trackedExercises){
-                    trackedExercisesArrayList.add(MainActivity.getTrackedExerciseString(exercise,true));
+                    trackedExercisesArrayList.add(Utilities.getTrackedExerciseString(exercise,true));
                 }
                 UpdateDSLV(trackedExercisesArrayList);
     }
@@ -432,40 +433,6 @@ public class TrackActivity extends AppCompatActivity implements Serializable, Pr
         }
         dslvAdapter.setPrPositions(personalRecordPositions);
         dslvAdapter.notifyDataSetChanged();
-    }
-
-    // TODO: Move to viewmodel
-    public static String ListToRow(ArrayList<String> list)
-    {
-        String result = new String();
-        String spacer = "";
-        switch(list.size()){
-            case 1:
-                spacer = "       ";
-                break;
-            case 2:
-                spacer = "      ";
-                break;
-            case 3:
-                spacer = "     ";
-                break;
-            case 4:
-                spacer = "    ";
-                break;
-            case 5:
-                spacer = "   ";
-                break;
-            case 6:
-                spacer = "  ";
-                break;
-                default:
-
-        }
-        for (String item : list){
-            result += item + spacer;
-        }
-        result = result.substring(0,result.length() - spacer.length());
-        return result;
     }
 
     // TODO: Move to viewmodel

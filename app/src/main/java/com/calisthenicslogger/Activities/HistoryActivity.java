@@ -14,6 +14,7 @@ import com.calisthenicslogger.R;
 import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.calisthenicslogger.Tools.PropertyTextView;
+import com.calisthenicslogger.Tools.Utilities;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -78,7 +79,7 @@ public class HistoryActivity extends Activity implements Serializable, PropertyC
             }else {
                 textView.setBackground(ContextCompat.getDrawable(HistoryActivity.this,R.drawable.sides_border));
             }
-            textView.setText(MainActivity.getTrackedExerciseString(exercise, false));
+            textView.setText(Utilities.getTrackedExerciseString(exercise, false));
             textView.setTag(exercise.getTimestamp());
             textView.setOnClickListener(handleExerciseClick);
             linearLayout.addView(textView);

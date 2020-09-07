@@ -28,6 +28,7 @@ import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.calisthenicslogger.Tools.DateFunctions;
 import com.calisthenicslogger.Tools.PropertyTextView;
+import com.calisthenicslogger.Tools.Utilities;
 import com.calisthenicslogger.ViewModels.MainActivityViewModel;
 
 import java.beans.PropertyChangeEvent;
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             }else{
                 textView.setBackground(ContextCompat.getDrawable(context,R.drawable.sides_border));
             }
-            String exerciseString = getTrackedExerciseString(exercise, true);
+            String exerciseString = Utilities.getTrackedExerciseString(exercise, true);
             textView.setText(exerciseString);
             linearLayout.addView(textView);
 
@@ -197,58 +198,6 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             }
         }
           return linearLayout;
-    }
-
-    public static String getTrackedExerciseString(TrackedExercise exercise, boolean includeSetNum){
-        // TODO: adapt this for many different units e.g kgs/m etc
-        ArrayList<String> trackedComponents = new ArrayList<String>();
-
-        if (includeSetNum)
-        {
-            trackedComponents.add(Integer.toString(exercise.getSetNumber()));
-        }
-        if (!(exercise.getReps() == -1)) {
-            //  result += "    " + exercise.getReps() + " reps";
-            trackedComponents.add(exercise.getReps() + " reps");
-        }
-
-        if (exercise.getCluster().length() > 0 && exercise.getCluster() != "0"){
-            String[] clusterArray = exercise.getCluster().split(" ");
-            String clusterString = "";
-            for(String clusterRep : clusterArray){
-                clusterString += " +" + clusterRep;
-            }
-            trackedComponents.add(clusterString);
-        }
-
-        if (!(exercise.getWeight() == -1))
-        {
-            trackedComponents.add(exercise.getWeight() + " kgs");
-        }
-        if (!exercise.getTime().isEmpty() && !exercise.getTime().equals("000000"))
-        {
-            String time = exercise.getTime();
-            String displayTime = time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
-            trackedComponents.add(displayTime);
-        }
-        if (!exercise.getBand().isEmpty() && !exercise.getBand().equals("No"))
-        {
-            trackedComponents.add(exercise.getBand() + " band");
-        }
-        if (!exercise.getTool().isEmpty())
-        {
-            trackedComponents.add(exercise.getTool());
-        }
-        int distance = exercise.getDistance();
-        if (distance != -1)
-        {
-            trackedComponents.add(distance + " m");
-        }
-        if (!exercise.getTempo().isEmpty() && !exercise.getTempo().equals(":::"))
-        {
-            trackedComponents.add(exercise.getTempo());
-        }
-        return TrackActivity.ListToRow(trackedComponents);
     }
 
     private void newTrackAcitivity(String exercise){

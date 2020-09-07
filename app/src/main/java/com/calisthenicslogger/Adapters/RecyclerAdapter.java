@@ -39,7 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         ((ViewHolder)viewHolder).titleTextView.setText("Test title");
-        ((ViewHolder)viewHolder).bodyTextView.setText("This is a test");
+        ((ViewHolder)viewHolder).bodyTextView.setText("This is a test \nNewline test");
 
         // Set the name of the 'NicePlace'
         //((ViewHolder)viewHolder).mName.setText(trackedExercises.get(i).getTitle());

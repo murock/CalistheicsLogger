@@ -30,5 +30,6 @@ public class ExerciseRepository {
         // add a bunch of trackedexercises to dataSet
         //String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool, int rest, String cluster){
         dataSet.add(new TrackedExercise("test","test",1,1,1f,"time","band",1,"tempo","tool",1,"cluster"));
+        dataSet.add(new TrackedExercise("test","test",2,1,1f,"time","band",1,"tempo","tool",1,"cluster"));
     }
 }

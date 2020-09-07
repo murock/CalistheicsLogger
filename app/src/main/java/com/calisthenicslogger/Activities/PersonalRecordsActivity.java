@@ -13,6 +13,7 @@ import com.calisthenicslogger.R;
 import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 import com.calisthenicslogger.Tools.DateFunctions;
+import com.calisthenicslogger.Tools.Utilities;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -61,7 +62,7 @@ public class PersonalRecordsActivity extends Activity implements Serializable, P
         {
             TrackedExercise exercise = trackedExercises.get(i);
             TextView textView = new TextView(PersonalRecordsActivity.this);
-            String exerciseString = MainActivity.getTrackedExerciseString(exercise, false) + " on " + DateFunctions.GetUKDateFormat(exercise.getTimestamp());
+            String exerciseString = Utilities.getTrackedExerciseString(exercise, false) + " on " + DateFunctions.GetUKDateFormat(exercise.getTimestamp());
             textView.setText(exerciseString);
             linearLayout.addView(textView);
         }
