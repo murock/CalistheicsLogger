@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.calisthenicslogger.Models.GroupedTrackedExercise;
 import com.calisthenicslogger.R;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TrackedExercise> trackedExercises = new ArrayList<>();
+    private List<GroupedTrackedExercise> trackedExercises = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerAdapter(Context context, List<TrackedExercise> exercises) {
+    public RecyclerAdapter(Context context, List<GroupedTrackedExercise> exercises) {
         trackedExercises = exercises;
         mContext = context;
     }
@@ -38,8 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        ((ViewHolder)viewHolder).titleTextView.setText("Test title");
-        ((ViewHolder)viewHolder).bodyTextView.setText("This is a test \nNewline test");
+        ((ViewHolder)viewHolder).titleTextView.setText(trackedExercises.get(i).getTitle());
+        ((ViewHolder)viewHolder).bodyTextView.setText(trackedExercises.get(i).getBodyText());
 
         // Set the name of the 'NicePlace'
         //((ViewHolder)viewHolder).mName.setText(trackedExercises.get(i).getTitle());

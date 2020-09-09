@@ -3,7 +3,6 @@ package com.calisthenicslogger.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 
 import com.calisthenicslogger.Adapters.RecyclerAdapter;
+import com.calisthenicslogger.Models.GroupedTrackedExercise;
 import com.calisthenicslogger.R;
 import com.calisthenicslogger.RoomDatabase.AppDatabase;
 import com.calisthenicslogger.RoomDatabase.DatabaseCommunicator;
@@ -36,7 +36,6 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -98,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         viewModel.init();
-        viewModel.getDaysExercises().observe(this, new Observer<List<TrackedExercise>>() {
+        viewModel.GetGroupedExercises().observe(this, new Observer<List<GroupedTrackedExercise>>() {
             @Override
-            public void onChanged(List<TrackedExercise> trackedExercises) {
+            public void onChanged(List<GroupedTrackedExercise> trackedExercises) {
                 recyclerAdapter.notifyDataSetChanged();
             }
         });
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     }
 
     private void initRecyclerView(){
-        recyclerAdapter = new RecyclerAdapter(this, viewModel.getDaysExercises().getValue());
+        recyclerAdapter = new RecyclerAdapter(this, viewModel.GetGroupedExercises().getValue());
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerAdapter);
