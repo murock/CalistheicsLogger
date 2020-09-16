@@ -1,8 +1,10 @@
 package com.calisthenicslogger.ViewModels;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -14,52 +16,65 @@ import com.calisthenicslogger.Tools.Utilities;
 import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<TrackedExercise>> daysExercises;
-    private LiveData<List<GroupedTrackedExercise>> transformedDaysExercises =
-            Transformations.map(
-                    daysExercises,
-                    daysExercisesItem ->{
-        List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
-        for(TrackedExercise exercise : daysExercisesItem){
-        GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(exercise.getName(), Utilities.getTrackedExerciseString(exercise, true));
-        groupedTrackedExercises.add(groupedTrackedExercise);
-    }
-        return  groupedTrackedExercises;
-    });
+    private LiveData<List<GroupedTrackedExercise>> transformedDaysExercises;
 
-    //, transformedDaysExercises -> {return GetTransformedDaysExercises();});
     private ExerciseRepository repo;
-    private  MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
     public void init(){
-        if (daysExercises != null){
+        if (transformedDaysExercises != null){
             return;
         }
         repo = ExerciseRepository.getInstance();
-        daysExercises = repo.getTrackedExercises();
+        SetUpLiveData();
     }
 
-    public LiveData<List<TrackedExercise>> GetDaysExercises(){
-        return daysExercises;
+    private void SetUpLiveData(){
+        LiveData<List<TrackedExercise>> trackedExercises =
+                repo.getTrackedExercises();
+
+        transformedDaysExercises = Transformations.map(trackedExercises,
+                new Function<List<TrackedExercise>, List<GroupedTrackedExercise>>() {
+                    @Override
+                    public List<GroupedTrackedExercise> apply(List<TrackedExercise> input) {
+                        List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
+
+                        for(TrackedExercise exercise : input){
+                            GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(exercise.getName(), Utilities.getTrackedExerciseString(exercise, true));
+                            groupedTrackedExercises.add(groupedTrackedExercise);
+                        }
+                        return  groupedTrackedExercises;
+                    }
+                });
     }
 
-    public LiveData<List<GroupedTrackedExercise>> GetGroupedExercises(){
+    //public LiveData<List<TrackedExercise>> GetDaysExercises(){
+//        return daysExercises;
+//    }
+
+    public LiveData<List<GroupedTrackedExercise>> GetTransformedDaysExercises(){
         return transformedDaysExercises;
     }
 
-    public List<GroupedTrackedExercise> GetTransformedDaysExercises(){
-        List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
+//    public List<GroupedTrackedExercise> GetTransformedDaysExercises1(){
+//        List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
+//
+//        for(TrackedExercise exercise : daysExercises.getValue()){
+//            GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(exercise.getName(), Utilities.getTrackedExerciseString(exercise, true));
+//            groupedTrackedExercises.add(groupedTrackedExercise);
+//        }
+//        return  groupedTrackedExercises;
+//    }
 
-        for(TrackedExercise exercise : daysExercises.getValue()){
-            GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(exercise.getName(), Utilities.getTrackedExerciseString(exercise, true));
-            groupedTrackedExercises.add(groupedTrackedExercise);
-        }
-        return  groupedTrackedExercises;
-    }
+//    public LiveData<List<GroupedTrackedExercise>> GetTransformedDaysExercises(){
+//        //LiveData<List<TrackedExercise>> trackedExercises = repo.getTrackedExercises();
+//
+//        transformedDaysExercises =  Transformations.map(daysExercises,
+//                newData -> GetTransformedDaysExercises1());
+//        return  transformedDaysExercises;
+//    }
 
 
 }

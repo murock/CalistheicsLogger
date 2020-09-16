@@ -28,6 +28,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mContext = context;
     }
 
+    public void setTrackedExercises(List<GroupedTrackedExercise> exercises){
+        trackedExercises = exercises;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -56,7 +60,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return trackedExercises.size();
+        if (trackedExercises != null){
+            return trackedExercises.size();
+        }else {
+            return 0;
+        }
+
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder{

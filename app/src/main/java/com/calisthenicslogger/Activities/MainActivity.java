@@ -97,9 +97,11 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         viewModel.init();
-        viewModel.GetGroupedExercises().observe(this, new Observer<List<GroupedTrackedExercise>>() {
+        viewModel.GetTransformedDaysExercises().observe(this, new Observer<List<GroupedTrackedExercise>>() {
             @Override
             public void onChanged(List<GroupedTrackedExercise> trackedExercises) {
+                //TODO: Why do I have to set this everytime? Only 1st line of data is being populated
+                recyclerAdapter.setTrackedExercises(trackedExercises);
                 recyclerAdapter.notifyDataSetChanged();
             }
         });
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
     }
 
     private void initRecyclerView(){
-        recyclerAdapter = new RecyclerAdapter(this, viewModel.GetGroupedExercises().getValue());
+        recyclerAdapter = new RecyclerAdapter(this, viewModel.GetTransformedDaysExercises().getValue());
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerAdapter);
