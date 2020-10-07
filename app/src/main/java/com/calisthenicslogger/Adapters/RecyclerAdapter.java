@@ -1,6 +1,7 @@
 package com.calisthenicslogger.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
+        Log.i("Alfie i is ", ""+ i);
+        Log.i("Alfie title is ", trackedExercises.get(i).getTitle());
+        Log.i("Alfie body is ", trackedExercises.get(i).getBodyText());
         ((ViewHolder)viewHolder).titleTextView.setText(trackedExercises.get(i).getTitle());
         ((ViewHolder)viewHolder).bodyTextView.setText(trackedExercises.get(i).getBodyText());
 
