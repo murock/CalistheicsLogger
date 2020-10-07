@@ -1,5 +1,7 @@
 package com.calisthenicslogger.ViewModels;
 
+import android.util.Log;
+
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -40,10 +42,31 @@ public class MainActivityViewModel extends ViewModel {
                     @Override
                     public List<GroupedTrackedExercise> apply(List<TrackedExercise> input) {
                         List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
-
+                        List<String> trackedExerciseEntries = new ArrayList<>();
+                        String currentTrackedExerciseTitle = "";
                         for(TrackedExercise exercise : input){
-                            GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(exercise.getName(), Utilities.getTrackedExerciseString(exercise, true));
-                            groupedTrackedExercises.add(groupedTrackedExercise);
+                            Log.i("Alfie curr title is", currentTrackedExerciseTitle);
+                            Log.i("Alfie exercise name is", exercise.getName());
+                            if (!currentTrackedExerciseTitle.equals(exercise.getName())){
+                                Log.i("Alfie", "is in If");
+                                // Exercise has changed so fill in data for GroupedTrackedExercise
+                                String bodyText = "";
+                                for(String entry : trackedExerciseEntries){
+                                    Log.i("Alfie entry is", entry);
+                                    bodyText.concat(entry + "/n");
+                                    Log.i("Alfie bodyText is1", bodyText);
+                                }
+                                Log.i("Alfie bodyText is", bodyText);
+                                GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(currentTrackedExerciseTitle, bodyText);
+                                groupedTrackedExercises.add(groupedTrackedExercise);
+
+                                trackedExerciseEntries.clear();
+
+                            }
+                            // Add another entry under the same title
+                            trackedExerciseEntries.add(Utilities.getTrackedExerciseString(exercise, true));
+                            currentTrackedExerciseTitle = exercise.getName();
+
                         }
                         return  groupedTrackedExercises;
                     }
