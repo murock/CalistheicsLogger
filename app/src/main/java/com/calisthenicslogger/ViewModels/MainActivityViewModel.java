@@ -44,30 +44,25 @@ public class MainActivityViewModel extends ViewModel {
                         List<GroupedTrackedExercise> groupedTrackedExercises = new ArrayList<>();
                         List<String> trackedExerciseEntries = new ArrayList<>();
                         String currentTrackedExerciseTitle = "";
+                        String bodyText = "";
                         for(TrackedExercise exercise : input){
-                            Log.i("Alfie curr title is", currentTrackedExerciseTitle);
-                            Log.i("Alfie exercise name is", exercise.getName());
                             if (!currentTrackedExerciseTitle.equals(exercise.getName())){
-                                Log.i("Alfie", "is in If");
                                 // Exercise has changed so fill in data for GroupedTrackedExercise
-                                String bodyText = "";
+                                bodyText = "";
                                 for(String entry : trackedExerciseEntries){
-                                    Log.i("Alfie entry is", entry);
-                                    bodyText.concat(entry + "/n");
-                                    Log.i("Alfie bodyText is1", bodyText);
+                                    bodyText = bodyText + entry + "\n";
                                 }
-                                Log.i("Alfie bodyText is", bodyText);
                                 GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(currentTrackedExerciseTitle, bodyText);
                                 groupedTrackedExercises.add(groupedTrackedExercise);
-
                                 trackedExerciseEntries.clear();
-
                             }
                             // Add another entry under the same title
                             trackedExerciseEntries.add(Utilities.getTrackedExerciseString(exercise, true));
                             currentTrackedExerciseTitle = exercise.getName();
-
                         }
+                        //Add the final set of exercises
+                        GroupedTrackedExercise groupedTrackedExercise = new GroupedTrackedExercise(currentTrackedExerciseTitle, bodyText);
+                        groupedTrackedExercises.add(groupedTrackedExercise);
                         return  groupedTrackedExercises;
                     }
                 });
