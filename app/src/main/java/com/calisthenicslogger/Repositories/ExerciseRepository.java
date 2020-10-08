@@ -1,15 +1,20 @@
 package com.calisthenicslogger.Repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.calisthenicslogger.Models.GroupedTrackedExercise;
+import com.calisthenicslogger.RoomDatabase.AppDatabase;
 import com.calisthenicslogger.RoomDatabase.Entities.TrackedExercise;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ExerciseRepository {
-
     private static  ExerciseRepository instance;
     private ArrayList<TrackedExercise> dataSet = new ArrayList<>();
 
@@ -28,6 +33,9 @@ public class ExerciseRepository {
     }
 
     private void setTrackedExercises(){
+        String selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+
         // add a bunch of trackedexercises to dataSet
         //String name, String timestamp, int setNumber, int reps, double weight, String time, String band, int distance, String tempo, String tool, int rest, String cluster){
 
