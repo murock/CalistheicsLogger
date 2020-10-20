@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
-
+        
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         viewModel.init();
         viewModel.GetTransformedDaysExercises().observe(this, new Observer<List<GroupedTrackedExercise>>() {

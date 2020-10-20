@@ -1,8 +1,11 @@
 package com.calisthenicslogger.ViewModels;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,12 +22,17 @@ import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityViewModel extends ViewModel {
+public class MainActivityViewModel extends AndroidViewModel {
 
     private LiveData<List<GroupedTrackedExercise>> transformedDaysExercises;
 
     private ExerciseRepository repo;
 
+    public MainActivityViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    // Legacy? TODO: Remove? use constructor instead?
     public void init(){
         if (transformedDaysExercises != null){
             return;

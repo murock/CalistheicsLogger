@@ -1,5 +1,6 @@
 package com.calisthenicslogger.Repositories;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
@@ -17,6 +18,16 @@ import java.util.Locale;
 public class ExerciseRepository {
     private static  ExerciseRepository instance;
     private ArrayList<TrackedExercise> dataSet = new ArrayList<>();
+    private AppDatabase appDatabase;
+
+    public ExerciseRepository(Application application){
+        appDatabase = AppDatabase.getInstance(application);
+    }
+
+    // Empty constructor LEGACY TODO: Remove
+    private ExerciseRepository(){
+
+    }
 
     public static ExerciseRepository getInstance(){
         if (instance == null){
