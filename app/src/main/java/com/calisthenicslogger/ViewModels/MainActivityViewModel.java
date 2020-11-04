@@ -30,6 +30,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
+        repo = new ExerciseRepository(application);
+        SetUpLiveData();
     }
 
     // Legacy? TODO: Remove? use constructor instead?
