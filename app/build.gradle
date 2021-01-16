@@ -44,5 +44,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation 'com.google.android.material:material:1.1.0'
-
+    implementation 'com.ajts.androidmads.sqliteimpex:library:1.0.0'
+    implementation ('net.rdrei.android.dirchooser:library:3.2@aar'){
+        transitive = true;
+    }
+    annotationProcessor 'com.google.auto.value:auto-value:1.1'
 }
+

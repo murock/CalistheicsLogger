@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
                 Intent locker = new Intent(this,LockerActivity.class);
                 startActivity(locker);
                 return true;
+            case R.id.database:
+                Intent db = new Intent(this,DatabaseActivity.class);
+                startActivity(db);
+                return true;
             default:
                 return  false;
         }

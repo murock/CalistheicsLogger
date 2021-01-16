@@ -10,5 +10,9 @@
         android:id="@+id/about"
         android:contentDescription="about menu option"
         android:title="About"></item>
+    <item
+        android:id="@+id/database"
+        android:contentDescription="Database menu option"
+        android:title="Database"></item>
 </menu>
 
